@@ -1,0 +1,21 @@
+/*
+    Snippet taken from here:
+        https://github.com/iamshaunjp/Complete-React-Tutorial/blob/lesson-10/dojo-blog/src/index.css
+*/
+
+/* blog previews / list */
+.courseList {
+  padding: 10px 16px;
+  margin: 2.5% 15%;
+  border-bottom: 1px solid #fafafa;
+  background-color: hsl(220, 60%, 90%);
+  border-radius: 10px;
+}
+.courseList:hover {
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+}
+.courseList h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 8px;
+}

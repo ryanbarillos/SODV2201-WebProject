@@ -1,0 +1,46 @@
+/*
+Source: https://github.com/iamshaunjp/Complete-React-Tutorial/blob/lesson-27/dojo-blog/src/index.css
+*/
+
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  border: 2px solid hsl(0, 0%, 60%);
+  border-radius: 5px;
+  padding: 5px 5px;
+}
+
+form label {
+  text-align: left;
+  display: block;
+  font-weight: bold;
+}
+
+form h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 30px;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+
+form button {
+  font-size: large;
+  font-weight: bold;
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}

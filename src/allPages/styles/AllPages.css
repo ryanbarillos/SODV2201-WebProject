@@ -1,0 +1,19 @@
+html {
+  text-align: center;
+}
+
+.special {
+  padding-top: 30px;
+  font-size: small;
+}
+
+.special button {
+  /* font-size: large; */
+  font-weight: bold;
+  background: hsl(0, 0%, 40%);
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
