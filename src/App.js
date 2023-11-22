@@ -4,7 +4,7 @@
   By Group 3
     Ryan Barillos
     Gurleen Kaur
-    David Yust
+    David Yusty
 */
 
 // CSS
