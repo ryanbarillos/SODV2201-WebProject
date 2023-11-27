@@ -25,39 +25,48 @@ function App() {
   const changeloginMode = (loginAs) => {
     setLoginMode(loginAs);
   };
+  switch (loginMode) {
+    /*
+      Login Student
+    */
+    case "student":
+      return <StudentMain />;
+    /*
+      Login Admin
+    */
+    case "admin":
+      return <AdminMain />;
+    /*
+      Login Page
+    */
+    default:
+      return (
+        <div>
+          <header className="navbar">
+            <div className="leftSide">
+              <img src={Logo} />
+              <h1>Log In</h1>
+            </div>
+          </header>
 
-  if (loginMode === "student") {
-    return <StudentMain />;
-  } else if (loginMode === "admin") {
-    return <AdminMain />;
-  } else {
-    return (
-      <div>
-        <header className="navbar">
-          <div className="leftSide">
-            <img src={Logo} />
-            <h1>Log In</h1>
+          <div className="LogIn">
+            <h1>Student Log In</h1>
+            <form onSubmit={() => changeloginMode("student")}>
+              <label>Email (Required)</label>
+              <input type="text" required></input>
+              <label>Password (Required)</label>
+              <input type="text" required></input>
+              <button onChange={() => changeloginMode("student")}>Done</button>
+            </form>
           </div>
-        </header>
 
-        <div className="LogIn">
-          <h1>Student Log In</h1>
-          <form onSubmit={() => changeloginMode("student")}>
-            <label>Email (Required)</label>
-            <input type="text" required></input>
-            <label>Password (Required)</label>
-            <input type="text" required></input>
-            <button onChange={() => changeloginMode("student")}>Done</button>
-          </form>
+          <div className="special">
+            <button onClick={() => changeloginMode("admin")}>
+              Log in as Admin
+            </button>
+          </div>
         </div>
-
-        <div className="special">
-          <button onClick={() => changeloginMode("admin")}>
-            Log in as Admin
-          </button>
-        </div>
-      </div>
-    );
+      );
   }
 }
 
