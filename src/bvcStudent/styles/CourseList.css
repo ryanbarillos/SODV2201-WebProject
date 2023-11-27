@@ -5,8 +5,8 @@
 
 /* blog previews / list */
 .courseList {
-  padding: 10px 16px;
-  margin: 2.5% 15%;
+  padding: 5px 20px;
+  margin: 2% 30%;
   border-bottom: 1px solid #fafafa;
   background-color: hsl(220, 60%, 90%);
   border-radius: 10px;
@@ -14,8 +14,29 @@
 .courseList:hover {
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
 }
+
 .courseList h2 {
   font-size: 20px;
+}
+
+#name {
   color: #f1356d;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
+  text-align: left;
+}
+#code {
+  color: black;
+  /* margin-bottom: 8px; */
+  text-align: right;
+}
+
+.courseList button {
+  font-size: large;
+  font-weight: bold;
+  background: hsl(240, 100%, 30%);
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
 }

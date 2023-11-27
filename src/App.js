@@ -27,14 +27,6 @@ function App() {
     setLoginMode(loginAs);
   };
 
-  useEffect(() => {
-    fetch("/api")
-      .then((response) => response.json())
-      .then((data) => {
-        setUserData(data);
-      });
-  });
-
   switch (loginMode) {
     /*
       Login Student
