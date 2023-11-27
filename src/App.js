@@ -15,16 +15,26 @@ import "./allPages/styles/Forms.css";
 
 // Javascript & React Components
 import Logo from "./allPages/assets/bvcLogo.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminMain from "./bvcAdmin/AdminMain";
 import StudentMain from "./bvcStudent/StudentMain";
 
 function App() {
-  const [loginMode, setLoginMode] = useState("");
+  const [loginMode, setLoginMode] = useState(""),
+    [userData, setUserData] = useState("");
 
   const changeloginMode = (loginAs) => {
     setLoginMode(loginAs);
   };
+
+  useEffect(() => {
+    fetch("/api")
+      .then((response) => response.json())
+      .then((data) => {
+        setUserData(data);
+      });
+  });
+
   switch (loginMode) {
     /*
       Login Student

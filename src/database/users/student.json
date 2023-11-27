@@ -1,0 +1,12 @@
+{
+    "student": [
+        {
+            "email": "stu1@mybvc.ca",
+            "password": "stu1"
+        },
+        {
+            "email": "stu2@mybvc.ca",
+            "password": "stu2"
+        }
+    ]
+}

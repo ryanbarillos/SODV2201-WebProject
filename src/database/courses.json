@@ -1,0 +1,74 @@
+{
+    "courses": [
+        {
+            "name": "Project Management 1",
+            "code": "PRO111",
+            "term": 1
+        },
+        {
+            "name": "C++ Programming Fundamentals",
+            "code": "CPP111",
+            "term": 1
+        },
+        {
+            "name": "Computer Maintenance 1",
+            "code": "COMP111",
+            "term": 1
+        },
+        {
+            "name": "Information Security 1",
+            "code": "IS111",
+            "term": 1
+        },
+        {
+            "name": "Networking Basics",
+            "code": "NET222",
+            "term": 2
+        },
+        {
+            "name": "Web Technology",
+            "code": "WEB222",
+            "term": 2
+        },
+        {
+            "name": "Project Management 2",
+            "code": "PRO222",
+            "term": 2
+        },
+        {
+            "name": "Advanced Project Management 1",
+            "code": "PRO333",
+            "term": 3
+        },
+        {
+            "name": "Advanced C++ Programming Fundamentals",
+            "code": "CPP333",
+            "term": 3
+        },
+        {
+            "name": "Advanced Computer Maintenance",
+            "code": "COMP333",
+            "term": 3
+        },
+        {
+            "name": "Advanced Information Security 1",
+            "code": "IS333",
+            "term": 3
+        },
+        {
+            "name": "Advanced Networking",
+            "code": "NET444",
+            "term": 4
+        },
+        {
+            "name": "Advanced Computer Maintenance",
+            "code": "COMP444",
+            "term": 4
+        },
+        {
+            "name": "Advanced Information Security 1",
+            "code": "WEB444",
+            "term": 4
+        }
+    ]
+}
