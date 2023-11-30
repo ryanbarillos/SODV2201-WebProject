@@ -11,6 +11,7 @@
     "mongodb": "^6.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router": "^6.20.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
@@ -41,7 +42,6 @@
   },
   "description": "**Staging Branch is designed for rapid development and will upload changes to Main branch once all changes are working**",
   "main": "index.js",
-  "devDependencies": {},
   "keywords": [],
   "author": "",
   "license": "ISC"

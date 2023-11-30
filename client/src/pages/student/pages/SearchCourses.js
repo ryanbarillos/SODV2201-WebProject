@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function CourseSearch() {
+function SearchCourses() {
   const [cName, cNameSet] = useState("");
   const [cCode, cCodeSet] = useState("");
   const [cDateStart, cDateStartSet] = useState("");
@@ -45,4 +45,4 @@ function CourseSearch() {
   );
 }
 
-export default CourseSearch;
+export default SearchCourses;

@@ -1,5 +1,3 @@
-// import "./App.css";
-
 function AdminLogin() {
   return (
     <div className="LoginAdmin">

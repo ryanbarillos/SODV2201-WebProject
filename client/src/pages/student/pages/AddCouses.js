@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CourseList from "../components/CourseList";
 
-function CourseAdd() {
+function AddCourses() {
   const [termNow, termNowSet] = useState(1),
     [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
     [courses, setCourses] = useState(null);
@@ -23,4 +23,4 @@ function CourseAdd() {
   );
 }
 
-export default CourseAdd;
+export default AddCourses;

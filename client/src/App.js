@@ -4,30 +4,28 @@
   By Group 3
     Ryan Barillos
     Gurleen Kaur
-    David Yusty
 */
 
 // CSS
-import "./App.css";
-import "./allPages/styles/AllPages.css";
-import "./allPages/styles/Navbar.css";
-import "./allPages/styles/Forms.css";
+// import "./allPages/styles/AllPages.css";
+// import "./allPages/styles/Navbar.css";
+// import "./allPages/styles/Forms.css";
 
 // Javascript & React Components
-import Logo from "./allPages/assets/bvcLogo.svg";
 import { useEffect, useState } from "react";
-import AdminMain from "./bvcAdmin/AdminMain";
-import StudentMain from "./bvcStudent/StudentMain";
+import AdminMain from "./pages/admin/AdminMain";
+import StudentMain from "./pages/student/StudentMain";
+import Navbar from "./component/navbar/Navbar";
 
 function App() {
-  const [loginMode, setLoginMode] = useState(""),
+  const [userMode, userModeSet] = useState(""),
     [userData, setUserData] = useState("");
 
   const changeloginMode = (loginAs) => {
-    setLoginMode(loginAs);
+    userModeSet(loginAs);
   };
 
-  switch (loginMode) {
+  switch (userMode) {
     /*
       Login Student
     */
@@ -44,12 +42,13 @@ function App() {
     default:
       return (
         <div>
-          <header className="navbar">
+          {/* <header className="navbar">
             <div className="leftSide">
               <img src={Logo} />
               <h1>Log In</h1>
             </div>
-          </header>
+          </header> */}
+          <Navbar mode="login" />
 
           <div className="LogIn">
             <h1>Student Log In</h1>
@@ -58,7 +57,10 @@ function App() {
               <input type="text" required></input>
               <label>Password (Required)</label>
               <input type="text" required></input>
-              <button onChange={() => changeloginMode("student")}>Done</button>
+              <button id="logIn" onChange={() => changeloginMode("student")}>
+                Log In
+              </button>
+              <button>Sign Up</button>
             </form>
           </div>
 
