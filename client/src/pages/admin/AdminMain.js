@@ -1,8 +1,6 @@
-import "./styles/AllPages.css";
-import "./styles/Forms.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import AdminLogin from "./pages/Login";
 import Home from "./pages/Home";
 import SearchCourse from "./pages/SearchCourse";
@@ -16,7 +14,7 @@ function AdminMain() {
   return (
     <div className="AdminMain">
       <Router>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/SearchCourse" element={<SearchCourse />} />

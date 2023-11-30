@@ -7,9 +7,8 @@
 */
 
 // CSS
-// import "./allPages/styles/AllPages.css";
-// import "./allPages/styles/Navbar.css";
-// import "./allPages/styles/Forms.css";
+import "./component/styles/Sitewide.css";
+import "./component/styles/Forms.css";
 
 // Javascript & React Components
 import { useEffect, useState } from "react";
@@ -18,10 +17,10 @@ import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
 
 function App() {
-  const [userMode, userModeSet] = useState(""),
+  const [userMode, userModeSet] = useState("logIn"),
     [userData, setUserData] = useState("");
 
-  const changeloginMode = (loginAs) => {
+  const ModeSet = (loginAs) => {
     userModeSet(loginAs);
   };
 
@@ -42,32 +41,26 @@ function App() {
     default:
       return (
         <div>
-          {/* <header className="navbar">
-            <div className="leftSide">
-              <img src={Logo} />
-              <h1>Log In</h1>
-            </div>
-          </header> */}
+          {/* Navbar */}
           <Navbar mode="login" />
-
+          {/* Log In form */}
           <div className="LogIn">
             <h1>Student Log In</h1>
-            <form onSubmit={() => changeloginMode("student")}>
+            <form onSubmit={() => ModeSet("student")}>
               <label>Email (Required)</label>
               <input type="text" required></input>
               <label>Password (Required)</label>
               <input type="text" required></input>
-              <button id="logIn" onChange={() => changeloginMode("student")}>
+              <button id="left" onChange={() => ModeSet("student")}>
                 Log In
               </button>
-              <button>Sign Up</button>
+              <button id="right" onChange={() => ModeSet("signup")}>
+                Sign Up
+              </button>
             </form>
           </div>
-
           <div className="special">
-            <button onClick={() => changeloginMode("admin")}>
-              Log in as Admin
-            </button>
+            <button onClick={() => ModeSet("admin")}>Log in as Admin</button>
           </div>
         </div>
       );
