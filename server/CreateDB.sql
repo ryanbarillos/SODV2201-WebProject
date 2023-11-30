@@ -90,8 +90,8 @@ VALUES
     ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');
 
 SELECT *
-FROM Courses
-WHERE courseTerm = 1;
+FROM Administrators
 -- Data Population END
+
 USE master
 GO
