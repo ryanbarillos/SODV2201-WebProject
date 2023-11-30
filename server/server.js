@@ -1,26 +1,40 @@
-import account from "./credentials.js";
+/*
+  Reference(s) to Connect to MongoDB given 
+  https://www.mongodb.com/blog/post/quick-start-nodejs-mongodb-how-to-get-connected-to-your-database
+  https://stackoverflow.com/questions/69436274/nodejs-cannot-connect-to-mongodb
 
+  REFERENCE(s) for SQL Server
+  https://stackoverflow.com/questions/60226370/certificate-error-when-connecting-to-sql-server
+  https://www.npmjs.com/package/dotenv#%EF%B8%8F-usage
+*/
+
+// Prerequisites
+require("dotenv").config();
 const express = require("express"),
+  sql = require("mssql"),
+  cors = require("cors"),
   app = express(),
-  port = 4000,
-  // account = require("../env"),
-  mongoose = require("mongoose");
+  config = {
+    server: process.env.SRVR,
+    user: process.env.NAME,
+    password: process.env.PASS,
+    database: process.env.DBSE,
+    driver: process.env.DRVR,
+    options: {
+      trustedConnection: true,
+      trustServerCertificate: true,
+    },
+  };
 
-app.get("/", (request, response) => {
-  response.send("Hi");
-});
+// Connect to Database
+let pool;
+async function initialize() {
+  try {
+    pool = await sql.connect(config);
+    console.log("Database Connected");
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
+}
 
-app.listen(port, () => {
-  console.log(account.name);
-});
-
-// mongoose
-//   .connect(
-//     `mongodb+srv://${account.user}:${account.pass}@webproject.xe9schq.mongodb.net/`
-//   )
-//   .then(() => {
-//     console.log("MonkeyDB");
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+initialize();
