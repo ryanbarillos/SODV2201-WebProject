@@ -17,15 +17,26 @@ import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
 
 function App() {
+  // Variables
   const [userMode, userModeSet] = useState("logIn"),
-    [userData, setUserData] = useState(null);
+    [email, setEmail] = useState(""),
+    [pass, setPass] = useState("");
 
-  const usrRef = useRef(),
-    errRef = useRef();
-
-  const ModeSet = (loginAs) => {
-    userModeSet(loginAs);
-  };
+  //Functions
+  const handleUser = (event) => {
+      let key = event.target.value;
+      setEmail(key);
+    },
+    handlePass = (event) => {
+      let key = event.target.value;
+      setPass(key);
+    },
+    handleLogin = (email, password) => {
+      alert(email + "\n" + password);
+    },
+    ModeSet = (loginAs) => {
+      userModeSet(loginAs);
+    };
 
   switch (userMode) {
     /*
@@ -49,17 +60,20 @@ function App() {
           {/* Log In form */}
           <div className="LogIn">
             <h1>Student Log In</h1>
-            <form onSubmit={() => ModeSet("student")}>
+            {/* <form onSubmit={() => ModeSet("student")}> */}
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleLogin(email, pass);
+              }}
+            >
               <label>Email (Required)</label>
-              <input type="text" required></input>
+              <input type="text" required onChange={handleUser}></input>
               <label>Password (Required)</label>
-              <input type="text" required></input>
-              <button id="left" onChange={() => ModeSet("student")}>
-                Log In
-              </button>
-              <button id="right" onChange={() => ModeSet("signup")}>
-                Sign Up
-              </button>
+              <input type="text" required onChange={handlePass}></input>
+              {/* <button id="left" onChange={ModeSet("student")}></button> */}
+              <button id="left">Log In</button>
+              <button id="right">Sign Up</button>
             </form>
           </div>
           <div className="special">
