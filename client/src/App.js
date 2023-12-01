@@ -55,12 +55,15 @@ function App() {
     default:
       return (
         <div>
+          {/*  */}
           {/* Navbar */}
+          {/*  */}
           <Navbar mode="login" />
+          {/*  */}
           {/* Log In form */}
+          {/*  */}
           <div className="LogIn">
             <h1>Student Log In</h1>
-            {/* <form onSubmit={() => ModeSet("student")}> */}
             <form
               onSubmit={(event) => {
                 event.preventDefault();
