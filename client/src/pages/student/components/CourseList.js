@@ -1,14 +1,14 @@
 const CourseList = ({ courses, term }) => {
-  let list = courses.filter((course) => course.term === term);
+  let list = courses.filter((c) => c.courseTerm === term);
   return (
     <div>
-      {list.map((course) => (
+      {list.map((c) => (
         // Render each course into individual sections
         <div className="courseList">
           <h2 style={{ textAlign: "left", color: "red" }}>
-            {course.name}
+            {c.courseName}
             <span style={{ float: "right", color: "black" }}>
-              {course.code}
+              {c.courseCode}
             </span>
           </h2>
           <button>Add Course</button>

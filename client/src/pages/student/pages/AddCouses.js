@@ -6,13 +6,16 @@ function AddCourses() {
     [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
     [courses, setCourses] = useState(null);
 
+  // Get courses
   useEffect(() => {
-    fetch("http://localhost:8000/courses")
-      .then((res) => {
-        return res.json();
+    fetch("/api/courses")
+      .then((response) => {
+        return response.json();
       })
-      .then((data) => setCourses(data));
-  });
+      .then((data) => {
+        setCourses(data.data);
+      });
+  }, []);
 
   return (
     <div>

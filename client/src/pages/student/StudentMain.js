@@ -6,6 +6,7 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 // import Navbar from "./components/Navbar";
+import Navbar from "../../component/navbar/Navbar";
 import Home from "./pages/Home";
 import MyCourses from "./pages/MyCourses";
 import CourseAdd from "./pages/AddCouses";
@@ -16,7 +17,8 @@ function StudentMain() {
   return (
     <div className="StudentMain">
       <Router>
-        {/* <Navbar /> */}
+        {/* Navbar */}
+        <Navbar mode="student" />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/MyCourses" element={<MyCourses />} />

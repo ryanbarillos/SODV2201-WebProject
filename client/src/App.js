@@ -18,7 +18,7 @@ import Navbar from "./component/navbar/Navbar";
 
 function App() {
   const [userMode, userModeSet] = useState("logIn"),
-    [userData, setUserData] = useState("");
+    [userData, setUserData] = useState(null);
 
   const ModeSet = (loginAs) => {
     userModeSet(loginAs);

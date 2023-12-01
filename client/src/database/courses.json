@@ -1,74 +1,74 @@
 {
     "courses": [
         {
-            "name": "Project Management 1",
-            "code": "PRO111",
-            "term": 1
+            "courseName": "Project Management 1",
+            "courseCode": "PRO111",
+            "courseTerm": 1
         },
         {
-            "name": "C++ Programming Fundamentals",
-            "code": "CPP111",
-            "term": 1
+            "courseName": "C++ Programming Fundamentals",
+            "courseCode": "CPP111",
+            "courseTerm": 1
         },
         {
-            "name": "Computer Maintenance 1",
-            "code": "COMP111",
-            "term": 1
+            "courseName": "Computer Maintenance 1",
+            "courseCode": "COMP111",
+            "courseTerm": 1
         },
         {
-            "name": "Information Security 1",
-            "code": "IS111",
-            "term": 1
+            "courseName": "Information Security 1",
+            "courseCode": "IS111",
+            "courseTerm": 1
         },
         {
-            "name": "Networking Basics",
-            "code": "NET222",
-            "term": 2
+            "courseName": "Networking Basics",
+            "courseCode": "NET222",
+            "courseTerm": 2
         },
         {
-            "name": "Web Technology",
-            "code": "WEB222",
-            "term": 2
+            "courseName": "Web Technology",
+            "courseCode": "WEB222",
+            "courseTerm": 2
         },
         {
-            "name": "Project Management 2",
-            "code": "PRO222",
-            "term": 2
+            "courseName": "Project Management 2",
+            "courseCode": "PRO222",
+            "courseTerm": 2
         },
         {
-            "name": "Advanced Project Management 1",
-            "code": "PRO333",
-            "term": 3
+            "courseName": "Advanced Project Management 1",
+            "courseCode": "PRO333",
+            "courseTerm": 3
         },
         {
-            "name": "Advanced C++ Programming Fundamentals",
-            "code": "CPP333",
-            "term": 3
+            "courseName": "Advanced C++ Programming Fundamentals",
+            "courseCode": "CPP333",
+            "courseTerm": 3
         },
         {
-            "name": "Advanced Computer Maintenance",
-            "code": "COMP333",
-            "term": 3
+            "courseName": "Advanced Computer Maintenance",
+            "courseCode": "COMP333",
+            "courseTerm": 3
         },
         {
-            "name": "Advanced Information Security 1",
-            "code": "IS333",
-            "term": 3
+            "courseName": "Advanced Information Security 1",
+            "courseCode": "IS333",
+            "courseTerm": 3
         },
         {
-            "name": "Advanced Networking",
-            "code": "NET444",
-            "term": 4
+            "courseName": "Advanced Networking",
+            "courseCode": "NET444",
+            "courseTerm": 4
         },
         {
-            "name": "Advanced Computer Maintenance",
-            "code": "COMP444",
-            "term": 4
+            "courseName": "Advanced Computer Maintenance",
+            "courseCode": "COMP444",
+            "courseTerm": 4
         },
         {
-            "name": "Advanced Information Security 1",
-            "code": "WEB444",
-            "term": 4
+            "courseName": "Advanced Information Security 1",
+            "courseCode": "WEB444",
+            "courseTerm": 4
         }
     ]
 }
