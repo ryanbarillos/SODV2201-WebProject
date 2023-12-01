@@ -38,6 +38,7 @@ function App() {
       userModeSet(loginAs);
     };
 
+  //Authentication Page
   switch (userMode) {
     /*
       Login Student
