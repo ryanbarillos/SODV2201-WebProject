@@ -40,7 +40,7 @@ app.get("/courses", async function (req, res) {
   try {
     const query = "SELECT * FROM Courses",
       result = await pool.request().query(query);
-    res.json({ data: result.recordset });
+    res.json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -50,7 +50,7 @@ app.get("/students", async function (req, res) {
   try {
     const query = "SELECT * FROM Students",
       result = await pool.request().query(query);
-    res.json({ data: result.recordset });
+    res.json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -60,7 +60,7 @@ app.get("/administrators", async function (req, res) {
   try {
     const query = "SELECT * FROM Administrators",
       result = await pool.request().query(query);
-    res.json({ data: result.recordset });
+    res.json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -70,7 +70,7 @@ app.get("/courses-enrolled", async function (req, res) {
   try {
     const query = "SELECT * FROM CoursesEnrolled",
       result = await pool.request().query(query);
-    res.json({ data: result.recordset });
+    res.json(result.recordset);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -83,7 +83,7 @@ app.get("/courses-enrolled", async function (req, res) {
 //     try {
 //     const query = "SELECT * FROM Administrators",
 //       result = await pool.request().query(query);
-//     res.json({ data: result.recordset });
+//     res.json(result.recordset });
 //   } catch (error) {
 //     res.status(500).json({ error: error.message });
 //   }

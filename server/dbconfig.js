@@ -4,7 +4,7 @@ const config = {
   server: process.env.SRVR,
   database: process.env.DBSE,
   driver: process.env.DRVR,
-  parseJSON: true,
+  //   parseJSON: false,
   options: {
     trustedConnection: true,
     trustServerCertificate: true,

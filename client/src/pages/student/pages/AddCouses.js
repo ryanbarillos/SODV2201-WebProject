@@ -8,12 +8,12 @@ function AddCourses() {
 
   // Get courses
   useEffect(() => {
-    fetch("/api/courses")
+    fetch("/courses")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        setCourses(data.data);
+        setCourses(data);
       });
   }, []);
 

@@ -33,6 +33,7 @@ function App() {
     },
     handleLogin = (email, password) => {
       alert(email + "\n" + password);
+      userModeSet("student");
     },
     ModeSet = (loginAs) => {
       userModeSet(loginAs);
