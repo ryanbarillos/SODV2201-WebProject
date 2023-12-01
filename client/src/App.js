@@ -74,7 +74,6 @@ function App() {
               <input type="text" required onChange={handleUser}></input>
               <label>Password (Required)</label>
               <input type="text" required onChange={handlePass}></input>
-              {/* <button id="left" onChange={ModeSet("student")}></button> */}
               <button id="left">Log In</button>
               <button id="right">Sign Up</button>
             </form>
