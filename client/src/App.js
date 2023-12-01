@@ -11,7 +11,7 @@ import "./component/styles/Sitewide.css";
 import "./component/styles/Forms.css";
 
 // Javascript & React Components
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
@@ -19,6 +19,9 @@ import Navbar from "./component/navbar/Navbar";
 function App() {
   const [userMode, userModeSet] = useState("logIn"),
     [userData, setUserData] = useState(null);
+
+  const usrRef = useRef(),
+    errRef = useRef();
 
   const ModeSet = (loginAs) => {
     userModeSet(loginAs);

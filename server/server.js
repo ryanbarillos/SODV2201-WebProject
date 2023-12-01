@@ -44,6 +44,9 @@ async function initialize() {
 
 initialize();
 
+/*
+  GET
+*/
 // Courses List
 app.get("/api/courses", async function (req, res) {
   try {
@@ -84,6 +87,19 @@ app.get("/api/courses-enrolled", async function (req, res) {
     res.status(500).json({ error: error.message });
   }
 });
+
+/*
+  POST
+*/
+// app.post("./signup", (req, res) => {
+//     try {
+//     const query = "SELECT * FROM Administrators",
+//       result = await pool.request().query(query);
+//     res.json({ data: result.recordset });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 app.listen(port, () => {
   console.log("Server running on port " + port);
