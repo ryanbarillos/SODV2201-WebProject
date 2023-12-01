@@ -15,19 +15,7 @@ const express = require("express"),
   sql = require("mssql"),
   cors = require("cors"),
   port = process.env.PORT,
-  config = {
-    server: process.env.SRVR,
-    user: process.env.NAME,
-    password: process.env.PASS,
-    database: process.env.DBSE,
-    driver: process.env.DRVR,
-    parseJSON: true,
-    options: {
-      trustedConnection: true,
-      trustServerCertificate: true,
-    },
-  };
-
+  config = require("./dbconfig");
 // Connect to Database
 let pool,
   request = new sql.Request();
@@ -48,7 +36,7 @@ initialize();
   GET
 */
 // Courses List
-app.get("/api/courses", async function (req, res) {
+app.get("/courses", async function (req, res) {
   try {
     const query = "SELECT * FROM Courses",
       result = await pool.request().query(query);
@@ -58,7 +46,7 @@ app.get("/api/courses", async function (req, res) {
   }
 });
 // Students List
-app.get("/api/students", async function (req, res) {
+app.get("/students", async function (req, res) {
   try {
     const query = "SELECT * FROM Students",
       result = await pool.request().query(query);
@@ -68,7 +56,7 @@ app.get("/api/students", async function (req, res) {
   }
 });
 // Administrators List
-app.get("/api/administrators", async function (req, res) {
+app.get("/administrators", async function (req, res) {
   try {
     const query = "SELECT * FROM Administrators",
       result = await pool.request().query(query);
@@ -78,7 +66,7 @@ app.get("/api/administrators", async function (req, res) {
   }
 });
 // "Courses Enrolled" List
-app.get("/api/courses-enrolled", async function (req, res) {
+app.get("/courses-enrolled", async function (req, res) {
   try {
     const query = "SELECT * FROM CoursesEnrolled",
       result = await pool.request().query(query);
