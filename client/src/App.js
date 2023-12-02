@@ -23,17 +23,13 @@ function App() {
     [pass, setPass] = useState("");
 
   //Functions
-  const handleUser = (event) => {
-      let key = event.target.value;
-      setEmail(key);
-    },
-    handlePass = (event) => {
-      let key = event.target.value;
-      setPass(key);
-    },
-    handleLogin = (email, password) => {
-      alert(email + "\n" + password);
-      userModeSet("student");
+  const handleSubmit = async (event) => {
+      event.preventDefault();
+      alert(email + "\n" + pass);
+
+      /*
+      Connect to SQL Server API to see if user exists
+    */
     },
     ModeSet = (loginAs) => {
       userModeSet(loginAs);
@@ -66,16 +62,23 @@ function App() {
           {/*  */}
           <div className="LogIn">
             <h1>Student Log In</h1>
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleLogin(email, pass);
-              }}
-            >
+            <form onSubmit={handleSubmit}>
               <label>Email (Required)</label>
-              <input type="text" required onChange={handleUser}></input>
+              <input
+                type="text"
+                id="email"
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
+                required
+              ></input>
               <label>Password (Required)</label>
-              <input type="text" required onChange={handlePass}></input>
+              <input
+                type="password"
+                id="pass"
+                onChange={(event) => setPass(event.target.value)}
+                value={pass}
+                required
+              ></input>
               <button id="left">Log In</button>
               <button id="right">Sign Up</button>
             </form>

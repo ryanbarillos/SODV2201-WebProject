@@ -6,89 +6,111 @@
   REFERENCE(s) for SQL Server
   https://stackoverflow.com/questions/60226370/certificate-error-when-connecting-to-sql-server
   https://www.npmjs.com/package/dotenv#%EF%B8%8F-usage
+  https://github.com/tediousjs/node-mssql#documentation
+  https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-database
 */
 
-// Build SQL Server
+// Modules
 require("dotenv").config();
 const express = require("express"),
   app = express(),
   sql = require("mssql"),
   cors = require("cors"),
+  bodyParser = require("body-parser"),
   port = process.env.PORT,
-  config = require("./dbconfig");
+  config = require("./dbconfig"),
+  router = express.Router();
+
+//App Configuration
+app
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(cors())
+  .use("/api", router);
+// .use(bodyParser.urlencoded({ extended: true }))
+
 // Connect to Database
-let pool,
+let database,
+  query = "",
   request = new sql.Request();
 
 async function initialize() {
   try {
-    pool = await sql.connect(config);
+    database = await sql.connect(config);
     console.log("Database Connected");
   } catch (err) {
     console.error("Connexion failed" + err);
   }
-  // pool.close();
+  // To end database connection
+  // database.close();
 }
-
 initialize();
 
 /*
-  GET
+  GET Requests
 */
-// Courses List
-app.get("/courses", async function (req, res) {
+// Students
+app.get("/api/students", async (request, response) => {
   try {
-    const query = "SELECT * FROM Courses",
-      result = await pool.request().query(query);
-    res.json(result.recordset);
+    (query = "SELECT * FROM Students"),
+      (result = await database.request().query(query));
+    // response.json(result.recordset);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    response.status(404).json({ error: error.message });
+  }
+  response.end();
+});
+app.post("/api/students/", async (request, response) => {
+  try {
+    const { email, passwd } = request.params;
+    query = `
+    SELECT studentEmail, studentPasswd
+    FROM Students
+    WHERE studentEmail = @email
+    AND studentPasswd = @passwd`;
+    result = await database
+      .request()
+      .input("email", sql.NVarChar(255), email)
+      .input("passwd", sql.NVarChar(255), passwd)
+      .query(query);
+    response.json(result.recordset);
+  } catch (error) {
+    response
+      .status(404)
+      .json({ message: "User not found", error: error.message });
   }
 });
-// Students List
-app.get("/students", async function (req, res) {
+// Courses List
+app.get("/api/courses", async (request, response) => {
   try {
-    const query = "SELECT * FROM Students",
-      result = await pool.request().query(query);
-    res.json(result.recordset);
+    (query = "SELECT * FROM Courses"),
+      (result = await database.request().query(query));
+    response.json(result.recordset);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    response.status(404).json({ error: error.message });
   }
 });
 // Administrators List
-app.get("/administrators", async function (req, res) {
+app.get("/api/administrators", async (request, response) => {
   try {
-    const query = "SELECT * FROM Administrators",
-      result = await pool.request().query(query);
-    res.json(result.recordset);
+    (query = "SELECT * FROM Administrators"),
+      (result = await database.request().query(query));
+    response.json(result.recordset);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    response.status(404).json({ error: error.message });
   }
 });
 // "Courses Enrolled" List
-app.get("/courses-enrolled", async function (req, res) {
+app.get("/api/courses-enrolled", async (request, response) => {
   try {
-    const query = "SELECT * FROM CoursesEnrolled",
-      result = await pool.request().query(query);
-    res.json(result.recordset);
+    (query = "SELECT * FROM CoursesEnrolled"),
+      (result = await database.request().query(query));
+    response.json(result.recordset);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    response.status(404).json({ error: error.message });
   }
 });
 
-/*
-  POST
-*/
-// app.post("./signup", (req, res) => {
-//     try {
-//     const query = "SELECT * FROM Administrators",
-//       result = await pool.request().query(query);
-//     res.json(result.recordset });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-app.listen(port, () => {
+app.listen(port || 3001, () => {
   console.log("Server running on port " + port);
 });
