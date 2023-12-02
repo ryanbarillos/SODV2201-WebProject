@@ -26,8 +26,8 @@ function App() {
   //Functions
   const handleSubmit = async (event) => {
       event.preventDefault();
-      setAuth(true);
-
+      // setAuth(true);
+      userModeSet("student");
       /*
       Connect to SQL Server API to see if user exists
     */
