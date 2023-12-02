@@ -4,24 +4,29 @@ https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-da
 
 const e = require("express"),
   r = e.Router(),
-  { getOne, getAll } = require("../controllers/controllerStudent");
+  { verify, getAll } = require("../controllers/controllerStudent");
 
 //Test
 r.get("/", (req, res) => {
   res.json({ ms: "test" });
 });
 
-// Get Student One
-r.get("/:email/:passwd", getOne);
+/*
+GET REQUESTS
+*/
+//Student One
+r.get("/:email/:passwd", verify);
 
-//Get Student All
+//Student All
 r.get("/all", getAll);
 
-//POST Student
+/*
+POST REQUESTS
+*/
 r.post("/", async (req, res) => {
   const { email, passwd } = res.body;
   try {
-    const login = new Login(email, passwd);
+    // const login = new Login(email, passwd);
   } catch (error) {
     res.status(404).json({ message: "User not found", error: error.message });
   }

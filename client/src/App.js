@@ -12,13 +12,14 @@ import "./component/styles/Forms.css";
 
 // Javascript & React Components
 import { useEffect, useState, useRef } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
 
 function App() {
   // Variables
-  const [userMode, userModeSet] = useState("logIn"),
+  const [userMode, userModeSet] = useState("login"),
     [email, setEmail] = useState(""),
     [pass, setPass] = useState(""),
     [auth, setAuth] = useState(false);
@@ -26,8 +27,20 @@ function App() {
   //Functions
   const handleSubmit = async (event) => {
       event.preventDefault();
-      // setAuth(true);
-      userModeSet("student");
+      setAuth(true);
+
+      fetch(`/api/student/${email}/${pass}`)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          userModeSet(
+            data.studentEmail === email && data.studentPasswd === pass
+              ? "student"
+              : "login"
+          );
+          alert("User Authenticated");
+        });
       /*
       Connect to SQL Server API to see if user exists
     */
@@ -37,29 +50,29 @@ function App() {
     };
 
   // useEffect(() => {
-  //   fetch("/api/students")
+  //   fetch(`/api/student/${email}/${pass}`)
   //     .then((response) => {
   //       return response.json();
   //     })
   //     .then((data) => {
   //       alert(data);
   //     });
-  // }, [auth]);
+  // }, []);
 
   //Authentication Page
   switch (userMode) {
     /*
-      Login Student
+      login Student
     */
     case "student":
       return <StudentMain />;
     /*
-      Login Admin
+      login Admin
     */
     case "admin":
       return <AdminMain />;
     /*
-      Login Page
+      login Page
     */
     default:
       return (
@@ -71,7 +84,7 @@ function App() {
           {/*  */}
           {/* Log In form */}
           {/*  */}
-          <div className="LogIn">
+          <div className="login">
             <h1>Student Log In</h1>
             <form onSubmit={handleSubmit}>
               <label>Email (Required)</label>

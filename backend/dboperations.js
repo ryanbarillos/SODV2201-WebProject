@@ -1,11 +1,11 @@
 const { config } = require("./dbconfig"),
   sql = require("mssql");
 
-getUser = async (email, passwd, user) => {
+verifyUser = async (email, passwd, user) => {
   //Query for student or admin that exists
   const query =
     user === "student"
-      ? `SELECT studentID, studentEmail
+      ? `SELECT studentEmail, studentPasswd
       FROM Students
       WHERE studentEmail = @email
       AND studentPasswd = @passwd`
@@ -63,4 +63,4 @@ getCourses = async () => {
   }
 };
 
-module.exports = { getUser, getUsers, getCourses };
+module.exports = { verifyUser, getUsers, getCourses };
