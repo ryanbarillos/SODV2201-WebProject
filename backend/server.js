@@ -10,24 +10,26 @@
   https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-database
 */
 
-// Modules
+// Modules Core
 require("dotenv").config();
 const express = require("express"),
-  app = express(),
   sql = require("mssql"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
+  //Modules Server Setup
+  app = express(),
   port = process.env.PORT,
   config = require("./dbconfig"),
-  router = express.Router();
+  //App Router
+  router = express.Router(),
+  routesUser = require("./routes/user");
 
 //App Configuration
 app
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
-  .use(cors())
-  .use("/api", router);
-// .use(bodyParser.urlencoded({ extended: true }))
+  .use(cors());
+// .use("/api", router);
 
 // Connect to Database
 let database,

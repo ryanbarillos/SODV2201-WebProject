@@ -8,7 +8,7 @@ function AddCourses() {
 
   // Get courses
   useEffect(() => {
-    fetch("/courses")
+    fetch("/api/courses")
       .then((response) => {
         return response.json();
       })

@@ -20,12 +20,13 @@ function App() {
   // Variables
   const [userMode, userModeSet] = useState("logIn"),
     [email, setEmail] = useState(""),
-    [pass, setPass] = useState("");
+    [pass, setPass] = useState(""),
+    [auth, setAuth] = useState(false);
 
   //Functions
   const handleSubmit = async (event) => {
       event.preventDefault();
-      alert(email + "\n" + pass);
+      setAuth(true);
 
       /*
       Connect to SQL Server API to see if user exists
@@ -34,6 +35,16 @@ function App() {
     ModeSet = (loginAs) => {
       userModeSet(loginAs);
     };
+
+  // useEffect(() => {
+  //   fetch("/api/students")
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       alert(data);
+  //     });
+  // }, [auth]);
 
   //Authentication Page
   switch (userMode) {
