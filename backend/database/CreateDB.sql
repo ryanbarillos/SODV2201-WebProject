@@ -56,7 +56,49 @@ CREATE TABLE Administrators
 );
 -- Make Tables END
 
+/*
+    START of stored procedures
+    NOTE:
+        Isolate procedure with GO
+        Necessary if multiple procedures & functions
+        will be made in one sql file
+*/
+GO
+CREATE PROCEDURE SignUp(@email NVARCHAR(255),
+    @passwd NVARCHAR(255),
+    @nf NVARCHAR(255),
+    @nl NVARCHAR(255),
+    @mode NVARCHAR(5))
+AS
+BEGIN
+    /*
+    Signup Student
+    */
+    IF ((SELECT LOWER(@mode)) = 'stdnt')
+    BEGIN
+        INSERT INTO Students
+            (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
+        VALUES
+            (@email, @passwd, @nf, @nl);
+    END;
+    /*
+    Signup Admin
+    */
+    ELSE IF ((SELECT LOWER(@mode)) = 'admin')
+    BEGIN
+        INSERT INTO Administrators
+            (adminEmail, adminPasswd, adminNameFirst, adminNameLast)
+        VALUES
+            (@email, @passwd, @nf, @nl);
+    END;
+END;
+GO
 
+
+
+/*
+    END of Stored Procedures
+*/
 
 -- Data Population START
 INSERT INTO Courses
@@ -77,12 +119,6 @@ VALUES
     ('Advanced Computer Maintenance 2', 'COMP444', 4),
     ('Advanced Information Security 2', 'IS444', 4);
 
-INSERT INTO Students
-    (studentTerm, studentEmail, studentPasswd, studentNameFirst, studentNameLast)
-VALUES
-    (1, 'back@bvc.ca', 'backslide', 'Back', 'Slide'),
-    (3, 'hyung@bvc.ca', 'hugology', 'Hyung', 'Su');
-
 INSERT INTO Administrators
     (adminEmail, adminPasswd, adminNameFirst, adminNameLast)
 VALUES
@@ -90,7 +126,7 @@ VALUES
     ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');
 
 SELECT *
-FROM Administrators
+FROM Students
 -- Data Population END
 
 USE master

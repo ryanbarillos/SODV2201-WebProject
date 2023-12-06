@@ -12,14 +12,15 @@ import "./component/styles/Forms.css";
 
 // Javascript & React Components
 import { useEffect, useState, useRef } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, Routes, Route, redirect } from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
 
 function App() {
   // Variables
-  const [userMode, userModeSet] = useState("login"),
+  const router = createBrowserRouter,
+    [userMode, userModeSet] = useState("login"),
     [email, setEmail] = useState(""),
     [pass, setPass] = useState(""),
     [auth, setAuth] = useState(false);
@@ -49,16 +50,6 @@ function App() {
       userModeSet(loginAs);
     };
 
-  // useEffect(() => {
-  //   fetch(`/api/student/${email}/${pass}`)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       alert(data);
-  //     });
-  // }, []);
-
   //Authentication Page
   switch (userMode) {
     /*
@@ -85,7 +76,7 @@ function App() {
           {/* Log In form */}
           {/*  */}
           <div className="login">
-            <h1>Student Log In</h1>
+            <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
               <label>Email (Required)</label>
               <input
@@ -106,9 +97,6 @@ function App() {
               <button id="left">Log In</button>
               <button id="right">Sign Up</button>
             </form>
-          </div>
-          <div className="special">
-            <button onClick={() => ModeSet("admin")}>Log in as Admin</button>
           </div>
         </div>
       );

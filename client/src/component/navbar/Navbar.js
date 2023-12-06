@@ -1,7 +1,12 @@
+/*
+  REFRENCE(s) on React Routers
+  https://www.youtube.com/watch?v=OMQ2QARHPo0&list=PL4cUxeGkcC9iVKmtNuCeIswnQ97in2GGf
+*/
+
 import "./Navbar.css";
 import React from "react";
 import Logo from "./bvc.svg";
-import { Link } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 function Navbar(props) {
   // User mode
@@ -26,9 +31,9 @@ function Navbar(props) {
       mode = "Student Mode";
       sideRight = (
         <div className="rightSide">
-          <Link to="MyCourses">My Courses</Link>
-          <Link to="AddCourses">Add Course</Link>
-          <Link to="Help">Get Help</Link>
+          <NavLink to="MyCourses">My Courses</NavLink>
+          <NavLink to="AddCourses">Add Course</NavLink>
+          <NavLink to="Help">Get Help</NavLink>
         </div>
       );
       break;
@@ -36,12 +41,12 @@ function Navbar(props) {
       mode = "Admin Mode";
       sideRight = (
         <div className="rightSide">
-          {/* <Link to="Home">Home</Link> */}
-          <Link to="FindCourse">Find Course</Link>
-          <Link to="AddCourse">Add Course</Link>
-          <Link to="RemoveCourse">Remove Course</Link>
-          <Link to="StudentList">Student List</Link>
-          <Link to="StudentForms">Student Forms</Link>
+          {/* <NavLink to="Home">Home</NavLink> */}
+          <NavLink to="FindCourse">Find Course</NavLink>
+          <NavLink to="AddCourse">Add Course</NavLink>
+          <NavLink to="RemoveCourse">Remove Course</NavLink>
+          <NavLink to="StudentList">Student List</NavLink>
+          <NavLink to="StudentForms">Student Forms</NavLink>
         </div>
       );
       break;
@@ -56,9 +61,17 @@ function Navbar(props) {
   );
 
   return (
-    <div className="navbar">
-      {sideLeft}
-      {sideRight}
+    <div>
+      <header>
+        <nav className="navbar">
+          {sideLeft}
+          {sideRight}
+        </nav>
+      </header>
+
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }

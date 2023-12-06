@@ -4,7 +4,7 @@ https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-da
 
 const e = require("express"),
   r = e.Router();
-dbo = require("../dboperations");
+// dbo = require("../controllers/operations/dboperations");
 
 //Get Courses
 r.get("/all", (req, res) => {

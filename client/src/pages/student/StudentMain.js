@@ -2,10 +2,7 @@
 // import "../allPages/styles/AllPages.css";
 // import "../allPages/styles/Forms.css";
 
-// Javascript & React Components
-import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-// import Navbar from "./components/Navbar";
+// Pages
 import Navbar from "../../component/navbar/Navbar";
 import Home from "./pages/Home";
 import MyCourses from "./pages/MyCourses";
@@ -13,20 +10,33 @@ import CourseAdd from "./pages/AddCouses";
 import Help from "../../component/pages/Help";
 import NotFound from "../../component/pages/NotFound";
 
+// Javascript & React Components
+import React from "react";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    // <Route path="/" element={Navbar}>
+    <Route element={<Navbar mode="student" />}>
+      <Route index element={<Home />} />
+      <Route path="/MyCourses" element={<MyCourses />} />
+      <Route path="/AddCourses" element={<CourseAdd />} />
+      <Route path="/Help" element={<Help />} />
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  )
+);
+
 function StudentMain() {
   return (
     <div className="StudentMain">
-      <Router>
-        {/* Navbar */}
-        <Navbar mode="student" />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/MyCourses" element={<MyCourses />} />
-          <Route path="/AddCourses" element={<CourseAdd />} />
-          <Route path="/Help" element={<Help />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+      {/* Navbar */}
+      <RouterProvider router={router} />
     </div>
   );
 }
