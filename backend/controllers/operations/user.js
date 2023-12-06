@@ -8,8 +8,10 @@
 */
 
 const bcrypt = require("bcrypt"),
+  validator = require("validator"),
   config = require("../../database/dbconfig"),
-  sql = require("mssql");
+  sql = require("mssql"),
+  isName = /^[A-Z][a-zA-z]+$/;
 
 // Sign In student or admin
 userSignIn = async (email, passwd) => {
@@ -41,74 +43,115 @@ userSignIn = async (email, passwd) => {
 
 // Sign Up student or admin
 userSignUp = async (email, passwd, namef, namel) => {
-  //bcrypt stuffs
-  const saltRounds = 10,
-    salt = bcrypt.genSaltSync(saltRounds),
-    hash = bcrypt.hashSync(passwd, salt);
-
-  // queries
-  const check1 = `
-  SELECT studentEmail
-  FROM Students
-  WHERE studentEmail = @email`,
-    check2 = `
-    SELECT studentPasswd
-    FROM Students
-    WHERE studentPasswd = @passwd`,
-    query = `
-  INSERT INTO Students
-    (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
-  VALUES
-    (@email, @passwd, @namef, @namel)`;
-
-  if (true) {
-    // Connect to db
-    const pool = await sql.connect(config);
-
-    // Check if email exists
-    const result1 = (
-      await pool
-        .request()
-        // user-defined variables
-        .input("email", sql.NVarChar(255), email)
-        .query(check1)
-    ).recordset[0];
+  /*
+  Check if parameters are empty or valid
+  */
+  if (!(email && passwd && namef && namel)) {
+    throw Error("All fields must be filled");
+  } else {
     /*
-        If email not exists, check if passwd exists
-       */
-    if (result1) {
-      throw Error("Email exists");
-    } else {
-      console.clear();
-      const result2 = (
-        await pool
-          .request()
-          // user-defined variables
-          .input("passwd", sql.NVarChar(255), passwd)
-          .query(check2)
-      ).recordset[0];
-      /*
-         If passwd not exists, do insert
-         https://www.npmjs.com/package/mssql#asyncawait
-         https://www.npmjs.com/package/mssql#stored-procedures
-         */
-      if (result2) {
-        throw Error("Password exists");
-      } else {
-        try {
-          const request = await pool
-            .request()
-            .input("email", sql.NVarChar(255), email)
-            .input("passwd", sql.NVarChar(255), hash)
-            .input("nf", sql.NVarChar(255), namef)
-            .input("nl", sql.NVarChar(255), namel)
-            .input("mode", sql.NVarChar(5), "stdnt")
-            .execute("SignUp");
-          console.log(results);
-        } catch (e) {
-          console.log(e.message);
+    Validate email
+    */
+    switch (validator.isEmail(email)) {
+      case false:
+        throw Error("INVALID email");
+      default:
+        /*
+        Validate password
+        */
+        switch (validator.isStrongPassword(passwd)) {
+          case false:
+            throw Error("Password not strong enough");
+          default:
+            /*
+            Validate name first
+            */
+            const errName =
+              "Name must start with big letter, followed by big & small letters";
+            switch (isName.test(namef)) {
+              case false:
+                throw Error(errName);
+              default:
+                /*
+                Validate name last
+                */
+                switch (isName.test(namel)) {
+                  case false:
+                    throw Error(errName);
+                  default:
+                    /*
+                    BEGIN INSERT
+                    BEGIN INSERT
+                    BEGIN INSERT
+                    */
+                    //bcrypt stuffs to obscure password
+                    const saltRounds = 10,
+                      salt = bcrypt.genSaltSync(saltRounds),
+                      hash = bcrypt.hashSync(passwd, salt),
+                      // queries
+                      check1 = `
+                      SELECT studentEmail
+                      FROM Students
+                      WHERE studentEmail = @email`,
+                      check2 = `
+                      SELECT studentPasswd
+                      FROM Students
+                      WHERE studentPasswd = @passwd`,
+                      query = `
+                      INSERT INTO Students
+                      (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
+                      VALUES
+                      (@email, @passwd, @namef, @namel)`;
+
+                    if (true) {
+                      // Connect to db
+                      const pool = await sql.connect(config);
+
+                      // Check if email exists
+                      const result1 = (
+                        await pool
+                          .request()
+                          // user-defined variables
+                          .input("email", sql.NVarChar(255), email)
+                          .query(check1)
+                      ).recordset[0];
+                      /*
+                      If email not exists, check if passwd exists
+                      */
+                      if (result1) {
+                        throw Error("Email exists");
+                      } else {
+                        const result2 = (
+                          await pool
+                            .request()
+                            // user-defined variables
+                            .input("passwd", sql.NVarChar(255), passwd)
+                            .query(check2)
+                        ).recordset[0];
+                        /*
+                        If passwd not exists, do insert
+                        https://www.npmjs.com/package/mssql#asyncawait
+                        https://www.npmjs.com/package/mssql#stored-procedures
+                        */
+                        if (result2) {
+                          throw Error("Password exists");
+                        } else {
+                          return (
+                            await pool
+                              .request()
+                              .input("email", sql.NVarChar(255), email)
+                              .input("passwd", sql.NVarChar(255), hash)
+                              .input("nf", sql.NVarChar(255), namef)
+                              .input("nl", sql.NVarChar(255), namel)
+                              .input("mode", sql.NVarChar(5), "stdnt")
+                              .execute("SignUp")
+                          ).rowsAffected;
+                        }
+                      }
+                    }
+                }
+            }
         }
-      }
     }
   }
 };

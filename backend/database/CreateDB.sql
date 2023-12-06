@@ -3,7 +3,7 @@
     Authored By Ryan Barillos
 
     Date Started: 29 Nov 2023
-    Last Updated: 30 Nov 2023
+    Last Updated: 06 Dec 2023
 */
 
 USE master;
@@ -125,8 +125,13 @@ VALUES
     ('jdm@bvc.ca', 're@|!+7_sets', 'Jon', 'Doe'),
     ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');
 
+
+USE SODV2201_Group3;
+GO
 SELECT *
 FROM Students
+
+
 -- Data Population END
 
 USE master
