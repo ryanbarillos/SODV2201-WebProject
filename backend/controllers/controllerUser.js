@@ -1,33 +1,43 @@
 // Requires are treated a functions in array
-const dbo = require("./operations/user");
+require("dotenv").config({ path: "./database/.env" }); // dotenv config is in other location
+const dbo = require("./operations/user"),
+  jwt = require("jsonwebtoken"),
+  mkToken = (id) => {
+    return jwt.sign({ id }, process.env.SCRT, { expiresIn: "2h" });
+  };
 
 const userLogin = async (req, res) => {
-    // const email = req.params.email,
-    //   passwd = req.params.passwd;
-
-    // dbo.userSignIn(email, passwd, "student").then((data) => {
-    //   // Returns 2d array; get only first value
-    //   const result = data[0][0];
-    //   res.status(200).json(result);
-    // });
-    res.json({ m: "Login" });
+    const { email, passwd } = req.body;
+    dbo
+      .userSignIn(email, passwd, "student")
+      .then(() => {
+        // Generate JSON Web Token to make login session
+        const token = mkToken(email);
+        res.status(200).json({ email, token });
+      })
+      .catch((e) => {
+        console.log(e);
+        res.status(400).json({ err: e.message });
+      });
   },
   userSignup = async (req, res) => {
     const { email, passwd, namef, namel } = req.body;
     dbo
       .userSignUp(email, passwd, namef, namel)
-      .then((data) => {
-        res.status(200).json(data);
+      .then(() => {
+        // Generate JSON Web Token to make login session
+        const token = mkToken(email);
+        res.status(200).json({ email, token });
       })
       .catch((e) => {
-        res.status(404).json({ err: e.message });
+        res.status(400).json({ err: e.message });
       });
     // try {
     //   // Returns 2d array; get only first value
     //   dbo.userSignUp(email, passwd, namef, namel);
     //   res.status(200).json({ email, passwd, namef, namel });
     // } catch (e) {
-    //   res.status(404).json({ Mayday: e });
+    //   res.status(400).json({ Mayday: e });
     //   console.clear().log("Mayday\n" + e.message);
     // }
   };

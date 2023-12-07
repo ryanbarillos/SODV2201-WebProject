@@ -11,33 +11,71 @@ const bcrypt = require("bcrypt"),
   validator = require("validator"),
   config = require("../../database/dbconfig"),
   sql = require("mssql"),
-  isName = /^[A-Z][a-zA-z]+$/;
+  { echo, print } = require("../../../global/Print");
+isName = /^[A-Z][a-zA-z]+$/;
 
+//Quick way to console log
 // Sign In student or admin
 userSignIn = async (email, passwd) => {
-  //Query for student or admin that exists
-  const task = `
-        SELECT studentEmail, studentPasswd
-        FROM Students
-        WHERE studentEmail = @email
-        AND studentPasswd = @passwd
-        UNION
-        SELECT adminID, adminEmail
-        FROM Administrators
-        WHERE adminEmail = @email
-        AND adminPasswd = @passwd`;
+  /*
+  Check if parameters are empty or valid
+  */
+  if (!(email && passwd)) {
+    throw Error("All fields must be filled");
+  } else {
+    //bcrypt stuffs to obscure password
+    const saltRounds = 10,
+      salt = bcrypt.genSaltSync(saltRounds),
+      hash = bcrypt.hashSync(passwd, salt),
+      // queries
+      job1 = `
+      SELECT studentEmail
+      FROM Students
+      WHERE studentEmail = @email`,
+      job2 = `
+      SELECT studentPasswd
+      FROM Students
+      WHERE studentEmail = @email`;
 
-  try {
-    // Connect to database
-    const pool = await sql.connect(config),
-      result = await pool
+    // Connect to db
+    const pool = await sql.connect(config);
+
+    // Check if email exists
+    const emailDB = (
+      await pool
         .request()
+        // user-defined variables
         .input("email", sql.NVarChar(255), email)
-        .input("passwd", sql.NVarChar(255), passwd)
-        .query(task);
-    return result.recordsets;
-  } catch (error) {
-    console.log(error);
+        .query(job1)
+    ).recordset[0].studentEmail;
+    /*
+      If email exists, check if passwd is correct
+      */
+    if (!emailDB) {
+      pool.close();
+      throw TypeError("Incorrect email");
+    } else {
+      const passwdDB = (
+          await pool
+            .request()
+            // user-defined variables
+            .input("email", sql.NVarChar(255), email)
+            .query(job2)
+        ).recordset[0].studentPasswd,
+        /*
+        https://www.npmjs.com/package/bcrypt#to-check-a-password
+      */
+        result = await bcrypt.compare(passwd, passwdDB);
+
+      switch (await bcrypt.compare(passwd, passwdDB)) {
+        case false:
+          pool.close();
+          throw Error("Incorrect password");
+        case true:
+          pool.close();
+          echo(`Authenticated student of email "${email}"`);
+      }
+    }
   }
 };
 
@@ -119,6 +157,7 @@ userSignUp = async (email, passwd, namef, namel) => {
                       If email not exists, check if passwd exists
                       */
                       if (result1) {
+                        pool.close();
                         throw Error("Email exists");
                       } else {
                         const result2 = (
@@ -134,9 +173,11 @@ userSignUp = async (email, passwd, namef, namel) => {
                         https://www.npmjs.com/package/mssql#stored-procedures
                         */
                         if (result2) {
+                          pool.close();
                           throw Error("Password exists");
                         } else {
-                          return (
+                          // Invoke anonymous function
+                          (async () => {
                             await pool
                               .request()
                               .input("email", sql.NVarChar(255), email)
@@ -144,8 +185,15 @@ userSignUp = async (email, passwd, namef, namel) => {
                               .input("nf", sql.NVarChar(255), namef)
                               .input("nl", sql.NVarChar(255), namel)
                               .input("mode", sql.NVarChar(5), "stdnt")
-                              .execute("SignUp")
-                          ).rowsAffected;
+                              .execute("SignUp");
+                            /*
+                              Close server connection
+                              to prevent database penetration
+                              to an open access server
+                            */
+                            pool.close();
+                            print(`Created student of email "${email}"`);
+                          })();
                         }
                       }
                     }
