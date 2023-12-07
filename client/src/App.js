@@ -8,26 +8,38 @@
 
 // CSS
 import "./component/styles/Sitewide.css";
-import "./component/styles/Forms.css";
+// import "./component/styles/Forms.css";
 
 // Javascript & React Components
 import { useEffect, useState, useRef } from "react";
-import { createBrowserRouter, Routes, Route, redirect } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+  useNavigate,
+  redirect,
+} from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
 import Navbar from "./component/navbar/Navbar";
+import { Login } from "./pages/authentication/Login";
+import { Signup } from "./pages/authentication/Signup";
 
 function App() {
   // Variables
-  const router = createBrowserRouter,
-    [userMode, userModeSet] = useState("login"),
-    [email, setEmail] = useState(""),
-    [pass, setPass] = useState(""),
-    [auth, setAuth] = useState(false);
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<Navbar mode={"auth"} />}>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+      </Route>
+    )
+  );
 
   return (
     <div>
-      <Navbar mode="login" />
+      <RouterProvider router={router} />
     </div>
   );
 }

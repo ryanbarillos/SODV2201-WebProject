@@ -3,7 +3,7 @@ https://youtu.be/VfReCe0nWOo?si=WbDoOiQGn60JpFmV
 */
 
 //CSS
-import "../../component/styles/Forms";
+import "../../component/styles/Forms.css";
 
 //React
 import { useState } from "react";
@@ -30,7 +30,7 @@ export const Login = () => {
       <input
         type="password"
         onChange={(event) => setPasswd(event.target.value)}
-        value={pass}
+        value={passwd}
         required
       ></input>
       <button>Log In</button>

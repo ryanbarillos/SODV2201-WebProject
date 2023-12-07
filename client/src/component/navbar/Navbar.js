@@ -21,11 +21,15 @@ function Navbar(props) {
     Students & Admins will each have its own set of links
   */
   switch (props.mode) {
-    case "login":
-      mode = "Log In";
-      break;
-    case "register":
-      mode = "Register";
+    case "auth":
+      mode = "Authenticate";
+      sideRight = (
+        <div className="rightSide">
+          <NavLink to="login">Login</NavLink>
+          <NavLink to="signup">Sign-up</NavLink>
+          {/* <NavLink to="Help">Get Help</NavLink> */}
+        </div>
+      );
       break;
     case "student":
       mode = "Student Mode";
