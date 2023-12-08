@@ -5,17 +5,20 @@ https://youtu.be/VfReCe0nWOo?si=WbDoOiQGn60JpFmV
 //CSS
 import "../../component/styles/Forms.css";
 
-//React
+//React & JS "modules"
 import { useState } from "react";
+import useSignup from "../../hooks/useSignup";
 
 export const Signup = () => {
   const [email, setEmail] = useState(""),
     [passwd, setPasswd] = useState(""),
     [namef, setNameF] = useState(""),
     [namel, setNameL] = useState(""),
+    { signup, isLoading, err } = useSignup(),
     handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(`${email}\n${passwd}`);
+      //   console.log(`${email}\n${passwd}\n${namef}\n${namel}`);
+      await signup(email, passwd, namef, namel);
     };
 
   return (
@@ -49,7 +52,13 @@ export const Signup = () => {
         value={passwd}
         required
       ></input>
-      <button>Sign Up</button>
+      {/* <button>Sign Up</button> */}
+      <button disabled={isLoading}>Sign Up</button>
+      {err && console.log(err) && (
+        <div className="err">
+          <h2>{err}Test</h2>
+        </div>
+      )}
     </form>
   );
 };

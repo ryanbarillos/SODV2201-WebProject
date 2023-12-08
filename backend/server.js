@@ -33,6 +33,7 @@ app.use((req, res, next) => {
 //Router
 app.use("/api/user", routerUser);
 app.use("/api/student", routerStudent);
+app.use("/api/course", routerCourse);
 // app.use("/api/course", routerCourse);
 
 app.listen(port || 3001, () => {
