@@ -17,8 +17,8 @@ export const Signup = () => {
     { signup, isLoading, err } = useSignup(),
     handleSubmit = async (event) => {
       event.preventDefault();
-      //   console.log(`${email}\n${passwd}\n${namef}\n${namel}`);
       await signup(email, passwd, namef, namel);
+      console.log(err);
     };
 
   return (
@@ -54,9 +54,9 @@ export const Signup = () => {
       ></input>
       {/* <button>Sign Up</button> */}
       <button disabled={isLoading}>Sign Up</button>
-      {err && console.log(err) && (
+      {err && (
         <div className="err">
-          <h2>{err}Test</h2>
+          <h2>{err}</h2>
         </div>
       )}
     </form>

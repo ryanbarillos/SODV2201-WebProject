@@ -1,0 +1,23 @@
+// Mario
+Mario
+Plumber
+mario@bvc.ca
+m@r!0++Hotel
+
+Plumber
+Moxley
+plumox@bvc.ca
+P|um0xl9y
+
+
+// Wario
+Wario
+Plumber
+wario@bvc.ca
+m@r!0++Hotel
+
+
+
+Source map error: Error: request failed with status 404
+Resource URL: null
+Source Map URL: react_devtools_backend_compact.js.map

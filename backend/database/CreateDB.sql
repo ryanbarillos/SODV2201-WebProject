@@ -35,7 +35,7 @@ CREATE TABLE Students
     studentID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     studentTerm INT NOT NULL DEFAULT 1,
     studentEmail NVARCHAR(255) NOT NULL UNIQUE,
-    studentPasswd NVARCHAR(255) NOT NULL,
+    studentPasswd NVARCHAR(MAX) NOT NULL,
     studentNameFirst NVARCHAR(255) NOT NULL,
     studentNameLast NVARCHAR(255) NOT NULL,
 );
@@ -50,7 +50,7 @@ CREATE TABLE Administrators
 (
     adminID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     adminEmail NVARCHAR(255) NOT NULL UNIQUE,
-    adminPasswd NVARCHAR(255) NOT NULL,
+    adminPasswd NVARCHAR(MAX) NOT NULL,
     adminNameFirst NVARCHAR(255) NOT NULL,
     adminNameLast NVARCHAR(255) NOT NULL,
 );

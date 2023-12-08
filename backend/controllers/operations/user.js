@@ -47,26 +47,28 @@ userSignIn = async (email, passwd) => {
         // user-defined variables
         .input("email", sql.NVarChar(255), email)
         .query(job1)
-    ).recordset[0].studentEmail;
+    ).recordset[0];
     /*
       If email exists, check if passwd is correct
+      FOR MSSQL SERVER:
+      
+      if var.recordset or var.recordsets is empty
+      it's null, so email not exists
       */
     if (!emailDB) {
       pool.close();
-      throw TypeError("Incorrect email");
+      throw Error("No account with that email found");
     } else {
       const passwdDB = (
-          await pool
-            .request()
-            // user-defined variables
-            .input("email", sql.NVarChar(255), email)
-            .query(job2)
-        ).recordset[0].studentPasswd,
-        /*
+        await pool
+          .request()
+          // user-defined variables
+          .input("email", sql.NVarChar(255), email)
+          .query(job2)
+      ).recordset[0].studentPasswd;
+      /*
         https://www.npmjs.com/package/bcrypt#to-check-a-password
       */
-        result = await bcrypt.compare(passwd, passwdDB);
-
       switch (await bcrypt.compare(passwd, passwdDB)) {
         case false:
           pool.close();
@@ -92,7 +94,7 @@ userSignUp = async (email, passwd, namef, namel) => {
     */
     switch (validator.isEmail(email)) {
       case false:
-        throw Error("INVALID email");
+        throw Error("Invalid Email");
       default:
         /*
         Validate password
@@ -104,99 +106,72 @@ userSignUp = async (email, passwd, namef, namel) => {
             /*
             Validate name first
             */
-            const errName =
-              "Name must start with big letter, followed by big & small letters";
-            switch (isName.test(namef)) {
+            const errName = "Name must start in capital letter";
+            switch (isName.test(namef) && isName.test(namel)) {
               case false:
                 throw Error(errName);
               default:
                 /*
-                Validate name last
-                */
-                switch (isName.test(namel)) {
-                  case false:
-                    throw Error(errName);
-                  default:
-                    /*
                     BEGIN INSERT
                     BEGIN INSERT
                     BEGIN INSERT
                     */
-                    //bcrypt stuffs to obscure password
-                    const saltRounds = 10,
-                      salt = bcrypt.genSaltSync(saltRounds),
-                      hash = bcrypt.hashSync(passwd, salt),
-                      // queries
-                      check1 = `
+                //bcrypt stuffs to obscure password
+                const saltRounds = 10,
+                  salt = bcrypt.genSaltSync(saltRounds),
+                  hash = bcrypt.hashSync(passwd, salt),
+                  // queries
+                  check1 = `
                       SELECT studentEmail
                       FROM Students
                       WHERE studentEmail = @email`,
-                      check2 = `
-                      SELECT studentPasswd
-                      FROM Students
-                      WHERE studentPasswd = @passwd`,
-                      query = `
+                  query = `
                       INSERT INTO Students
                       (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
                       VALUES
                       (@email, @passwd, @namef, @namel)`;
 
-                    if (true) {
-                      // Connect to db
-                      const pool = await sql.connect(config);
-
-                      // Check if email exists
-                      const result1 = (
-                        await pool
-                          .request()
-                          // user-defined variables
-                          .input("email", sql.NVarChar(255), email)
-                          .query(check1)
-                      ).recordset[0];
+                if (true) {
+                  // Connect to db
+                  const pool = await sql.connect(config);
+                  /*
+                    Check if email exists
+                    Otherwise, create account
+                  */
+                  const result1 = (
+                    await pool
+                      .request()
+                      // user-defined variables
+                      .input("email", sql.NVarChar(255), email)
+                      .query(check1)
+                  ).recordset[0];
+                  if (result1) {
+                    pool.close();
+                    throw Error("Email already in use");
+                  } else {
+                    //bcrypt stuffs to obscure password
+                    const saltRounds = 10,
+                      salt = bcrypt.genSaltSync(saltRounds),
+                      hash = bcrypt.hashSync(passwd, salt);
+                    // Invoke anonymous function
+                    (async () => {
+                      await pool
+                        .request()
+                        .input("email", sql.NVarChar(255), email)
+                        .input("passwd", sql.NVarChar(255), hash)
+                        .input("nf", sql.NVarChar(255), namef)
+                        .input("nl", sql.NVarChar(255), namel)
+                        .input("mode", sql.NVarChar(5), "stdnt")
+                        .execute("SignUp");
                       /*
-                      If email not exists, check if passwd exists
-                      */
-                      if (result1) {
-                        pool.close();
-                        throw Error("Email exists");
-                      } else {
-                        const result2 = (
-                          await pool
-                            .request()
-                            // user-defined variables
-                            .input("passwd", sql.NVarChar(255), passwd)
-                            .query(check2)
-                        ).recordset[0];
-                        /*
-                        If passwd not exists, do insert
-                        https://www.npmjs.com/package/mssql#asyncawait
-                        https://www.npmjs.com/package/mssql#stored-procedures
-                        */
-                        if (result2) {
-                          pool.close();
-                          throw Error("Password exists");
-                        } else {
-                          // Invoke anonymous function
-                          (async () => {
-                            await pool
-                              .request()
-                              .input("email", sql.NVarChar(255), email)
-                              .input("passwd", sql.NVarChar(255), hash)
-                              .input("nf", sql.NVarChar(255), namef)
-                              .input("nl", sql.NVarChar(255), namel)
-                              .input("mode", sql.NVarChar(5), "stdnt")
-                              .execute("SignUp");
-                            /*
-                              Close server connection
-                              to prevent database penetration
-                              to an open access server
-                            */
-                            pool.close();
-                            print(`Created student of email "${email}"`);
-                          })();
-                        }
-                      }
-                    }
+                                Close server connection
+                                to prevent database penetration
+                                to an open access server
+                              */
+                      pool.close();
+                      echo(`Authenticated student of email "${email}"`);
+                    })();
+                  }
                 }
             }
         }

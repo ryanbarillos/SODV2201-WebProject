@@ -1,5 +1,9 @@
 /*
-Source: https://github.com/iamshaunjp/Complete-React-Tutorial/blob/lesson-27/dojo-blog/src/index.css
+Source:
+https://github.com/iamshaunjp/Complete-React-Tutorial/blob/lesson-27/dojo-blog/src/index.css
+
+Rounded Corners
+https://www.w3schools.com/css/css3_borders.asp
 */
 
 form {
@@ -17,11 +21,11 @@ form label {
   font-weight: bold;
 }
 
-form h2 {
+/* form h2 {
   font-size: 20px;
   color: #f1356d;
   margin-bottom: 30px;
-}
+} */
 
 form input,
 form textarea,
@@ -43,6 +47,15 @@ form button {
   padding: 6px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+form .err {
+  font-size: 15px;
+  background-color: #f1356d;
+  border-radius: 5px;
+  color: white;
+  /* color: #f1356d; */
+  /* margin-bottom: 30px; */
 }
 
 #left {

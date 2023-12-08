@@ -7,13 +7,16 @@ import "../../component/styles/Forms.css";
 
 //React
 import { useState } from "react";
+import useLogin from "../../hooks/useLogin";
 
 export const Login = () => {
   const [email, setEmail] = useState(""),
     [passwd, setPasswd] = useState(""),
+    { login, isLoading, err } = useLogin(),
     handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(`${email}\n${passwd}`);
+      await login(email, passwd);
+      if (err) console.log(err);
     };
 
   return (
@@ -33,7 +36,13 @@ export const Login = () => {
         value={passwd}
         required
       ></input>
-      <button>Log In</button>
+      {/* <button>Log In</button> */}
+      <button disabled={isLoading}>Log In</button>
+      {err && (
+        <div className="err">
+          <h2>{err}</h2>
+        </div>
+      )}
     </form>
   );
 };
