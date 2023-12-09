@@ -3,7 +3,7 @@ require("dotenv").config({ path: "./database/.env" }); // dotenv config is in ot
 const dbo = require("./operations/user"),
   jwt = require("jsonwebtoken"),
   mkToken = (id) => {
-    return jwt.sign({ id }, process.env.SCRT, { expiresIn: "2h" });
+    return jwt.sign({ id }, process.env.SCRT, { expiresIn: "1h" });
   };
 
 const userLogin = async (req, res) => {

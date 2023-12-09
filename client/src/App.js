@@ -28,35 +28,17 @@ import { Login } from "./pages/authentication/Login";
 import { Signup } from "./pages/authentication/Signup";
 let mode = "stdnt";
 
-function App() {
+export function App() {
   // Variables
   const auth = createBrowserRouter(
-      createRoutesFromElements(
-        <Route path="/" element={<Navbar mode={mode} />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      )
-    ),
-    stdnt = createBrowserRouter(
-      createRoutesFromElements(
-        <Route path="/" element={<Navbar mode={mode} />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      )
-    ),
-    admin = createBrowserRouter(
-      createRoutesFromElements(
-        <Route path="/" element={<Navbar mode={mode} />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      )
-    );
+    createRoutesFromElements(
+      <Route path="/" element={<Navbar mode={mode} />}>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    )
+  );
 
   switch (mode) {
     case "auth":

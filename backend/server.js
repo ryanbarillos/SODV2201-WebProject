@@ -27,10 +27,10 @@ const express = require("express"),
 */
 const data = express.json(); //Use to retreive for data
 app.use(data);
-app.use((req, res, next) => {
-  next();
-});
-//Router
+
+/*
+Router
+*/
 app.use("/api/user", routerUser);
 app.use("/api/student", routerStudent);
 app.use("/api/course", routerCourse);
