@@ -26,10 +26,11 @@ import NotFound from "./component/pages/NotFound";
 import Navbar from "./component/navbar/Navbar";
 import { Login } from "./pages/authentication/Login";
 import { Signup } from "./pages/authentication/Signup";
-let mode = "stdnt";
+import useAuthContext from "./hooks/useAuthContext";
 
 export function App() {
   // Variables
+  let mode = "auth";
   const auth = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Navbar mode={mode} />}>
@@ -51,6 +52,12 @@ export function App() {
       return (
         <div>
           <StudentMain />
+        </div>
+      );
+    case "admin":
+      return (
+        <div>
+          <AdminMain />
         </div>
       );
   }

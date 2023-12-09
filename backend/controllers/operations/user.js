@@ -12,6 +12,10 @@ const bcrypt = require("bcrypt"),
   config = require("../../database/dbconfig"),
   sql = require("mssql"),
   { echo, print } = require("../../../global/Print"),
+  MODE = {
+    STDNT: "stdnt",
+    ADMIN: "admin",
+  },
   //Regex
   isName = /^[A-Z][a-zA-z]+$/;
 
@@ -50,7 +54,7 @@ userSignIn = async (email, passwd) => {
       FROM Administrators
       WHERE studentEmail = @email`;
     // To determine if user is student or admin
-    let userType = "student";
+    let type = "student";
 
     // Connect to db
     const pool = await sql.connect(config);
@@ -84,11 +88,11 @@ userSignIn = async (email, passwd) => {
         throw Error("No account with that email found");
       } else {
         // Otherwise, user is admin
-        userType = "administrator";
+        type = "administrator";
       }
     } else {
       // Otherwise, user is student
-      userType = "student";
+      type = "student";
     }
     /*
       Check if password matches
@@ -98,14 +102,14 @@ userSignIn = async (email, passwd) => {
       https://www.npmjs.com/package/bcrypt#to-check-a-password
       */
     let passwdDB = "";
-    if (userType === "student") {
+    if (type === "student") {
       passwdDB = (
         await pool
           .request()
           .input("email", sql.NVarChar(255), email)
           .query(chk2_1)
       ).recordset[0].studentPasswd;
-    } else if (userType === "administrator") {
+    } else if (type === "administrator") {
       passwdDB = (
         await pool
           .request()
@@ -120,15 +124,18 @@ userSignIn = async (email, passwd) => {
         throw Error("Incorrect password");
       case true:
         pool.close();
-        echo(`Authenticated ${userType} of email "${email}"`);
+        echo(`Authenticated ${type} of email "${email}"`);
     }
     //Return user type: student or admin
-    return userType;
+    return type;
   }
 };
 
 // Sign Up student or admin
-userSignUp = async (email, passwd, namef, namel, userType) => {
+userSignUp = async (email, passwd, namef, namel, type) => {
+  // Connect to db
+  const pool = await sql.connect(config);
+  let done = false;
   /*
   Check if parameters are empty or valid
   */
@@ -172,8 +179,6 @@ userSignUp = async (email, passwd, namef, namel, userType) => {
                   FROM Administrators
                   WHERE adminEmail = @email`;
 
-                // Connect to db
-                const pool = await sql.connect(config);
                 /*
                     Check if email exists
                     Otherwise, create account
@@ -186,7 +191,6 @@ userSignUp = async (email, passwd, namef, namel, userType) => {
                     .input("email", sql.NVarChar(255), email)
                     .query(chk1_1)
                 ).recordset[0];
-
                 if (emailDB) {
                   pool.close();
                   throw Error("Email already in use");
@@ -207,7 +211,7 @@ userSignUp = async (email, passwd, namef, namel, userType) => {
                       salt = bcrypt.genSaltSync(saltRounds),
                       hash = bcrypt.hashSync(passwd, salt);
                     // Insert to right db
-                    switch (userType) {
+                    switch (type) {
                       case "student":
                         // Invoke anonymous function
                         (async () => {
@@ -217,10 +221,11 @@ userSignUp = async (email, passwd, namef, namel, userType) => {
                             .input("passwd", sql.NVarChar(255), hash)
                             .input("nf", sql.NVarChar(255), namef)
                             .input("nl", sql.NVarChar(255), namel)
-                            .input("mode", sql.NVarChar(5), "stdnt")
+                            .input("mode", sql.NVarChar(5), MODE.STDNT)
                             .execute("SignUp");
+                          pool.close();
                         })();
-                        pool.close();
+                        done = true;
                         break;
                       case "administrator":
                         // Invoke anonymous function
@@ -231,25 +236,19 @@ userSignUp = async (email, passwd, namef, namel, userType) => {
                             .input("passwd", sql.NVarChar(255), hash)
                             .input("nf", sql.NVarChar(255), namef)
                             .input("nl", sql.NVarChar(255), namel)
-                            .input("mode", sql.NVarChar(5), "admin")
+                            .input("mode", sql.NVarChar(5), MODE.ADMIN)
                             .execute("SignUp");
+                          pool.close();
                         })();
-                        pool.close();
                         break;
                     }
                   }
                 }
-                /*
-                  Close server connection
-                  to prevent database penetration
-                  to an open access server
-                */
-                pool.close();
             }
         }
     }
   }
-  echo(`Authenticated ${userType} of email "${email}"`);
+  echo(`Authenticated ${type} of email "${email}"`);
 };
 
 module.exports = { userSignIn, userSignUp };

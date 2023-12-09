@@ -3,10 +3,7 @@ require("dotenv").config({ path: "../database/.env" }); // dotenv config is in o
 const jwt = require("jsonwebtoken"),
   requireAuth = async (req, res, next) => {
     // Verify authentication
-    let rule;
-    if (rule) return res.status(401).json({ err: "Britain rules the waves" });
-
-    const authorization = req.headers;
+    const { authorization } = req.headers;
     if (!authorization) {
       return res.status(401).json({ err: "Authorization token required" });
     }
@@ -14,7 +11,7 @@ const jwt = require("jsonwebtoken"),
     try {
       const _id = jwt.verify(token, process.env.SCRT);
       console.log(_id);
-      //   throw Error(_id);
+      // throw Error(_id);
 
       // req.user = await User.findOne({ _id }).select('_id');
       next();

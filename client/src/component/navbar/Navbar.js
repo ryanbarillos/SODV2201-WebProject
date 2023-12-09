@@ -18,11 +18,11 @@ function Navbar(props) {
 
   //Logout function
   // const { user } = useAuthContext(),
-  // const { logout } = useLogout(),
-  const handleClick = () => {
-    // logout();
-    alert("Log Out");
-  };
+  // const { logout } = useLogout();
+  // const handleClick = () => {
+  //   logout();
+  //   alert("Log Out");
+  // };
   /*
     Change mode and buttons of navbar based on login state
     .
@@ -48,7 +48,7 @@ function Navbar(props) {
           <NavLink to="MyCourses">My Courses</NavLink>
           <NavLink to="AddCourses">Add Course</NavLink>
           <NavLink to="Help">Get Help</NavLink>
-          <NavLink onClick={handleClick}>Log Out</NavLink>
+          {/* <NavLink onClick={handleClick}>Log Out</NavLink> */}
         </div>
       );
       break;
@@ -57,7 +57,7 @@ function Navbar(props) {
       sideRight = (
         <div className="rightSide">
           {/* <NavLink to="Home">Home</NavLink> */}
-          <button onClick={handleClick}>Log Out</button>
+          {/* <button onClick={handleClick}>Log Out</button> */}
           <NavLink to="FindCourse">Find Course</NavLink>
           <NavLink to="AddCourse">Add Course</NavLink>
           <NavLink to="RemoveCourse">Remove Course</NavLink>
