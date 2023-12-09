@@ -8,6 +8,7 @@ import React from "react";
 import Logo from "./bvc.svg";
 import { NavLink, Outlet } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
+// import useAuthContext from "../../hooks/useAuthContext";
 
 function Navbar(props) {
   // User mode
@@ -16,6 +17,7 @@ function Navbar(props) {
     sideRight = "";
 
   //Logout function
+  // const { user } = useAuthContext(),
   const { logout } = useLogout(),
     handleClick = () => {
       logout();
@@ -37,14 +39,15 @@ function Navbar(props) {
         </div>
       );
       break;
-    case "student":
+    case "stdnt":
       mode = "Student Mode";
       sideRight = (
         <div className="rightSide">
-          <button onClick={handleClick}>Log Out</button>
+          {/* <button onClick={handleClick}>Log Out</button> */}
           <NavLink to="MyCourses">My Courses</NavLink>
           <NavLink to="AddCourses">Add Course</NavLink>
           <NavLink to="Help">Get Help</NavLink>
+          <NavLink onClick={handleClick}>Log Out</NavLink>
         </div>
       );
       break;
@@ -62,12 +65,14 @@ function Navbar(props) {
         </div>
       );
       break;
+    default:
+      break;
   }
 
   // Navbar School Logo
   const sideLeft = (
     <div className="leftSide">
-      <img src={Logo} />
+      <img src={Logo} alt={"Bow Valley College Logo"} />
       <h1>{mode}</h1>
     </div>
   );

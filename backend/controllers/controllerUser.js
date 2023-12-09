@@ -9,11 +9,11 @@ const dbo = require("./operations/user"),
 const userLogin = async (req, res) => {
     const { email, passwd } = req.body;
     dbo
-      .userSignIn(email, passwd, "student")
-      .then(() => {
+      .userSignIn(email, passwd)
+      .then((type) => {
         // Generate JSON Web Token to make login session
         const token = mkToken(email);
-        res.status(200).json({ email, token });
+        res.status(200).json({ email, token, type });
       })
       .catch((e) => {
         console.log(e);
@@ -21,13 +21,13 @@ const userLogin = async (req, res) => {
       });
   },
   userSignup = async (req, res) => {
-    const { email, passwd, namef, namel } = req.body;
+    const { email, passwd, namef, namel, type } = req.body;
     dbo
-      .userSignUp(email, passwd, namef, namel)
+      .userSignUp(email, passwd, namef, namel, type)
       .then(() => {
         // Generate JSON Web Token to make login session
         const token = mkToken(email);
-        res.status(200).json({ email, token });
+        res.status(200).json({ email, token, type });
       })
       .catch((e) => {
         res.status(400).json({ err: e.message });

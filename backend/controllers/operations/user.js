@@ -11,8 +11,9 @@ const bcrypt = require("bcrypt"),
   validator = require("validator"),
   config = require("../../database/dbconfig"),
   sql = require("mssql"),
-  { echo, print } = require("../../../global/Print");
-isName = /^[A-Z][a-zA-z]+$/;
+  { echo, print } = require("../../../global/Print"),
+  //Regex
+  isName = /^[A-Z][a-zA-z]+$/;
 
 //Quick way to console log
 // Sign In student or admin
@@ -27,62 +28,107 @@ userSignIn = async (email, passwd) => {
     const saltRounds = 10,
       salt = bcrypt.genSaltSync(saltRounds),
       hash = bcrypt.hashSync(passwd, salt),
-      // queries
-      job1 = `
+      /*
+        Queries
+        Job #1 for email
+        Job #2 for passwords
+       */
+      chk1_1 = `
       SELECT studentEmail
       FROM Students
       WHERE studentEmail = @email`,
-      job2 = `
+      chk1_2 = `
+      SELECT adminEmail
+      FROM Administrators
+      WHERE adminEmail = @email`,
+      chk2_1 = `
       SELECT studentPasswd
       FROM Students
+      WHERE studentEmail = @email`,
+      chk2_2 = `
+      SELECT adminPasswd
+      FROM Administrators
       WHERE studentEmail = @email`;
+    // To determine if user is student or admin
+    let userType = "student";
 
     // Connect to db
     const pool = await sql.connect(config);
-
-    // Check if email exists
-    const emailDB = (
+    /*
+      Check if email exists at all
+      
+      FOR MSSQL SERVER:      
+      if var.recordset or var.recordsets is empty
+      it's null, so email not exists
+      */
+    //Check in student db
+    let emailDB = (
       await pool
         .request()
         // user-defined variables
         .input("email", sql.NVarChar(255), email)
-        .query(job1)
+        .query(chk1_1)
     ).recordset[0];
-    /*
-      If email exists, check if passwd is correct
-      FOR MSSQL SERVER:
-      
-      if var.recordset or var.recordsets is empty
-      it's null, so email not exists
-      */
+
     if (!emailDB) {
-      pool.close();
-      throw Error("No account with that email found");
-    } else {
-      const passwdDB = (
+      // Check in admin db
+      emailDB = (
         await pool
           .request()
-          // user-defined variables
           .input("email", sql.NVarChar(255), email)
-          .query(job2)
-      ).recordset[0].studentPasswd;
-      /*
-        https://www.npmjs.com/package/bcrypt#to-check-a-password
-      */
-      switch (await bcrypt.compare(passwd, passwdDB)) {
-        case false:
-          pool.close();
-          throw Error("Incorrect password");
-        case true:
-          pool.close();
-          echo(`Authenticated student of email "${email}"`);
+          .query(chk1_2)
+      ).recordset[0];
+      //Throw error if email not found
+      if (!emailDB) {
+        pool.close();
+        throw Error("No account with that email found");
+      } else {
+        // Otherwise, user is admin
+        userType = "administrator";
       }
+    } else {
+      // Otherwise, user is student
+      userType = "student";
     }
+    /*
+      Check if password matches
+
+      NOTE:
+      Use bcrypt.compare() for this
+      https://www.npmjs.com/package/bcrypt#to-check-a-password
+      */
+    let passwdDB = "";
+    if (userType === "student") {
+      passwdDB = (
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .query(chk2_1)
+      ).recordset[0].studentPasswd;
+    } else if (userType === "administrator") {
+      passwdDB = (
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .query(chk2_2)
+      ).recordset[0].adminPasswd;
+    }
+    //Check if password is correct
+    switch (await bcrypt.compare(passwd, passwdDB)) {
+      case false:
+        pool.close();
+        throw Error("Incorrect password");
+      case true:
+        pool.close();
+        echo(`Authenticated ${userType} of email "${email}"`);
+    }
+    //Return user type: student or admin
+    return userType;
   }
 };
 
 // Sign Up student or admin
-userSignUp = async (email, passwd, namef, namel) => {
+userSignUp = async (email, passwd, namef, namel, userType) => {
   /*
   Check if parameters are empty or valid
   */
@@ -112,40 +158,47 @@ userSignUp = async (email, passwd, namef, namel) => {
                 throw Error(errName);
               default:
                 /*
-                    BEGIN INSERT
-                    BEGIN INSERT
-                    BEGIN INSERT
-                    */
-                //bcrypt stuffs to obscure password
-                const saltRounds = 10,
-                  salt = bcrypt.genSaltSync(saltRounds),
-                  hash = bcrypt.hashSync(passwd, salt),
-                  // queries
-                  check1 = `
-                      SELECT studentEmail
-                      FROM Students
-                      WHERE studentEmail = @email`,
-                  query = `
-                      INSERT INTO Students
-                      (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
-                      VALUES
-                      (@email, @passwd, @namef, @namel)`;
+                  BEGIN INSERT
+                  BEGIN INSERT
+                  BEGIN INSERT
+                */
+                // queries
+                const chk1_1 = `
+                  SELECT studentEmail
+                  FROM Students
+                  WHERE studentEmail = @email`,
+                  chk1_2 = `
+                  SELECT adminEmail
+                  FROM Administrators
+                  WHERE adminEmail = @email`;
 
-                if (true) {
-                  // Connect to db
-                  const pool = await sql.connect(config);
-                  /*
+                // Connect to db
+                const pool = await sql.connect(config);
+                /*
                     Check if email exists
                     Otherwise, create account
                   */
-                  const result1 = (
+                // check in student db
+                let emailDB = (
+                  await pool
+                    .request()
+                    // user-defined variables
+                    .input("email", sql.NVarChar(255), email)
+                    .query(chk1_1)
+                ).recordset[0];
+
+                if (emailDB) {
+                  pool.close();
+                  throw Error("Email already in use");
+                } else {
+                  // check in admin db
+                  emailDB = (
                     await pool
                       .request()
-                      // user-defined variables
                       .input("email", sql.NVarChar(255), email)
-                      .query(check1)
+                      .query(chk1_2)
                   ).recordset[0];
-                  if (result1) {
+                  if (emailDB) {
                     pool.close();
                     throw Error("Email already in use");
                   } else {
@@ -153,30 +206,50 @@ userSignUp = async (email, passwd, namef, namel) => {
                     const saltRounds = 10,
                       salt = bcrypt.genSaltSync(saltRounds),
                       hash = bcrypt.hashSync(passwd, salt);
-                    // Invoke anonymous function
-                    (async () => {
-                      await pool
-                        .request()
-                        .input("email", sql.NVarChar(255), email)
-                        .input("passwd", sql.NVarChar(255), hash)
-                        .input("nf", sql.NVarChar(255), namef)
-                        .input("nl", sql.NVarChar(255), namel)
-                        .input("mode", sql.NVarChar(5), "stdnt")
-                        .execute("SignUp");
-                      /*
-                                Close server connection
-                                to prevent database penetration
-                                to an open access server
-                              */
-                      pool.close();
-                      echo(`Authenticated student of email "${email}"`);
-                    })();
+                    // Insert to right db
+                    switch (userType) {
+                      case "student":
+                        // Invoke anonymous function
+                        (async () => {
+                          await pool
+                            .request()
+                            .input("email", sql.NVarChar(255), email)
+                            .input("passwd", sql.NVarChar(255), hash)
+                            .input("nf", sql.NVarChar(255), namef)
+                            .input("nl", sql.NVarChar(255), namel)
+                            .input("mode", sql.NVarChar(5), "stdnt")
+                            .execute("SignUp");
+                        })();
+                        pool.close();
+                        break;
+                      case "administrator":
+                        // Invoke anonymous function
+                        (async () => {
+                          await pool
+                            .request()
+                            .input("email", sql.NVarChar(255), email)
+                            .input("passwd", sql.NVarChar(255), hash)
+                            .input("nf", sql.NVarChar(255), namef)
+                            .input("nl", sql.NVarChar(255), namel)
+                            .input("mode", sql.NVarChar(5), "admin")
+                            .execute("SignUp");
+                        })();
+                        pool.close();
+                        break;
+                    }
                   }
                 }
+                /*
+                  Close server connection
+                  to prevent database penetration
+                  to an open access server
+                */
+                pool.close();
             }
         }
     }
   }
+  echo(`Authenticated ${userType} of email "${email}"`);
 };
 
 module.exports = { userSignIn, userSignUp };

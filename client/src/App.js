@@ -22,26 +22,56 @@ import {
 } from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
+import NotFound from "./component/pages/NotFound";
 import Navbar from "./component/navbar/Navbar";
 import { Login } from "./pages/authentication/Login";
 import { Signup } from "./pages/authentication/Signup";
+let mode = "stdnt";
 
 function App() {
   // Variables
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<Navbar mode={"auth"} />}>
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-      </Route>
-    )
-  );
+  const auth = createBrowserRouter(
+      createRoutesFromElements(
+        <Route path="/" element={<Navbar mode={mode} />}>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      )
+    ),
+    stdnt = createBrowserRouter(
+      createRoutesFromElements(
+        <Route path="/" element={<Navbar mode={mode} />}>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      )
+    ),
+    admin = createBrowserRouter(
+      createRoutesFromElements(
+        <Route path="/" element={<Navbar mode={mode} />}>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      )
+    );
 
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+  switch (mode) {
+    case "auth":
+      return (
+        <div>
+          <RouterProvider router={auth} />
+        </div>
+      );
+    case "stdnt":
+      return (
+        <div>
+          <StudentMain />
+        </div>
+      );
+  }
 }
 
 export default App;

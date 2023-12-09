@@ -22,7 +22,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     // <Route path="/" element={Navbar}>
-    <Route element={<Navbar mode="student" />}>
+    <Route element={<Navbar mode="stdnt" />}>
       <Route index element={<Home />} />
       <Route path="/MyCourses" element={<MyCourses />} />
       <Route path="/AddCourses" element={<CourseAdd />} />

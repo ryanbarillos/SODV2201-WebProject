@@ -4,7 +4,7 @@
     https://youtu.be/6RhOzQciVwI?si=eujFn9GP1EY93FbK
 */
 
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
 const AuthContext = createContext(),
   AuthReducer = (state, action) => {
@@ -21,6 +21,17 @@ const AuthContext = createContext(),
     const [state, dispatch] = useReducer(AuthReducer, {
       user: null,
     });
+
+    useEffect(() => {
+      /*
+      Check if user credentials are in local storage
+      To log in automatically
+      */
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        dispatch({ type: "LOGIN", payload: user });
+      }
+    }, []);
     // console.log("AuthContext State: ", state);
     return (
       <AuthContext.Provider value={{ ...state, dispatch }}>
