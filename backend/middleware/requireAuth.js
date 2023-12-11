@@ -1,3 +1,8 @@
+/*
+  REFERNCE(s)
+  https://youtu.be/MrEoixi8QY4?si=lTC8WxVTZCjfuckR
+*/
+
 require("dotenv").config({ path: "../database/.env" }); // dotenv config is in other location
 const jwt = require("jsonwebtoken"),
   { getUserID } = require("../controllers/operations/get"),
