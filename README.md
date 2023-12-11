@@ -17,14 +17,11 @@ This is MERN Stack Website with the following:
 - React
 - Node JS
 
-Following NPM Packages Used:
-[bcrypt](https://www.npmjs.com/package/bcrypt)
+Following NPM Packages Used:<br>
 
-<ol>
-
-<li>[dotenv](https://www.npmjs.com/package/dotenv)</li>
-<li>[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)</li>
-<li>[mssql](https://www.npmjs.com/package/mssql)</li>
-<li>[nodemon](https://www.npmjs.com/package/nodemon)</li>
-<li>[validator](https://www.npmjs.com/package/validator)</li>
-</ol>
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+- [mssql](https://www.npmjs.com/package/mssql)
+- [nodemon](https://www.npmjs.com/package/nodemon)
+- [validator](https://www.npmjs.com/package/validator)
