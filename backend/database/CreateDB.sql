@@ -24,35 +24,36 @@ GO
 -- Make Tables START
 CREATE TABLE Courses
 (
-    courseID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    courseName NVARCHAR(255) NOT NULL UNIQUE,
-    courseCode NVARCHAR(7) NOT NULL UNIQUE,
-    courseTerm INT NOT NULL
+    CourseID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    CourseName NVARCHAR(255) NOT NULL UNIQUE,
+    CourseCode NVARCHAR(7) NOT NULL UNIQUE,
+    CourseTerm INT NOT NULL
 );
 
 CREATE TABLE Students
 (
-    studentID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    studentTerm INT NOT NULL DEFAULT 1,
-    studentEmail NVARCHAR(255) NOT NULL UNIQUE,
-    studentPasswd NVARCHAR(MAX) NOT NULL,
-    studentNameFirst NVARCHAR(255) NOT NULL,
-    studentNameLast NVARCHAR(255) NOT NULL,
+    ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Term INT NOT NULL DEFAULT 1,
+    Email NVARCHAR(255) NOT NULL UNIQUE,
+    Passwd NVARCHAR(MAX) NOT NULL,
+    NameFirst NVARCHAR(255) NOT NULL,
+    NameLast NVARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE CoursesEnrolled
 (
-    studentID INT NOT NULL FOREIGN KEY REFERENCES Students(studentID),
-    courseID INT NOT NULL FOREIGN KEY REFERENCES Courses(courseID)
+    StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
+    CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(courseID),
+    PRIMARY KEY (StudentID, CourseID)
 );
 
 CREATE TABLE Administrators
 (
-    adminID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    adminEmail NVARCHAR(255) NOT NULL UNIQUE,
-    adminPasswd NVARCHAR(MAX) NOT NULL,
-    adminNameFirst NVARCHAR(255) NOT NULL,
-    adminNameLast NVARCHAR(255) NOT NULL,
+    ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Email NVARCHAR(255) NOT NULL UNIQUE,
+    Passwd NVARCHAR(MAX) NOT NULL,
+    NameFirst NVARCHAR(255) NOT NULL,
+    NameLast NVARCHAR(255) NOT NULL,
 );
 -- Make Tables END
 
@@ -77,7 +78,7 @@ BEGIN
     IF ((SELECT LOWER(@mode)) = 'stdnt')
     BEGIN
         INSERT INTO Students
-            (studentEmail, studentPasswd, studentNameFirst, studentNameLast)
+            (Email, Passwd, NameFirst, NameLast)
         VALUES
             (@email, @passwd, @nf, @nl);
     END;
@@ -87,10 +88,22 @@ BEGIN
     ELSE IF ((SELECT LOWER(@mode)) = 'admin')
     BEGIN
         INSERT INTO Administrators
-            (adminEmail, adminPasswd, adminNameFirst, adminNameLast)
+            (Email, Passwd, NameFirst, NameLast)
         VALUES
             (@email, @passwd, @nf, @nl);
     END;
+END;
+GO
+
+
+-- Enroll students to course
+GO
+CREATE PROCEDURE Enroll(@studentID INT,
+    @courseID INT)
+AS
+BEGIN
+    INSERT INTO CoursesEnrolled
+    VALUES(@studentID, @courseID)
 END;
 GO
 
@@ -120,7 +133,7 @@ VALUES
     ('Advanced Information Security 2', 'IS444', 4);
 
 INSERT INTO Administrators
-    (adminEmail, adminPasswd, adminNameFirst, adminNameLast)
+    (Email, Passwd, NameFirst, NameLast)
 VALUES
     ('jdm@bvc.ca', 're@|!+7_sets', 'Jon', 'Doe'),
     ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');

@@ -7,6 +7,7 @@
   https://www.npmjs.com/package/bcrypt#sync
 */
 
+// Const Variables
 const bcrypt = require("bcrypt"),
   validator = require("validator"),
   config = require("../../database/dbconfig"),
@@ -17,236 +18,197 @@ const bcrypt = require("bcrypt"),
     ADMIN: "admin",
   },
   //Regex
-  isName = /^[A-Z][a-zA-z]+$/;
-
-//Quick way to console log
-// Sign In student or admin
-userSignIn = async (email, passwd) => {
+  isName = /^[A-Z][a-zA-z]+$/,
+  // Bcrypt
+  saltRounds = 10,
+  salt = bcrypt.genSaltSync(saltRounds),
   /*
-  Check if parameters are empty or valid
+  Email Exists Checker
   */
-  if (!(email && passwd)) {
-    throw Error("All fields must be filled");
-  } else {
-    //bcrypt stuffs to obscure password
-    const saltRounds = 10,
-      salt = bcrypt.genSaltSync(saltRounds),
-      hash = bcrypt.hashSync(passwd, salt),
-      /*
-        Queries
-        Job #1 for email
-        Job #2 for passwords
-       */
-      chk1_1 = `
-      SELECT studentEmail
-      FROM Students
-      WHERE studentEmail = @email`,
-      chk1_2 = `
-      SELECT adminEmail
-      FROM Administrators
-      WHERE adminEmail = @email`,
-      chk2_1 = `
-      SELECT studentPasswd
-      FROM Students
-      WHERE studentEmail = @email`,
-      chk2_2 = `
-      SELECT adminPasswd
-      FROM Administrators
-      WHERE studentEmail = @email`;
-    // To determine if user is student or admin
-    let type = "student";
-
-    // Connect to db
-    const pool = await sql.connect(config);
+  chkEmailExists = async (pool, email) => {
     /*
       Check if email exists at all
       
       FOR MSSQL SERVER:      
       if var.recordset or var.recordsets is empty
       it's null, so email not exists
-      */
-    //Check in student db
-    let emailDB = (
-      await pool
-        .request()
-        // user-defined variables
-        .input("email", sql.NVarChar(255), email)
-        .query(chk1_1)
-    ).recordset[0];
+    */
+    // Queries
+    const chk1 = `
+    SELECT Email
+    FROM Students
+    WHERE Email = @email`,
+      chk2 = `
+      SELECT Email
+      FROM Administrators
+      WHERE Email = @email`;
 
-    if (!emailDB) {
-      // Check in admin db
+    //Check in student db
+    let type = MODE.STDNT,
       emailDB = (
         await pool
           .request()
           .input("email", sql.NVarChar(255), email)
-          .query(chk1_2)
+          .query(chk1)
       ).recordset[0];
-      //Throw error if email not found
-      if (!emailDB) {
-        pool.close();
-        throw Error("No account with that email found");
-      } else {
-        // Otherwise, user is admin
-        type = "administrator";
+    // Search email in admin db
+    if (!emailDB) {
+      emailDB = (
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .query(chk2)
+      ).recordset[0];
+      if (emailDB) {
+        type = MODE.ADMIN;
       }
+    }
+    // Return boolean result
+    if (emailDB) {
+      return {
+        type,
+        res: true,
+      };
     } else {
-      // Otherwise, user is student
-      type = "student";
+      return {
+        type,
+        res: false,
+      };
     }
-    /*
-      Check if password matches
-
-      NOTE:
-      Use bcrypt.compare() for this
-      https://www.npmjs.com/package/bcrypt#to-check-a-password
-      */
-    let passwdDB = "";
-    if (type === "student") {
-      passwdDB = (
-        await pool
-          .request()
-          .input("email", sql.NVarChar(255), email)
-          .query(chk2_1)
-      ).recordset[0].studentPasswd;
-    } else if (type === "administrator") {
-      passwdDB = (
-        await pool
-          .request()
-          .input("email", sql.NVarChar(255), email)
-          .query(chk2_2)
-      ).recordset[0].adminPasswd;
-    }
-    //Check if password is correct
-    switch (await bcrypt.compare(passwd, passwdDB)) {
-      case false:
-        pool.close();
-        throw Error("Incorrect password");
-      case true:
-        pool.close();
-        echo(`Authenticated ${type} of email "${email}"`);
-    }
-    //Return user type: student or admin
-    return type;
+  };
+/*
+  Log-in
+  */
+userSignIn = async (email, passwd) => {
+  // Reject operation when either fields are empty
+  if (!(email && passwd)) {
+    throw Error("All fields must be filled");
   }
+  /*
+        Queries
+        Job #1 for email
+        Job #2 for passwords
+       */
+  const chk1 = `
+        SELECT Passwd
+        FROM Students
+        WHERE Email = @email`,
+    chk2 = `
+    SELECT Passwd
+    FROM Administrators
+    WHERE Email = @email`;
+  /*
+    Check if email exists
+    Otherwise, no login
+  */
+  // Connect to db
+  const pool = await sql.connect(config),
+    obj = await chkEmailExists(pool, email),
+    result = obj.res,
+    type = obj.type;
+  if (!result) {
+    pool.close();
+    throw Error("No account with this email found");
+  }
+  /*
+    Check if password is correct
+    https://www.npmjs.com/package/bcrypt#to-check-a-password
+  */
+  let passwdDB = "";
+  switch (type) {
+    case MODE.STDNT:
+      passwdDB = (
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .query(chk1)
+      ).recordset[0].Passwd;
+      break;
+    case MODE.ADMIN:
+      passwdDB = (
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .query(chk2)
+      ).recordset[0].Passwd;
+      break;
+  }
+  switch (await bcrypt.compare(passwd, passwdDB)) {
+    case false:
+      pool.close();
+      throw Error("Incorrect password");
+    case true:
+      pool.close();
+      echo(`Authenticated ${type} of email "${email}"`);
+  }
+  //Return user type: student or admin
+  return type;
 };
 
-// Sign Up student or admin
+/*
+  Sign Up student or admin
+*/
 userSignUp = async (email, passwd, namef, namel, type) => {
-  // Connect to db
-  const pool = await sql.connect(config);
-  let done = false;
-  /*
-  Check if parameters are empty or valid
-  */
+  // Check if parameters are empty or valid
   if (!(email && passwd && namef && namel)) {
     throw Error("All fields must be filled");
-  } else {
-    /*
-    Validate email
-    */
-    switch (validator.isEmail(email)) {
-      case false:
-        throw Error("Invalid Email");
-      default:
-        /*
-        Validate password
-        */
-        switch (validator.isStrongPassword(passwd)) {
-          case false:
-            throw Error("Password not strong enough");
-          default:
-            /*
-            Validate name first
-            */
-            const errName = "Name must start in capital letter";
-            switch (isName.test(namef) && isName.test(namel)) {
-              case false:
-                throw Error(errName);
-              default:
-                /*
-                  BEGIN INSERT
-                  BEGIN INSERT
-                  BEGIN INSERT
-                */
-                // queries
-                const chk1_1 = `
-                  SELECT studentEmail
-                  FROM Students
-                  WHERE studentEmail = @email`,
-                  chk1_2 = `
-                  SELECT adminEmail
-                  FROM Administrators
-                  WHERE adminEmail = @email`;
+  }
+  // Validate email
+  if (!validator.isEmail(email)) {
+    throw Error("Invalid Email");
+  }
+  // Validate password
+  if (!validator.isStrongPassword(passwd)) {
+    throw Error("Password not strong enough");
+  }
+  // Validate names
+  if (!(isName.test(namef) && isName.test(namel))) {
+    throw Error("Name must start in capital letter");
+  }
+  /*
+    Check if email exists
+    Otherwise, create account
+  */
+  // Connect to db
+  const pool = await sql.connect(config),
+    result = (await chkEmailExists(pool, email)).res;
 
-                /*
-                    Check if email exists
-                    Otherwise, create account
-                  */
-                // check in student db
-                let emailDB = (
-                  await pool
-                    .request()
-                    // user-defined variables
-                    .input("email", sql.NVarChar(255), email)
-                    .query(chk1_1)
-                ).recordset[0];
-                if (emailDB) {
-                  pool.close();
-                  throw Error("Email already in use");
-                } else {
-                  // check in admin db
-                  emailDB = (
-                    await pool
-                      .request()
-                      .input("email", sql.NVarChar(255), email)
-                      .query(chk1_2)
-                  ).recordset[0];
-                  if (emailDB) {
-                    pool.close();
-                    throw Error("Email already in use");
-                  } else {
-                    //bcrypt stuffs to obscure password
-                    const saltRounds = 10,
-                      salt = bcrypt.genSaltSync(saltRounds),
-                      hash = bcrypt.hashSync(passwd, salt);
-                    // Insert to right db
-                    switch (type) {
-                      case "student":
-                        // Invoke anonymous function
-                        (async () => {
-                          await pool
-                            .request()
-                            .input("email", sql.NVarChar(255), email)
-                            .input("passwd", sql.NVarChar(255), hash)
-                            .input("nf", sql.NVarChar(255), namef)
-                            .input("nl", sql.NVarChar(255), namel)
-                            .input("mode", sql.NVarChar(5), MODE.STDNT)
-                            .execute("SignUp");
-                          pool.close();
-                        })();
-                        done = true;
-                        break;
-                      case "administrator":
-                        // Invoke anonymous function
-                        (async () => {
-                          await pool
-                            .request()
-                            .input("email", sql.NVarChar(255), email)
-                            .input("passwd", sql.NVarChar(255), hash)
-                            .input("nf", sql.NVarChar(255), namef)
-                            .input("nl", sql.NVarChar(255), namel)
-                            .input("mode", sql.NVarChar(5), MODE.ADMIN)
-                            .execute("SignUp");
-                          pool.close();
-                        })();
-                        break;
-                    }
-                  }
-                }
-            }
-        }
-    }
+  if (result) {
+    pool.close();
+    throw Error("Email already in use");
+  }
+  //bcrypt stuffs to obscure password
+  const hash = bcrypt.hashSync(passwd, salt);
+  // Insert to right db
+  switch (type) {
+    case MODE.STDNT:
+      // Invoke anonymous function
+      await (async () => {
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .input("passwd", sql.NVarChar(255), hash)
+          .input("nf", sql.NVarChar(255), namef)
+          .input("nl", sql.NVarChar(255), namel)
+          .input("mode", sql.NVarChar(5), MODE.STDNT)
+          .execute("SignUp");
+        pool.close();
+      })();
+      break;
+    case MODE.ADMIN:
+      // Invoke anonymous function
+      (async () => {
+        await pool
+          .request()
+          .input("email", sql.NVarChar(255), email)
+          .input("passwd", sql.NVarChar(255), hash)
+          .input("nf", sql.NVarChar(255), namef)
+          .input("nl", sql.NVarChar(255), namel)
+          .input("mode", sql.NVarChar(5), MODE.ADMIN)
+          .execute("SignUp");
+        pool.close();
+      })();
+      break;
   }
   echo(`Authenticated ${type} of email "${email}"`);
 };

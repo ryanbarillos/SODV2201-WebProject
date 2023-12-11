@@ -32,14 +32,6 @@ const userLogin = async (req, res) => {
       .catch((e) => {
         res.status(400).json({ err: e.message });
       });
-    // try {
-    //   // Returns 2d array; get only first value
-    //   dbo.userSignUp(email, passwd, namef, namel);
-    //   res.status(200).json({ email, passwd, namef, namel });
-    // } catch (e) {
-    //   res.status(400).json({ Mayday: e });
-    //   console.clear().log("Mayday\n" + e.message);
-    // }
   };
 
 module.exports = { userLogin, userSignup };

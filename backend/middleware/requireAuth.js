@@ -1,19 +1,20 @@
 require("dotenv").config({ path: "../database/.env" }); // dotenv config is in other location
-
 const jwt = require("jsonwebtoken"),
+  { getUserID } = require("../controllers/operations/get"),
   requireAuth = async (req, res, next) => {
     // Verify authentication
     const { authorization } = req.headers;
     if (!authorization) {
       return res.status(401).json({ err: "Authorization token required" });
     }
+    // Extract jwt from Bearer Token
     const token = authorization.split(" ")[1];
     try {
-      const _id = jwt.verify(token, process.env.SCRT);
-      console.log(_id);
-      // throw Error(_id);
-
-      // req.user = await User.findOne({ _id }).select('_id');
+      // This returns a 3-property JSON; only pull email
+      const email = jwt.verify(token, process.env.SCRT).id;
+      // const s = getUserID(email);
+      req.user = getUserID(email);
+      console.log(req.user);
       next();
     } catch (e) {
       console.log(e);
