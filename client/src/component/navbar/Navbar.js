@@ -7,22 +7,14 @@ import "./Navbar.css";
 import React from "react";
 import Logo from "./bvc.svg";
 import { NavLink, Outlet } from "react-router-dom";
-// import { useLogout } from "../../hooks/useLogout";
-// import useAuthContext from "../../hooks/useAuthContext";
+import useLogout from "../../hooks/useLogout";
+import useAuthContext from "../../hooks/useAuthContext";
 
 function Navbar(props) {
   // User mode
   let mode = "",
     // Navbar Buttons
     sideRight = "";
-
-  //Logout function
-  // const { user } = useAuthContext(),
-  // const { logout } = useLogout();
-  // const handleClick = () => {
-  //   logout();
-  //   alert("Log Out");
-  // };
   /*
     Change mode and buttons of navbar based on login state
     .
@@ -48,7 +40,8 @@ function Navbar(props) {
           <NavLink to="MyCourses">My Courses</NavLink>
           <NavLink to="AddCourses">Add Course</NavLink>
           <NavLink to="Help">Get Help</NavLink>
-          {/* <NavLink onClick={handleClick}>Log Out</NavLink> */}
+          <li>Log Out</li>
+          {/* <ul></ul> */}
         </div>
       );
       break;

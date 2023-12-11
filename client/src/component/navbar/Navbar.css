@@ -45,11 +45,15 @@ References:
   margin: 20px;
 }
 
-.navbar .rightSide button {
-  background-color: transparent;
-  border: none;
+.navbar .rightSide ul,
+li,
+button {
+  list-style: none;
   color: white;
-  cursor: pointer;
+  font-size: larger;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 20px;
 }
 
 .navbar .rightSide svg {

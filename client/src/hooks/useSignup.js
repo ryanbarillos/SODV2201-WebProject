@@ -23,7 +23,7 @@ const useSignup = () => {
           passwd,
           namef,
           namel,
-          type: "student",
+          type: "stdnt",
         }),
       }),
       json = await res.json();

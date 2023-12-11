@@ -24,19 +24,26 @@ import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
 import NotFound from "./component/pages/NotFound";
 import Navbar from "./component/navbar/Navbar";
-import { Login } from "./pages/authentication/Login";
-import { Signup } from "./pages/authentication/Signup";
+import Login from "./pages/authentication/Login";
+import Signup from "./pages/authentication/Signup";
 import useAuthContext from "./hooks/useAuthContext";
 
 export function App() {
   // Variables
-  let mode = "auth";
+  const user = useAuthContext().user;
+  let mode = user === null || undefined ? "auth" : user.type;
+  // console.log(mode);
+  // let mode = "stdnt";
+  // let mode = userType === null ? "auth" : userType;
+
+  // V6 and newer
   const auth = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Navbar mode={mode} />}>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
+        {/* <Route path="studentMain" element={<StudentMain />} /> */}
       </Route>
     )
   );

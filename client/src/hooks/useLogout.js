@@ -1,6 +1,6 @@
 import useAuthContext from "./useAuthContext";
 
-export const useLogout = () => {
+const useLogout = () => {
   const { dispatch } = useAuthContext(),
     logout = () => {
       // Remove credentials from local storage
@@ -11,3 +11,5 @@ export const useLogout = () => {
 
   return logout;
 };
+
+export default useLogout;

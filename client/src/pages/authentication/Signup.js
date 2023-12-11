@@ -9,7 +9,7 @@ import "../../component/styles/Forms.css";
 import { useState } from "react";
 import useSignup from "../../hooks/useSignup";
 
-export const Signup = () => {
+const Signup = () => {
   const [email, setEmail] = useState(""),
     [passwd, setPasswd] = useState(""),
     [namef, setNameF] = useState(""),
@@ -62,3 +62,5 @@ export const Signup = () => {
     </form>
   );
 };
+
+export default Signup;

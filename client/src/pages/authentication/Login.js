@@ -9,7 +9,7 @@ import "../../component/styles/Forms.css";
 import { useState } from "react";
 import useLogin from "../../hooks/useLogin";
 
-export const Login = () => {
+const Login = () => {
   const [email, setEmail] = useState(""),
     [passwd, setPasswd] = useState(""),
     { login, isLoading, err } = useLogin(),
@@ -45,3 +45,5 @@ export const Login = () => {
     </form>
   );
 };
+
+export default Login;

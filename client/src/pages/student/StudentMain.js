@@ -32,13 +32,13 @@ const router = createBrowserRouter(
   )
 );
 
-function StudentMain() {
+const StudentMain = () => {
   return (
     <div className="StudentMain">
-      {/* Navbar */}
+      {/* {console.log("I'm a student")} */}
       <RouterProvider router={router} />
     </div>
   );
-}
+};
 
 export default StudentMain;
