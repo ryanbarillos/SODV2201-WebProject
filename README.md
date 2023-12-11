@@ -7,8 +7,8 @@
 By the following team members:
 
 - Ryan Barillos
-- Gurleen Kaur (formerly)
-- David Yusty (formerly)
+- Gurleen Kaur <strong>RETIRED</strong>
+- David Yusty <strong>RETIRED</strong>
 
 This is MERN Stack Website with the following:
 
