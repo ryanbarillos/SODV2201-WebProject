@@ -31,14 +31,10 @@ getUserID = async (email) => {
     if (!id) {
       pool.close();
       throw Error("No account with that email found");
-    } else {
-      id = id.ID;
     }
-  } else {
-    id = id.ID;
   }
   pool.close();
-  return id;
+  return id.ID;
 };
 
 getUsers = async (user) => {
