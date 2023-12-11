@@ -18,9 +18,10 @@ This is MERN Stack Website with the following:
 - Node JS
 
 Following NPM Packages Used:
+[bcrypt](https://www.npmjs.com/package/bcrypt)
 
 <ol>
-<li>[bcrypt](https://www.npmjs.com/package/bcrypt)</li>
+
 <li>[dotenv](https://www.npmjs.com/package/dotenv)</li>
 <li>[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)</li>
 <li>[mssql](https://www.npmjs.com/package/mssql)</li>
