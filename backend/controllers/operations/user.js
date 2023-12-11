@@ -32,6 +32,12 @@ const bcrypt = require("bcrypt"),
       FOR MSSQL SERVER:      
       if var.recordset or var.recordsets is empty
       it's null, so email not exists
+
+      NOTE:
+      If a const sql pool is delcared here and closed in this function,
+      the pool inside the function calling this will close the sql
+      connection too, thus accept pool as a parameter
+      and NEVER CLOSE IT HERE
     */
     // Queries
     const chk1 = `
