@@ -12,9 +12,7 @@ const jwt = require("jsonwebtoken"),
     try {
       // This returns a 3-property JSON; only pull email
       const email = jwt.verify(token, process.env.SCRT).id;
-      // const s = getUserID(email);
       req.user = getUserID(email);
-      console.log(req.user);
       next();
     } catch (e) {
       console.log(e);

@@ -15,6 +15,7 @@
 // Modules Core
 require("dotenv").config({ path: "./database/.env" }); // dotenv config is in other location
 const express = require("express"),
+  cors = require("cors"),
   app = express(),
   port = process.env.PORT,
   routerStudent = require("./routes/students"),

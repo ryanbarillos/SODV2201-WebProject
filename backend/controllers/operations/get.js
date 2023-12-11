@@ -1,4 +1,4 @@
-const { config } = require("../../database/dbconfig"),
+const config = require("../../database/dbconfig"),
   sql = require("mssql");
 
 //Find user id using email
@@ -14,8 +14,6 @@ getUserID = async (email) => {
       WHERE Email = @email`,
     // Connect to db
     pool = await sql.connect(config);
-  console.log(pool);
-  throw Error(pool);
 
   // Check in student db
   let id = (
