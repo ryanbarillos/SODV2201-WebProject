@@ -15,6 +15,7 @@
 // Modules Core
 require("dotenv").config({ path: "./database/.env" }); // dotenv config is in other location
 const express = require("express"),
+  cors = require("cors"),
   app = express(),
   port = process.env.PORT,
   routerCourse = require("./routes/routerCourse"),
@@ -25,6 +26,7 @@ const express = require("express"),
   App Configuration
 */
 const data = express.json(); //Use to retreive for data
+app.use(cors());
 app.use(data);
 
 /*

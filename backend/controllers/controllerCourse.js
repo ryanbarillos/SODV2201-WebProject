@@ -14,8 +14,9 @@ const courseGetAll = async (req, res) => {
       });
   },
   courseEnroll = async (req, res) => {
-    const studentID = getUserID(req.params.email),
+    const studentID = await getUserID(req.params.studentID),
       courseID = req.params.courseID;
+    // console.log(studentID, courseID);
     dbo
       .courseEnroll(studentID, courseID)
       .then(() => {
