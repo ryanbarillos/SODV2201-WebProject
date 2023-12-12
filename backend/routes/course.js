@@ -5,7 +5,7 @@ https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-da
 const e = require("express"),
   r = e.Router();
 const reqAuth = require("../middleware/requireAuth");
-dbo = require("../controllers/operations/get");
+dbo = require("../controllers/operations/course");
 
 //Require authentication to access courses per student
 r.use(reqAuth);
@@ -17,6 +17,9 @@ r.get("/all", (req, res) => {
     res.json(result);
   });
 });
+
+// Enroll Course
+r.post("/enroll/:studentID/:courseID", (req, res) => {});
 
 //DELETE Student
 r.delete("/:id", (req, res) => {

@@ -15,11 +15,9 @@
 // Modules Core
 require("dotenv").config({ path: "./database/.env" }); // dotenv config is in other location
 const express = require("express"),
-  cors = require("cors"),
   app = express(),
   port = process.env.PORT,
-  routerStudent = require("./routes/students"),
-  routerCourse = require("./routes/courses"),
+  routerCourse = require("./routes/course"),
   routerUser = require("./routes/user");
 
 /*
@@ -33,9 +31,7 @@ app.use(data);
 Router
 */
 app.use("/api/user", routerUser);
-app.use("/api/student", routerStudent);
 app.use("/api/course", routerCourse);
-// app.use("/api/course", routerCourse);
 
 app.listen(port || 3001, () => {
   console.log("Server running on port " + port);

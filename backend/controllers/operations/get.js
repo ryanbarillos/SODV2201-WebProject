@@ -59,21 +59,8 @@ getUsers = async (user) => {
   }
 };
 
-getCourses = async () => {
-  try {
-    // Connect to database
-    const pool = await sql.connect(config),
-      //Query
-      query = "SELECT * FROM Courses",
-      result = await pool.request().query(query);
-    return result.recordsets;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 module.exports = {
   getUsers,
-  getCourses,
+  // getCourses,
   getUserID,
 };

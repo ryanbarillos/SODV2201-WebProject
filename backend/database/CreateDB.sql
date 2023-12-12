@@ -43,7 +43,7 @@ CREATE TABLE Students
 CREATE TABLE CoursesEnrolled
 (
     StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
-    CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(courseID),
+    CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(CourseID),
     PRIMARY KEY (StudentID, CourseID)
 );
 

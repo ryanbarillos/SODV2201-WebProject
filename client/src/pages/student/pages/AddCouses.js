@@ -26,7 +26,14 @@ function AddCourses() {
   }, []);
 
   return (
-    <div>{courses && <CourseList courses={courses} term={termNow} />}</div>
+    <div>
+      {" "}
+      <h1>You are in Term {termNow}</h1>
+      <h2>Select Your Course(s)</h2>
+      {courses && (
+        <CourseList courses={courses} term={termNow} mode={"enroll"} />
+      )}
+    </div>
   );
 }
 

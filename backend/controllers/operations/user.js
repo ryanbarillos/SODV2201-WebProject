@@ -85,7 +85,7 @@ const bcrypt = require("bcrypt"),
 /*
   Log-in
   */
-userSignIn = async (email, passwd) => {
+userLogin = async (email, passwd) => {
   // Reject operation when either fields are empty
   if (!(email && passwd)) {
     throw Error("All fields must be filled");
@@ -154,7 +154,7 @@ userSignIn = async (email, passwd) => {
 /*
   Sign Up student or admin
 */
-userSignUp = async (email, passwd, namef, namel, type) => {
+userSignup = async (email, passwd, namef, namel, type) => {
   // Check if parameters are empty or valid
   if (!(email && passwd && namef && namel)) {
     throw Error("All fields must be filled");
@@ -219,4 +219,4 @@ userSignUp = async (email, passwd, namef, namel, type) => {
   echo(`Authenticated ${type} of email "${email}"`);
 };
 
-module.exports = { userSignIn, userSignUp };
+module.exports = { userLogin, userSignup };

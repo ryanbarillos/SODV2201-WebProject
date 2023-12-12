@@ -9,7 +9,7 @@ const dbo = require("./operations/user"),
 const userLogin = async (req, res) => {
     const { email, passwd } = req.body;
     dbo
-      .userSignIn(email, passwd)
+      .userLogin(email, passwd)
       .then((type) => {
         // Generate JSON Web Token to make login session
         const token = mkToken(email);
@@ -23,7 +23,7 @@ const userLogin = async (req, res) => {
   userSignup = async (req, res) => {
     const { email, passwd, namef, namel, type } = req.body;
     dbo
-      .userSignUp(email, passwd, namef, namel, type)
+      .userSignup(email, passwd, namef, namel, type)
       .then(() => {
         // Generate JSON Web Token to make login session
         const token = mkToken(email);
