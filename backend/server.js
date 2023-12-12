@@ -17,8 +17,8 @@ require("dotenv").config({ path: "./database/.env" }); // dotenv config is in ot
 const express = require("express"),
   app = express(),
   port = process.env.PORT,
-  routerCourse = require("./routes/course"),
-  routerUser = require("./routes/user");
+  routerCourse = require("./routes/routerCourse"),
+  routerUser = require("./routes/routerUser");
 
 /*
   Middleware

@@ -1,0 +1,10 @@
+Array(14) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+AddCouses.js:22
+Uncaught (in promise) SyntaxError: JSON.parse: unexpected end of data at line 1 column 1 of the JSON data
+    courseList Choo
+    AsyncFunctionThrow self-hosted:856
+    (Async: async)
+    AddCourses Choo
+    React 7
+    Choo 6
+    Webpack 24

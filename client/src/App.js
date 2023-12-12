@@ -31,6 +31,7 @@ import useAuthContext from "./hooks/useAuthContext";
 export function App() {
   // Variables
   const user = useAuthContext().user;
+  // WIP : Make this a reactive variable
   let mode = user === null || undefined ? "auth" : user.type;
   // console.log(mode);
   // let mode = "stdnt";

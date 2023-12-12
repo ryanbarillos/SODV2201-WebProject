@@ -107,6 +107,17 @@ BEGIN
 END;
 GO
 
+-- Withdraw students to course
+GO
+CREATE PROCEDURE Withdraw(@studentID INT,
+    @courseID INT)
+AS
+BEGIN
+    DELETE FROM CoursesEnrolled
+    WHERE StudentID = @studentID
+        AND CourseID = @courseID
+END;
+GO
 
 
 /*
@@ -137,15 +148,17 @@ INSERT INTO Administrators
 VALUES
     ('jdm@bvc.ca', 're@|!+7_sets', 'Jon', 'Doe'),
     ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');
-
+-- Data Population END
 
 USE SODV2201_Group3;
 GO
+
 SELECT *
 FROM Students
 
+SELECT *
+FROM CoursesEnrolled
 
--- Data Population END
 
 USE master
 GO

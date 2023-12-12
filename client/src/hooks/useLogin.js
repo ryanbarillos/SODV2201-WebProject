@@ -16,11 +16,13 @@ const useLogin = () => {
 
     // Get POST response
     const res = await fetch("/api/user/login", {
+        // Consider converting to GET instead of POST
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, passwd }),
       }),
       json = await res.json();
+    // console.log(json);
 
     if (!res.ok) {
       setIsLoading(false);

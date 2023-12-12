@@ -18,7 +18,7 @@ const Signup = () => {
     handleSubmit = async (event) => {
       event.preventDefault();
       await signup(email, passwd, namef, namel);
-      // if (err) console.log(err);
+      if (err) console.log(err);
     };
 
   return (

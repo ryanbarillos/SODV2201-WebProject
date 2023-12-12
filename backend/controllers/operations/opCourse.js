@@ -23,7 +23,9 @@ courseGetAll = async () => {
       query = "SELECT * FROM Courses",
       result = await pool.request().query(query);
     pool.close();
-    return result.recordsets;
+    // console.log(result);
+    // console.log(result.recordsets[0]);
+    return result.recordsets[0];
   } catch (error) {
     console.log(error);
   }

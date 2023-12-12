@@ -1,6 +1,6 @@
 // Requires are treated a functions in array
 require("dotenv").config({ path: "./database/.env" }); // dotenv config is in other location
-const dbo = require("./operations/user"),
+const dbo = require("./operations/opUser"),
   jwt = require("jsonwebtoken"),
   mkToken = (id) => {
     return jwt.sign({ id }, process.env.SCRT, { expiresIn: "1h" });

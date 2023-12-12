@@ -1,32 +1,29 @@
 // Requires are treated a functions in array
-const dbo = require("./operations/course");
+const dbo = require("./operations/opCourse"),
+  { getUserID } = require("./operations/opUser");
 
-const userLogin = async (req, res) => {
-    const { email, passwd } = req.body;
+const courseGetAll = async (req, res) => {
     dbo
-      .userLogin(email, passwd)
-      .then((type) => {
-        // Generate JSON Web Token to make login session
-        const token = mkToken(email);
-        res.status(200).json({ email, token, type });
+      .courseGetAll()
+      .then((data) => {
+        res.status(200).json(data);
       })
       .catch((e) => {
         console.log(e);
         res.status(400).json({ err: e.message });
       });
   },
-  userSignup = async (req, res) => {
-    const { email, passwd, namef, namel, type } = req.body;
+  courseEnroll = async (req, res) => {
+    const studentID = getUserID(req.params.email),
+      courseID = req.params.courseID;
     dbo
-      .userSignup(email, passwd, namef, namel, type)
+      .courseEnroll(studentID, courseID)
       .then(() => {
-        // Generate JSON Web Token to make login session
-        const token = mkToken(email);
-        res.status(200).json({ email, token, type });
+        res.status(200).json({ msg: "Course enrolled" });
       })
       .catch((e) => {
         res.status(400).json({ err: e.message });
       });
   };
 
-module.exports = { userLogin, userSignup };
+module.exports = { courseGetAll, courseEnroll };
