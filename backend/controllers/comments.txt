@@ -1,1 +1,0 @@
-https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-database
