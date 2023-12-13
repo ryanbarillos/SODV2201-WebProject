@@ -146,9 +146,7 @@ VALUES
 INSERT INTO Administrators
     (Email, Passwd, NameFirst, NameLast)
 VALUES
-    ('jdm@bvc.ca', 're@|!+7_sets', 'Jon', 'Doe'),
-    ('arkfx@bvc.ca', 'arkenfoxjs', 'Arken', 'Fox');
+    ('jdm@bvc.ca', '$2a$10$iY1DML9Ehu60bd41VA9wW.qSmyHuaP/ptCWzL5aGa/nNTPkjVKJem', 'Jon', 'Fam');
 -- Data Population END
-
 USE master
 GO
