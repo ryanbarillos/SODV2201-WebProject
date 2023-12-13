@@ -5,10 +5,10 @@ import AddCourse from "./pages/AddCourse";
 import StudentList from "./pages/StudentList";
 import StudentForms from "./pages/StudentForms";
 import RemoveCourse from "./pages/RemoveCourse";
-import NotFound from "../../component/pages/NotFound";
+import NotFound from "../../components/pages/NotFound";
 
 // Javascript & React Components
-import Navbar from "../../component/navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar";
 import {
   createBrowserRouter,
   createRoutesFromElements,

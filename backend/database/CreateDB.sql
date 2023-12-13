@@ -18,7 +18,7 @@ CREATE DATABASE SODV2201_Group3;
 GO
 USE SODV2201_Group3;
 SELECT *
-FROM Students
+FROM CoursesEnrolled
 GO
 -- Make database END
 

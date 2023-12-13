@@ -7,7 +7,9 @@ import { useState } from "react";
 const CourseList = ({ courses, term, mode }) => {
   // Local Variables
   const user = useAuthContext().user,
-    [list, setList] = useState(courses.filter((c) => c.CourseTerm === term)),
+    [list, setList] = useState(
+      mode === "edit" ? courses : courses.filter((c) => c.CourseTerm === term)
+    ),
     /*
       Enroll student to course
     */

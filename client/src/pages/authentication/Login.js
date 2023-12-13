@@ -3,7 +3,7 @@ https://youtu.be/VfReCe0nWOo?si=WbDoOiQGn60JpFmV
 */
 
 //CSS
-import "../../component/styles/Forms.css";
+import "../../components/styles/Forms.css";
 
 //React
 import { useState } from "react";

@@ -20,18 +20,20 @@ const express = require("express"),
   port = process.env.PORT,
   routerCourse = require("./routes/routerCourse"),
   routerUser = require("./routes/routerUser");
+// routerAdmin = require("./routes/routerAdmin ");
 
 /*
   Middleware
   App Configuration
 */
 const data = express.json(); //Use to retreive for data
-app.use(cors());
+app.use(cors()); // Benefits are unknown, as I haven't emphasized cors
 app.use(data);
 
 /*
 Router
 */
+// app.use("/admin", routerAdmin);
 app.use("/api/user", routerUser);
 app.use("/api/course", routerCourse);
 

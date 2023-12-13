@@ -7,8 +7,8 @@
 */
 
 // CSS
-import "./component/styles/Sitewide.css";
-// import "./component/styles/Forms.css";
+import "./components/styles/Sitewide.css";
+// import "./components/styles/Forms.css";
 
 // Javascript & React Components
 // import { useEffect, useState, useRef } from "react";
@@ -22,8 +22,8 @@ import {
 } from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
-import NotFound from "./component/pages/NotFound";
-import Navbar from "./component/navbar/Navbar";
+import NotFound from "./components/pages/NotFound";
+import Navbar from "./components/navbar/Navbar";
 import Login from "./pages/authentication/Login";
 import Signup from "./pages/authentication/Signup";
 import useAuthContext from "./hooks/useAuthContext";
