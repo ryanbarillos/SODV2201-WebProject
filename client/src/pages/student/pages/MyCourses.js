@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import CourseList from "../components/CourseList";
+import CourseList from "../../../components/courselist/CourseList";
 import useAuthContext from "../../../hooks/useAuthContext";
 
 function MyCourses() {
-  const [termNow, termNowSet] = useState(1),
-    [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
+  const user = useAuthContext().user,
+    [termNow, termNowSet] = useState(1),
     [courses, setCourses] = useState(null),
-    [subtitle, setSubtitle] = useState(""),
-    user = useAuthContext().user;
+    [subtitle, setSubtitle] = useState("");
 
   // Get courses
   useEffect(() => {

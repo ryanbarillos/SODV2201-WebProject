@@ -1,3 +1,10 @@
+/*
+NOTE:
+Hook Module UNUSED
+See Navbar.js
+
+*/
+
 import useAuthContext from "./useAuthContext";
 
 const useLogout = () => {

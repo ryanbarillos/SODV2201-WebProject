@@ -1,7 +1,7 @@
 // Authentication
-import useAuthContext from "../../../hooks/useAuthContext";
+import useAuthContext from "../../hooks/useAuthContext";
 // CSS
-import "../styles/CourseList.css";
+import "./CourseList.css";
 
 import { useState } from "react";
 const CourseList = ({ courses, term, mode }) => {
@@ -80,6 +80,7 @@ const CourseList = ({ courses, term, mode }) => {
                   {c.CourseCode}
                 </span>
               </h2>
+              {/* <button onClick={() => courseWithdraw(c.CourseID)}> */}
               <button onClick={() => courseWithdraw(c.CourseID)}>
                 Withdraw
               </button>

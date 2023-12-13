@@ -7,12 +7,13 @@
 */
 
 USE master;
-GO
 
 -- Make database START
+GO
 IF  DB_ID('SODV2201_Group3') IS NOT NULL
     DROP DATABASE SODV2201_Group3;
 GO
+
 CREATE DATABASE SODV2201_Group3;
 GO
 USE SODV2201_Group3;
@@ -29,7 +30,6 @@ CREATE TABLE Courses
     CourseCode NVARCHAR(7) NOT NULL UNIQUE,
     CourseTerm INT NOT NULL
 );
-
 CREATE TABLE Students
 (
     ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
@@ -39,14 +39,12 @@ CREATE TABLE Students
     NameFirst NVARCHAR(255) NOT NULL,
     NameLast NVARCHAR(255) NOT NULL,
 );
-
 CREATE TABLE CoursesEnrolled
 (
     StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
     CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(CourseID),
     PRIMARY KEY (StudentID, CourseID)
 );
-
 CREATE TABLE Administrators
 (
     ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
@@ -64,6 +62,7 @@ CREATE TABLE Administrators
         Necessary if multiple procedures & functions
         will be made in one sql file
 */
+-- Sign up user
 GO
 CREATE PROCEDURE SignUp(@email NVARCHAR(255),
     @passwd NVARCHAR(255),
@@ -72,9 +71,7 @@ CREATE PROCEDURE SignUp(@email NVARCHAR(255),
     @mode NVARCHAR(5))
 AS
 BEGIN
-    /*
-    Signup Student
-    */
+    -- Student
     IF ((SELECT LOWER(@mode)) = 'stdnt')
     BEGIN
         INSERT INTO Students
@@ -82,9 +79,7 @@ BEGIN
         VALUES
             (@email, @passwd, @nf, @nl);
     END;
-    /*
-    Signup Admin
-    */
+    -- Administrator
     ELSE IF ((SELECT LOWER(@mode)) = 'admin')
     BEGIN
         INSERT INTO Administrators
@@ -94,8 +89,6 @@ BEGIN
     END;
 END;
 GO
-
-
 -- Enroll students to course
 GO
 CREATE PROCEDURE Enroll(@studentID INT,
@@ -106,7 +99,6 @@ BEGIN
     VALUES(@studentID, @courseID)
 END;
 GO
-
 -- Withdraw students to course
 GO
 CREATE PROCEDURE Withdraw(@studentID INT,
@@ -118,15 +110,56 @@ BEGIN
         AND CourseID = @courseID
 END;
 GO
+/*
+    ADMINISTRATOR CONTROLS
+    ADMINISTRATOR CONTROLS
+*/
+-- Delete Course
+GO
+CREATE PROCEDURE cDel(@adminID INT,
+    @courseID INT)
+AS
+BEGIN
+    IF EXISTS (SELECT ID
+    FROM Administrators
+    WHERE ID = @adminID)
+BEGIN
+        DELETE FROM CoursesEnrolled
+    WHERE CourseID = @courseID;
 
 
+        DELETE FROM Courses
+    WHERE CourseID = @courseID;
+    END;
+END;
+GO
+-- Add Course
+GO
+CREATE PROCEDURE cAdd(@adminID INT,
+    @cName NVARCHAR(255),
+    @cCode NVARCHAR(7),
+    @cTerm INT)
+AS
+BEGIN
+    IF EXISTS (SELECT ID
+    FROM Administrators
+    WHERE ID = @adminID)
+BEGIN
+        INSERT INTO Courses
+        VALUES(@cName, @cCode, @cTerm);
+    END;
+END;
+GO
+/*
+    ADMINISTRATOR CONTROLS
+    ADMINISTRATOR CONTROLS
+*/
 /*
     END of Stored Procedures
 */
 
 -- Data Population START
 INSERT INTO Courses
-    (courseName, courseCode,courseTerm)
 VALUES
     ('Project Management 1', 'PRO111', 1),
     ('C++ Programming Fundamentals', 'CPP111', 1),
@@ -144,7 +177,6 @@ VALUES
     ('Advanced Information Security 2', 'IS444', 4);
 
 INSERT INTO Administrators
-    (Email, Passwd, NameFirst, NameLast)
 VALUES
     ('jdm@bvc.ca', '$2a$10$iY1DML9Ehu60bd41VA9wW.qSmyHuaP/ptCWzL5aGa/nNTPkjVKJem', 'Jon', 'Fam');
 -- Data Population END

@@ -1,9 +1,4 @@
-// CSS
-// import "../allPages/styles/AllPages.css";
-// import "../allPages/styles/Forms.css";
-
 // Pages
-import Navbar from "../../component/navbar/Navbar";
 import Home from "./pages/Home";
 import MyCourses from "./pages/MyCourses";
 import AddCourses from "./pages/AddCouses";
@@ -11,7 +6,7 @@ import Help from "../../component/pages/Help";
 import NotFound from "../../component/pages/NotFound";
 
 // Javascript & React Components
-import React from "react";
+import Navbar from "../../component/navbar/Navbar";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -34,7 +29,6 @@ const router = createBrowserRouter(
 const StudentMain = () => {
   return (
     <div className="StudentMain">
-      {/* {console.log("I'm a student")} */}
       <RouterProvider router={router} />
     </div>
   );
