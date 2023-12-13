@@ -1,76 +1,43 @@
-// CSS
-import "../styles/CourseList.css";
-
-// Javascript & React Components
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import CourseList from "../components/CourseList";
+import useAuthContext from "../../../hooks/useAuthContext";
 
 function MyCourses() {
-  const [courseList, setCourseList] = useState([
-    [
-      { cName: "Project Management 1", cCode: "PRO111", id: 1 },
-      { cName: "C++ Programming Fundamentals", cCode: "CPP111", id: 2 },
-      { cName: "Computer Maintenance", cCode: "COMP1111", id: 3 },
-      { cName: "Information Security 1", cCode: "IS1111", id: 4 },
-    ],
-    [
-      { cName: "Networking", cCode: "NET222", id: 1 },
-      { cName: "Web Technology", cCode: "WEB222", id: 2 },
-      { cName: "Project Management 2", cCode: "PRO222", id: 3 },
-    ],
-    [
-      { cName: "Advanced Project Management 1", cCode: "PRO333", id: 1 },
-      { cName: "Advanced Computer Maintenance", cCode: "CPP222", id: 2 },
-      { cName: "Advanced Information Security 1", cCode: "IS333", id: 3 },
-    ],
-    [
-      { cName: "Advanced Networking", cCode: "NET444", id: 1 },
-      { cName: "Advanced Computer Maintenance", cCode: "WEB444", id: 2 },
-      { cName: "Advanced Information Security 1", cCode: "PRO444", id: 3 },
-    ],
-  ]);
+  const [termNow, termNowSet] = useState(1),
+    [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
+    [courses, setCourses] = useState(null),
+    user = useAuthContext().user;
 
-  // <div className="term01" key={courseList.id}><h3>{courseList.cName}</h3><h4>{courseList.cCode}</h4></div>
+  // Get courses
+  useEffect(() => {
+    const courseList = async (user) => {
+      const email = user.email;
+      try {
+        const response = await fetch(`/api/course/all/${email}`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${user.token}` },
+        }).then((res) => {
+          return res.json();
+        });
+        if (response) {
+          setCourses(response);
+        }
+      } catch (err) {
+        console.log("Error\n" + err.message);
+      }
+    };
+    if (user) {
+      courseList(user);
+    }
+  }, [user]);
+
+  console.log(courses);
   return (
     <div>
+      {" "}
       <h1>My Courses</h1>
-
-      <div className="courseList">
-        <h1>Term 01</h1>
-        {courseList[0].map((courseList) => (
-          <div className="term01" key={courseList.id}>
-            <h2>{courseList.cName}</h2>
-            <p>{courseList.cCode}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="courseList">
-        <h1>Term 02</h1>
-        {courseList[1].map((courseList) => (
-          <div className="term01" key={courseList.id}>
-            <h2>{courseList.cName}</h2>
-            <p>{courseList.cCode}</p>
-          </div>
-        ))}
-      </div>
-      <div className="courseList">
-        <h1>Term 03</h1>
-        {courseList[2].map((courseList) => (
-          <div className="term01" key={courseList.id}>
-            <h2>{courseList.cName}</h2>
-            <p>{courseList.cCode}</p>
-          </div>
-        ))}
-      </div>
-      <div className="courseList">
-        <h1>Term 04</h1>
-        {courseList[3].map((courseList) => (
-          <div className="term01" key={courseList.id}>
-            <h2>{courseList.cName}</h2>
-            <p>{courseList.cCode}</p>
-          </div>
-        ))}
-      </div>
+      <h2>Enrolled for Term {termNow}</h2>
+      {courses && <CourseList courses={courses} term={termNow} mode={"show"} />}
     </div>
   );
 }

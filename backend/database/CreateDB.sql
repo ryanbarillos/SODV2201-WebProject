@@ -156,8 +156,19 @@ GO
 SELECT *
 FROM Students
 
+DECLARE @i INT = 1;
 SELECT *
 FROM CoursesEnrolled
+WHERE StudentID = @i;
+
+DECLARE @i INT = 1;
+SELECT *
+FROM Courses
+WHERE CourseTerm = 1
+    AND CourseID NOT IN (SELECT CourseID
+    FROM CoursesEnrolled
+    WHERE StudentID = 2)
+
 
 
 USE master

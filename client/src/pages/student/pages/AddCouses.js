@@ -12,13 +12,12 @@ function AddCourses() {
   useEffect(() => {
     const courseList = async (user) => {
       const email = user.email;
-      console.log(email);
       try {
-        const response = await fetch("/api/course/all", {
+        const response = await fetch(`/api/course/all/${email}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${user.token}` },
-        }).then((response) => {
-          return response.json();
+        }).then((res) => {
+          return res.json();
         });
         if (response) {
           setCourses(response);
@@ -31,6 +30,8 @@ function AddCourses() {
       courseList(user);
     }
   }, [user]);
+
+  console.log(courses);
   return (
     <div>
       {" "}

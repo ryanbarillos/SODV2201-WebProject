@@ -23,12 +23,57 @@ courseGetAll = async () => {
       query = "SELECT * FROM Courses",
       result = await pool.request().query(query);
     pool.close();
-    // console.log(result);
-    // console.log(result.recordsets[0]);
     return result.recordsets[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { courseEnroll, courseGetAll };
+courseSelect = async (id, term) => {
+  try {
+    // Connect to database
+    const pool = await sql.connect(config),
+      /*
+        Show courses with following constraints:
+        —Within the student's term
+        —Not already enrolled by student
+      */
+      query = `
+      SELECT *
+      FROM Courses
+      WHERE CourseTerm = @term
+      AND CourseID NOT IN (SELECT CourseID
+      FROM CoursesEnrolled
+      WHERE StudentID = @id)`,
+      result = await pool
+        .request()
+        .input("term", sql.Int, term)
+        .input("id", sql.Int, id)
+        .query(query);
+    pool.close();
+    return result.recordsets[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+courseGetMine = async (id) => {
+  try {
+    // Connect to database
+    const pool = await sql.connect(config),
+      //Query
+      query = "SELECT * FROM CoursesEnrolled WHERE StudentID = @id",
+      result = await pool.request().input("courseID", sql.Int, id).query(query);
+    pool.close();
+    return result.recordsets[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  courseEnroll,
+  courseGetAll,
+  courseSelect,
+  courseGetMine,
+};

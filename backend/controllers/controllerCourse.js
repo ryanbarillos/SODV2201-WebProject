@@ -1,6 +1,6 @@
 // Requires are treated a functions in array
 const dbo = require("./operations/opCourse"),
-  { getUserID } = require("./operations/opUser");
+  { getUserID, getStdntTerm } = require("./operations/opUser");
 
 const courseGetAll = async (req, res) => {
     dbo
@@ -10,6 +10,19 @@ const courseGetAll = async (req, res) => {
       })
       .catch((e) => {
         console.log(e);
+        res.status(400).json({ err: e.message });
+      });
+  },
+  courseSelect = async (req, res) => {
+    const studentID = await getUserID(req.params.studentID),
+      term = await getStdntTerm(studentID);
+    dbo
+      .courseSelect(studentID, term)
+      .then((data) => {
+        // console.log(data);
+        res.status(200).json(data);
+      })
+      .catch((e) => {
         res.status(400).json({ err: e.message });
       });
   },
@@ -27,4 +40,8 @@ const courseGetAll = async (req, res) => {
       });
   };
 
-module.exports = { courseGetAll, courseEnroll };
+module.exports = {
+  courseGetAll,
+  courseEnroll,
+  courseSelect,
+};

@@ -11,7 +11,8 @@ const e = require("express"),
 r.use(reqAuth);
 
 //Get Courses
-r.get("/all", dbo.courseGetAll);
+r.get("/all/", dbo.courseGetAll);
+r.get("/all/:studentID", dbo.courseSelect);
 
 // Enroll student to specified course
 r.post("/enroll/:studentID/:courseID", dbo.courseEnroll);

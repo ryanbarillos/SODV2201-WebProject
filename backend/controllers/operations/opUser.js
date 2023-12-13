@@ -222,11 +222,11 @@ userSignup = async (email, passwd, namef, namel, type) => {
 //Find user id using email
 getUserID = async (email) => {
   // Query for email
-  const chk1_1 = `
+  const chk1 = `
     SELECT ID
     FROM Students
     WHERE Email = @email`,
-    chk1_2 = `
+    chk2 = `
       SELECT ID
       FROM Administrators
       WHERE Email = @email`,
@@ -235,16 +235,13 @@ getUserID = async (email) => {
 
   // Check in student db
   let id = (
-    await pool.request().input("email", sql.NVarChar(255), email).query(chk1_1)
+    await pool.request().input("email", sql.NVarChar(255), email).query(chk1)
   ).recordset[0];
 
   if (!id) {
     // Check in admin db
     id = (
-      await pool
-        .request()
-        .input("email", sql.NVarChar(255), email)
-        .query(chk1_2)
+      await pool.request().input("email", sql.NVarChar(255), email).query(chk2)
     ).recordset[0];
     if (!id) {
       pool.close();
@@ -255,4 +252,26 @@ getUserID = async (email) => {
   return id.ID;
 };
 
-module.exports = { userLogin, userSignup, getUserID };
+//Get Current Student's term
+getStdntTerm = async (id) => {
+  // Query for email
+  const qry = `
+    SELECT Term
+    FROM Students
+    WHERE ID = @ID`,
+    // Connect to db
+    pool = await sql.connect(config);
+
+  // Check in student db
+  const term = (await pool.request().input("id", sql.Int, id).query(qry))
+    .recordset[0];
+
+  if (!term) {
+    pool.close();
+    throw Error("Term missing");
+  }
+  pool.close();
+  return term.Term;
+};
+
+module.exports = { userLogin, userSignup, getUserID, getStdntTerm };

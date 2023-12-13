@@ -6,7 +6,7 @@
 import Navbar from "../../component/navbar/Navbar";
 import Home from "./pages/Home";
 import MyCourses from "./pages/MyCourses";
-import CourseAdd from "./pages/AddCouses";
+import AddCourses from "./pages/AddCouses";
 import Help from "../../component/pages/Help";
 import NotFound from "../../component/pages/NotFound";
 
@@ -21,11 +21,10 @@ import {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    // <Route path="/" element={Navbar}>
     <Route element={<Navbar mode="stdnt" />}>
       <Route index element={<Home />} />
       <Route path="/MyCourses" element={<MyCourses />} />
-      <Route path="/AddCourses" element={<CourseAdd />} />
+      <Route path="/AddCourses" element={<AddCourses />} />
       <Route path="/Help" element={<Help />} />
       <Route path="*" element={<NotFound />} />
     </Route>

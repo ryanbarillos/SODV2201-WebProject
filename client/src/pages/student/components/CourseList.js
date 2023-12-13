@@ -1,4 +1,7 @@
+// Authentication
 import useAuthContext from "../../../hooks/useAuthContext";
+// CSS
+import "../styles/CourseList.css";
 
 import { useState } from "react";
 const CourseList = ({ courses, term, mode }) => {
@@ -15,10 +18,10 @@ const CourseList = ({ courses, term, mode }) => {
         }).then((response) => {
           if (response.ok) {
             alert("You've enrolled in this course!");
+            // Reflect changes on frontend
+            setList(list.filter((c) => c.CourseID !== courseID));
           }
         });
-        // Reflect changes on frontend
-        setList(list.filter((c) => c.CourseID !== courseID));
       }
     };
 
