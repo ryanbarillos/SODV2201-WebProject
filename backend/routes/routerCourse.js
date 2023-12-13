@@ -13,9 +13,11 @@ r.use(reqAuth);
 //Get Courses
 r.get("/all/", dbo.courseGetAll);
 r.get("/all/:studentID", dbo.courseSelect);
+r.get("/mine/:studentID", dbo.courseGetMine);
 
-// Enroll student to specified course
+// Enroll or Withdraw student to specified course
 r.post("/enroll/:studentID/:courseID", dbo.courseEnroll);
+r.delete("/withdraw/:studentID/:courseID", dbo.courseWithdraw);
 
 //DELETE Student
 r.delete("/:id", (req, res) => {

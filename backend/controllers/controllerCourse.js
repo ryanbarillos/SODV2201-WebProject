@@ -19,7 +19,17 @@ const courseGetAll = async (req, res) => {
     dbo
       .courseSelect(studentID, term)
       .then((data) => {
-        // console.log(data);
+        res.status(200).json(data);
+      })
+      .catch((e) => {
+        res.status(400).json({ err: e.message });
+      });
+  },
+  courseGetMine = async (req, res) => {
+    const studentID = await getUserID(req.params.studentID);
+    dbo
+      .courseGetMine(studentID)
+      .then((data) => {
         res.status(200).json(data);
       })
       .catch((e) => {
@@ -29,11 +39,22 @@ const courseGetAll = async (req, res) => {
   courseEnroll = async (req, res) => {
     const studentID = await getUserID(req.params.studentID),
       courseID = req.params.courseID;
-    // console.log(studentID, courseID);
     dbo
       .courseEnroll(studentID, courseID)
       .then(() => {
         res.status(200).json({ msg: "Course enrolled" });
+      })
+      .catch((e) => {
+        res.status(400).json({ err: e.message });
+      });
+  },
+  courseWithdraw = async (req, res) => {
+    const studentID = await getUserID(req.params.studentID),
+      courseID = req.params.courseID;
+    dbo
+      .courseWithdraw(studentID, courseID)
+      .then(() => {
+        res.status(200).json({ msg: "Course withdrawn" });
       })
       .catch((e) => {
         res.status(400).json({ err: e.message });
@@ -44,4 +65,6 @@ module.exports = {
   courseGetAll,
   courseEnroll,
   courseSelect,
+  courseGetMine,
+  courseWithdraw,
 };

@@ -31,7 +31,6 @@ function AddCourses() {
     }
   }, [user]);
 
-  console.log(courses);
   return (
     <div>
       {" "}

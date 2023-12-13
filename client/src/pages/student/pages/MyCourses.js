@@ -6,6 +6,7 @@ function MyCourses() {
   const [termNow, termNowSet] = useState(1),
     [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
     [courses, setCourses] = useState(null),
+    [subtitle, setSubtitle] = useState(""),
     user = useAuthContext().user;
 
   // Get courses
@@ -13,14 +14,19 @@ function MyCourses() {
     const courseList = async (user) => {
       const email = user.email;
       try {
-        const response = await fetch(`/api/course/all/${email}`, {
+        const response = await fetch(`/api/course/mine/${email}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${user.token}` },
         }).then((res) => {
           return res.json();
         });
         if (response) {
-          setCourses(response);
+          if (response.length > 0) {
+            setCourses(response);
+            setSubtitle(`Enrolled for Term ${termNow}`);
+          } else {
+            setSubtitle(`Zero courses? Enroll now!`);
+          }
         }
       } catch (err) {
         console.log("Error\n" + err.message);
@@ -30,13 +36,10 @@ function MyCourses() {
       courseList(user);
     }
   }, [user]);
-
-  console.log(courses);
   return (
     <div>
-      {" "}
       <h1>My Courses</h1>
-      <h2>Enrolled for Term {termNow}</h2>
+      <h2>{subtitle}</h2>
       {courses && <CourseList courses={courses} term={termNow} mode={"show"} />}
     </div>
   );

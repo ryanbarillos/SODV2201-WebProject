@@ -5,10 +5,13 @@ import "../styles/CourseList.css";
 
 import { useState } from "react";
 const CourseList = ({ courses, term, mode }) => {
+  // Local Variables
   const user = useAuthContext().user,
     [list, setList] = useState(courses.filter((c) => c.CourseTerm === term)),
+    /*
+      Enroll student to course
+    */
     courseEnroll = (courseID) => {
-      // Enroll student to course
       if (user) {
         fetch(`/api/course/enroll/${user.email}/${courseID}`, {
           method: "POST",
@@ -18,6 +21,22 @@ const CourseList = ({ courses, term, mode }) => {
         }).then((response) => {
           if (response.ok) {
             alert("You've enrolled in this course!");
+            // Reflect changes on frontend
+            setList(list.filter((c) => c.CourseID !== courseID));
+          }
+        });
+      }
+    },
+    courseWithdraw = (courseID) => {
+      if (user) {
+        fetch(`/api/course/withdraw/${user.email}/${courseID}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }).then((response) => {
+          if (response.ok) {
+            alert("You've withdrawn from this course!");
             // Reflect changes on frontend
             setList(list.filter((c) => c.CourseID !== courseID));
           }
@@ -52,7 +71,7 @@ const CourseList = ({ courses, term, mode }) => {
         <div>
           {list.map((c) => (
             // Render each course into individual sections
-            <div className="courseList">
+            <div className="courseList" key={c.CourseID}>
               <h2
                 style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}
               >
@@ -61,7 +80,9 @@ const CourseList = ({ courses, term, mode }) => {
                   {c.CourseCode}
                 </span>
               </h2>
-              <button onClick={() => {}}>Withdraw</button>
+              <button onClick={() => courseWithdraw(c.CourseID)}>
+                Withdraw
+              </button>
             </div>
           ))}
         </div>

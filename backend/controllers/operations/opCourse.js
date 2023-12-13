@@ -14,6 +14,18 @@ courseEnroll = async (studentID, courseID) => {
     pool.close();
   })();
 };
+courseWithdraw = async (studentID, courseID) => {
+  const pool = await sql.connect(config);
+  // Invoke anonymous function
+  (async () => {
+    await pool
+      .request()
+      .input("studentID", sql.Int, studentID)
+      .input("courseID", sql.Int, courseID)
+      .execute("Withdraw");
+    pool.close();
+  })();
+};
 
 courseGetAll = async () => {
   try {
@@ -62,8 +74,13 @@ courseGetMine = async (id) => {
     // Connect to database
     const pool = await sql.connect(config),
       //Query
-      query = "SELECT * FROM CoursesEnrolled WHERE StudentID = @id",
-      result = await pool.request().input("courseID", sql.Int, id).query(query);
+      query = `
+      SELECT *
+      FROM Courses
+      WHERE CourseID IN (SELECT CourseID
+      FROM CoursesEnrolled
+      WHERE StudentID = @id)`,
+      result = await pool.request().input("id", sql.Int, id).query(query);
     pool.close();
     return result.recordsets[0];
   } catch (error) {
@@ -76,4 +93,5 @@ module.exports = {
   courseGetAll,
   courseSelect,
   courseGetMine,
+  courseWithdraw,
 };
