@@ -3,7 +3,7 @@
     Authored By Ryan Barillos
 
     Date Started: 29 Nov 2023
-    Last Updated: 06 Dec 2023
+    Last Updated: 13 Dec 2023
 */
 
 USE master;
@@ -18,7 +18,7 @@ CREATE DATABASE SODV2201_Group3;
 GO
 USE SODV2201_Group3;
 SELECT *
-FROM CoursesEnrolled
+FROM Students
 GO
 -- Make database END
 
