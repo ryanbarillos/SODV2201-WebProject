@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 
 function AddCourse() {
-  const [cName, cNameSet] = useState("");
-  const [cCode, cCodeSet] = useState("");
-  const [cDateStart, cDateStartSet] = useState("");
-  const [cDateEnd, cDateEndSet] = useState("");
+  // React Variables
+  const [cName, cNameSet] = useState(""),
+    [cCode, cCodeSet] = useState(""),
+    [cTerm, cTermSet] = useState("1");
+  //Regex
+
   const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(typeof cTerm);
     // To not immediately lose all form values via refreshing upon submitting
 
-    const newCourse = { cName, cCode, cDateStart, cDateEnd };
-    alert("Course Added!");
+    // const newCourse = { cName, cCode, cTerm };
+    // alert("Course Added!");
   };
 
   return (
@@ -32,16 +36,12 @@ function AddCourse() {
         ></input>
         <label>Start Date (Required)</label>
         <input
-          type="date"
-          value={cDateStart}
-          onChange={(cDateStart) => cDateStartSet(cDateStart.target.value)}
-          required
-        ></input>
-        <label>End Date (Required)</label>
-        <input
-          type="date"
-          value={cDateEnd}
-          onChange={(cDateEnd) => cDateEndSet(cDateEnd.target.value)}
+          type="number"
+          min="1"
+          max="4"
+          default="1"
+          value={cTerm}
+          onChange={(cTerm) => cTermSet(cTerm.target.value)}
           required
         ></input>
         <button>Done</button>
