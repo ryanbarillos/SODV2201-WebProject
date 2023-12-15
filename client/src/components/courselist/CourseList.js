@@ -8,39 +8,57 @@ const CourseList = ({ courses, term, mode }) => {
   // Local Variables
   const user = useAuthContext().user,
     [list, setList] = useState(
-      mode === "edit" ? courses : courses.filter((c) => c.CourseTerm === term)
+      mode === "edit" || "show"
+        ? courses
+        : courses.filter((c) => c.CourseTerm === term)
     ),
     /*
       Enroll student to course
     */
-    courseEnroll = (courseID) => {
+    courseEnroll = (cCode) => {
       if (user) {
-        fetch(`/api/course/enroll/${user.email}/${courseID}`, {
+        const email = user.email;
+        fetch(`/api/course/enroll/`, {
           method: "POST",
           headers: {
+            // To authorize transaction
             Authorization: `Bearer ${user.token}`,
+            // To send body
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            email: email,
+            code: cCode,
+          }),
         }).then((response) => {
           if (response.ok) {
             alert("You've enrolled in this course!");
             // Reflect changes on frontend
-            setList(list.filter((c) => c.CourseID !== courseID));
+            setList(list.filter((c) => c.CourseCode !== cCode));
           }
         });
       }
     },
-    courseWithdraw = (courseID) => {
+    courseWithdraw = (cCode) => {
       if (user) {
-        fetch(`/api/course/withdraw/${user.email}/${courseID}`, {
+        const email = user.email;
+        fetch(`/api/course/withdraw/`, {
           method: "DELETE",
           headers: {
+            // To authorize transaction
             Authorization: `Bearer ${user.token}`,
+            // To send body
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            email: email,
+            code: cCode,
+          }),
         }).then((response) => {
           if (response.ok) {
             alert("You've withdrawn from this course!");
             // Reflect changes on frontend
-            setList(list.filter((c) => c.CourseID !== courseID));
+            setList(list.filter((c) => c.CourseCode !== cCode));
           }
         });
       }
@@ -52,7 +70,7 @@ const CourseList = ({ courses, term, mode }) => {
         <div>
           {list.map((c) => (
             // Render each course into individual sections
-            <div className="courseList" key={c.CourseID}>
+            <div className="courseList" key={c.CourseCode}>
               <h2
                 style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}
               >
@@ -61,7 +79,7 @@ const CourseList = ({ courses, term, mode }) => {
                   {c.CourseCode}
                 </span>
               </h2>
-              <button onClick={() => courseEnroll(c.CourseID)}>
+              <button onClick={() => courseEnroll(c.CourseCode)}>
                 Add Course
               </button>
             </div>
@@ -69,11 +87,13 @@ const CourseList = ({ courses, term, mode }) => {
         </div>
       );
     case "show":
+      // console.log(list);
+      // alert(list.length);
       return (
         <div>
           {list.map((c) => (
             // Render each course into individual sections
-            <div className="courseList" key={c.CourseID}>
+            <div className="courseList" key={c.CourseCode}>
               <h2
                 style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}
               >
@@ -82,8 +102,8 @@ const CourseList = ({ courses, term, mode }) => {
                   {c.CourseCode}
                 </span>
               </h2>
-              {/* <button onClick={() => courseWithdraw(c.CourseID)}> */}
-              <button onClick={() => courseWithdraw(c.CourseID)}>
+              {/* <button onClick={() => courseWithdraw(c.CourseCode)}> */}
+              <button onClick={() => courseWithdraw(c.CourseCode)}>
                 Withdraw
               </button>
             </div>

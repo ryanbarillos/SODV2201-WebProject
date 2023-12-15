@@ -37,10 +37,10 @@ const courseGetAll = async (req, res) => {
       });
   },
   courseEnroll = async (req, res) => {
-    const studentID = await getUserID(req.params.studentID),
-      courseID = req.params.courseID;
+    const { email, code } = req.body,
+      id = await getUserID(email);
     dbo
-      .courseEnroll(studentID, courseID)
+      .courseEnroll(id, code)
       .then(() => {
         res.status(200).json({ msg: "Course enrolled" });
       })
@@ -49,10 +49,10 @@ const courseGetAll = async (req, res) => {
       });
   },
   courseWithdraw = async (req, res) => {
-    const studentID = await getUserID(req.params.studentID),
-      courseID = req.params.courseID;
+    const { email, code } = req.body,
+      id = await getUserID(email);
     dbo
-      .courseWithdraw(studentID, courseID)
+      .courseWithdraw(id, code)
       .then(() => {
         res.status(200).json({ msg: "Course withdrawn" });
       })

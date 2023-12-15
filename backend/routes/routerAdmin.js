@@ -5,18 +5,19 @@ https://www.telerik.com/blogs/step-by-step-create-node-js-rest-api-sql-server-da
 const e = require("express"),
   r = e.Router(),
   reqAuth = require("../middleware/requireAuth"),
-  dbo = require("../controllers/controllerCourse");
+  dbo = require("../controllers/controllerAdmin");
 
 //Require authentication to access courses per student
 r.use(reqAuth);
 
-//Get Courses
-r.get("/all/", dbo.courseGetAll);
-r.get("/all/:studentID", dbo.courseSelect);
-r.get("/mine/:studentID", dbo.courseGetMine);
+// course add
+r.post("/mk/crs/", dbo.cAdd);
+// // course remove
+// r.delete("/rm/crs", dbo.courseWithdraw);
+// // student remove
+// r.delete("/rm/stdnt", dbo.courseWithdraw);
 
 // Enroll to specified course
-r.post("/enroll/", dbo.courseEnroll);
 // Withdraw from specified course
-r.delete("/withdraw/", dbo.courseWithdraw);
+
 module.exports = r;

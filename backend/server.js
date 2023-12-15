@@ -19,8 +19,8 @@ const express = require("express"),
   app = express(),
   port = process.env.PORT,
   routerCourse = require("./routes/routerCourse"),
-  routerUser = require("./routes/routerUser");
-// routerAdmin = require("./routes/routerAdmin ");
+  routerUser = require("./routes/routerUser"),
+  routerAdmin = require("./routes/routerAdmin");
 
 /*
   Middleware
@@ -30,11 +30,11 @@ const data = express.json(); //Use to retreive for data
 app.use(cors()); // Benefits are unknown, as I haven't emphasized cors
 app.use(data);
 
-/*
-Router
-*/
-// app.use("/admin", routerAdmin);
+// Router Admin
+app.use("/api/58E1tuTbjL1YhkTZEV5IyXig2eK9q7jp", routerAdmin);
+// Router User
 app.use("/api/user", routerUser);
+// Router Course
 app.use("/api/course", routerCourse);
 
 app.listen(port || 3001, () => {

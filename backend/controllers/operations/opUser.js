@@ -18,7 +18,7 @@ const bcrypt = require("bcrypt"),
     ADMIN: "admin",
   },
   //Regex
-  isName = /^[A-Z][a-zA-z]+$/,
+  isName = /^[A-Z][a-zA-Z]+$/,
   // Bcrypt
   saltRounds = 10,
   salt = bcrypt.genSaltSync(saltRounds),

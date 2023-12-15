@@ -20,6 +20,7 @@ function MyCourses() {
           return res.json();
         });
         if (response) {
+          console.log(response);
           if (response.length > 0) {
             setCourses(response);
             setSubtitle(`Enrolled for Term ${termNow}`);

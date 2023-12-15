@@ -1,28 +1,52 @@
 const config = require("../../database/dbconfig"),
   sql = require("mssql");
 
-// Enroll course
-courseEnroll = async (id, code) => {
+// course add
+cAdd = async (adminID, cName, cCode, cTerm) => {
   const pool = await sql.connect(config);
   // Invoke anonymous function
-  (async () => {
-    await pool
-      .request()
-      .input("sID", sql.Int, id)
-      .input("cCode", sql.NVarChar(7), code)
-      .execute("Enroll");
-    pool.close();
-  })();
+  try {
+    (async () => {
+      await pool
+        .request()
+        .input("adminID", sql.Int, adminID)
+        .input("cName", sql.NVarChar(255), cName)
+        .input("cCode", sql.NVarChar(7), cCode)
+        .input("cTerm", sql.Int, cTerm)
+        .execute("cAdd");
+      pool.close();
+    })();
+  } catch (err) {
+    throw Error(err);
+  }
 };
-courseWithdraw = async (id, code) => {
-  // throw Error(`${id}\n${code}`);
+
+// course remove
+cDel = async (adminID, cCode) => {
+  const pool = await sql.connect(config);
+  // Invoke anonymous function
+  try {
+    (async () => {
+      await pool
+        .request()
+        .input("adminID", sql.Int, adminID)
+        .input("cCode", sql.NVarChar(7), cCode)
+        .execute("cDel");
+      pool.close();
+    })();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+courseWithdraw = async (studentID, courseID) => {
   const pool = await sql.connect(config);
   // Invoke anonymous function
   (async () => {
     await pool
       .request()
-      .input("sID", sql.Int, id)
-      .input("cCode", sql.NVarChar(7), code)
+      .input("studentID", sql.Int, studentID)
+      .input("courseID", sql.Int, courseID)
       .execute("Withdraw");
     pool.close();
   })();
@@ -55,7 +79,7 @@ courseSelect = async (id, term) => {
       SELECT *
       FROM Courses
       WHERE CourseTerm = @term
-      AND CourseCode NOT IN (SELECT CourseCode
+      AND CourseID NOT IN (SELECT CourseID
       FROM CoursesEnrolled
       WHERE StudentID = @id)`,
       result = await pool
@@ -78,7 +102,7 @@ courseGetMine = async (id) => {
       query = `
       SELECT *
       FROM Courses
-      WHERE CourseCode IN (SELECT CourseCode
+      WHERE CourseID IN (SELECT CourseID
       FROM CoursesEnrolled
       WHERE StudentID = @id)`,
       result = await pool.request().input("id", sql.Int, id).query(query);
@@ -90,9 +114,6 @@ courseGetMine = async (id) => {
 };
 
 module.exports = {
-  courseEnroll,
-  courseGetAll,
-  courseSelect,
-  courseGetMine,
-  courseWithdraw,
+  cAdd,
+  cDel,
 };

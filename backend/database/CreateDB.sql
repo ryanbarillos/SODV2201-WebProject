@@ -17,19 +17,16 @@ GO
 CREATE DATABASE SODV2201_Group3;
 GO
 USE SODV2201_Group3;
-SELECT *
-FROM Students
 GO
 -- Make database END
-
 
 
 -- Make Tables START
 CREATE TABLE Courses
 (
-    CourseID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    CourseID INT NOT NULL IDENTITY(1,1),
     CourseName NVARCHAR(255) NOT NULL UNIQUE,
-    CourseCode NVARCHAR(7) NOT NULL UNIQUE,
+    CourseCode NVARCHAR(7) NOT NULL PRIMARY KEY,
     CourseTerm INT NOT NULL
 );
 CREATE TABLE Students
@@ -44,8 +41,8 @@ CREATE TABLE Students
 CREATE TABLE CoursesEnrolled
 (
     StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
-    CourseID INT NOT NULL FOREIGN KEY REFERENCES Courses(CourseID),
-    PRIMARY KEY (StudentID, CourseID)
+    CourseCode NVARCHAR(7) NOT NULL FOREIGN KEY REFERENCES Courses(CourseCode),
+    PRIMARY KEY (StudentID, CourseCode)
 );
 CREATE TABLE Administrators
 (
@@ -93,23 +90,23 @@ END;
 GO
 -- Enroll students to course
 GO
-CREATE PROCEDURE Enroll(@studentID INT,
-    @courseID INT)
+CREATE PROCEDURE Enroll(@sID INT,
+    @cCode NVARCHAR(7))
 AS
 BEGIN
     INSERT INTO CoursesEnrolled
-    VALUES(@studentID, @courseID)
+    VALUES(@sID, @cCode)
 END;
 GO
 -- Withdraw students to course
 GO
-CREATE PROCEDURE Withdraw(@studentID INT,
-    @courseID INT)
+CREATE PROCEDURE Withdraw(@sID INT,
+    @cCode NVARCHAR(7))
 AS
 BEGIN
     DELETE FROM CoursesEnrolled
-    WHERE StudentID = @studentID
-        AND CourseID = @courseID
+    WHERE StudentID = @sID
+        AND CourseCode = @cCode
 END;
 GO
 /*
@@ -118,20 +115,20 @@ GO
 */
 -- Delete Course
 GO
-CREATE PROCEDURE cDel(@adminID INT,
-    @courseID INT)
+CREATE PROCEDURE cDel(@aID INT,
+    @cCode INT)
 AS
 BEGIN
     IF EXISTS (SELECT ID
     FROM Administrators
-    WHERE ID = @adminID)
+    WHERE ID = @aID)
 BEGIN
         DELETE FROM CoursesEnrolled
-    WHERE CourseID = @courseID;
+    WHERE CourseCode = @cCode;
 
 
         DELETE FROM Courses
-    WHERE CourseID = @courseID;
+    WHERE CourseCode = @cCode;
     END;
 END;
 GO
@@ -184,3 +181,9 @@ VALUES
 -- Data Population END
 USE master
 GO
+
+
+USE SODV2201_Group3;
+SELECT *
+FROM Courses
+ORDER BY CourseTerm, CourseName

@@ -19,30 +19,32 @@ const Login = () => {
     };
 
   return (
-    <form className="login" onSubmit={handleSubmit}>
+    <div>
       <h1>Log In</h1>
-      <label>Email (Required)</label>
-      <input
-        type="text"
-        onChange={(event) => setEmail(event.target.value)}
-        value={email}
-        required
-      ></input>
-      <label>Password (Required)</label>
-      <input
-        type="password"
-        onChange={(event) => setPasswd(event.target.value)}
-        value={passwd}
-        required
-      ></input>
-      {/* <button>Log In</button> */}
-      <button disabled={isLoading}>Log In</button>
-      {err && (
-        <div className="err">
-          <h2>{err}</h2>
-        </div>
-      )}
-    </form>
+      <form className="login" onSubmit={handleSubmit}>
+        <label>Email (Required)</label>
+        <input
+          type="text"
+          onChange={(event) => setEmail(event.target.value)}
+          value={email}
+          required
+        ></input>
+        <label>Password (Required)</label>
+        <input
+          type="password"
+          onChange={(event) => setPasswd(event.target.value)}
+          value={passwd}
+          required
+        ></input>
+        {/* <button>Log In</button> */}
+        <button disabled={isLoading}>Log In</button>
+        {err && (
+          <div className="err">
+            <h2>{err}</h2>
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 
