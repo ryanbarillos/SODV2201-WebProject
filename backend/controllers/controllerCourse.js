@@ -3,16 +3,16 @@ const dbo = require("./operations/opCourse"),
   { getUserID, getStdntTerm } = require("./operations/opUser");
 
 const courseGetAll = async (req, res) => {
-    dbo
-      .courseGetAll()
-      .then((data) => {
-        res.status(200).json(data);
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(400).json({ err: e.message });
-      });
-  },
+  dbo
+    .courseGetAll()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(400).json({ err: e.message });
+    });
+},
   courseSelect = async (req, res) => {
     const studentID = await getUserID(req.params.studentID),
       term = await getStdntTerm(studentID);

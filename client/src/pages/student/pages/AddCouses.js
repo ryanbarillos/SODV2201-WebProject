@@ -5,7 +5,6 @@ import useAuthContext from "../../../hooks/useAuthContext";
 function AddCourses() {
   const user = useAuthContext().user,
     [termNow, termNowSet] = useState(1),
-    // [termNext, termNextSet] = useState(termNow === 4 ? 0 : termNow + 1),
     [courses, setCourses] = useState(null);
 
   // Get courses
@@ -33,7 +32,6 @@ function AddCourses() {
 
   return (
     <div>
-      {" "}
       <h1>You are in Term {termNow}</h1>
       <h2>Select Your Course(s)</h2>
       {courses && (

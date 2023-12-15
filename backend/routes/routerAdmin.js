@@ -12,8 +12,8 @@ r.use(reqAuth);
 
 // course add
 r.post("/mk/crs/", dbo.cAdd);
-// // course remove
-// r.delete("/rm/crs", dbo.courseWithdraw);
+// course remove
+r.delete("/rm/crs", dbo.cDel);
 // // student remove
 // r.delete("/rm/stdnt", dbo.courseWithdraw);
 

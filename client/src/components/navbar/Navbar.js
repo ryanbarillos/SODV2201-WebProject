@@ -58,7 +58,7 @@ function Navbar(props) {
           {/* <NavLink to="Home">Home</NavLink> */}
           {/* <button onClick={handleClick}>Log Out</button> */}
           <NavLink to="AddCourse">Add Course</NavLink>
-          <NavLink to="RemoveCourse">Edit Courses</NavLink>
+          <NavLink to="EditCourse">Edit Course</NavLink>
           <NavLink to="StudentList">Student List</NavLink>
           <NavLink to="StudentForms">Forms</NavLink>
           <li onClick={() => handleClick()}>Log Out</li>

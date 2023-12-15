@@ -87,8 +87,6 @@ const CourseList = ({ courses, term, mode }) => {
         </div>
       );
     case "show":
-      // console.log(list);
-      // alert(list.length);
       return (
         <div>
           {list.map((c) => (
@@ -106,6 +104,26 @@ const CourseList = ({ courses, term, mode }) => {
               <button onClick={() => courseWithdraw(c.CourseCode)}>
                 Withdraw
               </button>
+            </div>
+          ))}
+        </div>
+      );
+    case "edit":
+      return (
+        <div>
+          {list.map((c) => (
+            // Render each course into individual sections
+            <div className="courseList" key={c.CourseCode}>
+              <h2
+                style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}
+              >
+                {c.CourseName}
+                <span style={{ float: "right", color: "black" }}>
+                  {c.CourseCode}
+                </span>
+              </h2>
+              <button onClick={() => alert("To be added")}>Modify</button>
+              <button onClick={() => alert("To be added")}>Delete</button>
             </div>
           ))}
         </div>

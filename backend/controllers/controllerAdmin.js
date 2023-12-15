@@ -5,6 +5,7 @@ const dbo = [
   require("./operations/opCourse"),
 ];
 
+// Add Course
 cAdd = async (req, res) => {
   const { email, name, code, term } = req.body,
     id = await dbo[1].getUserID(email);
@@ -17,19 +18,21 @@ cAdd = async (req, res) => {
       res.status(400).json({ err: e.message });
     });
 };
-courseWithdraw = async (req, res) => {
-  const studentID = await getUserID(req.params.studentID),
-    courseID = req.params.courseID;
-  dbo
-    .courseWithdraw(studentID, courseID)
+
+// Delete Course
+cDel = async (req, res) => {
+  const { email, code } = req.body,
+    id = await dbo[1].getUserID(email);
+  dbo[0]
+    .cAdd(id, code)
     .then(() => {
-      res.status(200).json({ msg: "Course withdrawn" });
+      res.status(200).json({ msg: "Course deleted" });
     })
     .catch((e) => {
       res.status(400).json({ err: e.message });
     });
 };
-
 module.exports = {
   cAdd,
+  cDel,
 };
