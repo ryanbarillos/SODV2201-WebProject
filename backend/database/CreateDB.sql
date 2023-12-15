@@ -181,9 +181,3 @@ VALUES
 -- Data Population END
 USE master
 GO
-
-
-USE SODV2201_Group3;
-SELECT *
-FROM Courses
-ORDER BY CourseTerm, CourseName
