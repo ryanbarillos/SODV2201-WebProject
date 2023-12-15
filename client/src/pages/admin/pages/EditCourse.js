@@ -30,7 +30,7 @@ function EditCourses() {
   return (
     <div>
       <h1>Edit Courses</h1>
-      <h2>Update or Delete Any Course</h2>
+      <h2>Search Any Course to Update or Delete</h2>
       {courses && <CourseList courses={courses} term={null} mode={"edit"} />}
     </div>
   );

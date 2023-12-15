@@ -1,3 +1,9 @@
+/*
+  REFERENCE(s):
+    Search filter
+    https://youtu.be/xAqCEBFGdYk?si=ZvuTf03483_b7R7J
+*/
+
 // Authentication
 import useAuthContext from "../../hooks/useAuthContext";
 // CSS
@@ -12,6 +18,34 @@ const CourseList = ({ courses, term, mode }) => {
         ? courses
         : courses.filter((c) => c.CourseTerm === term)
     ),
+    // Filter Search
+    [searchName, setSearchName] = useState(''),
+    [searchCode, setSearchCode] = useState(''),
+    filterErr = "ERROR:\nUsing two search filters at the same time\n\nSOLUTION:\nUse one search filter at a time by clearing out the other field",
+    filterDiv = () => {
+      return (<div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <strong>Name:&nbsp;</strong>
+        <input
+          placeholder='Search Name...'
+          onChange={event => searchCode.length != 0 ? alert(filterErr) : setSearchName(event.target.value)}
+          value={searchName}
+          style={{ marginRight: "20px" }}
+        />
+        <strong>Code:&nbsp;</strong>
+        <input
+          placeholder='Search Code...'
+          onChange={event => searchName.length != 0 ? alert(filterErr) : setSearchCode(event.target.value)}
+          value={searchCode}
+        />
+      </div>);
+    },
+    filterLst = list.filter(c => {
+      return searchName.toLowerCase() === "" && searchCode.toLowerCase() === ""
+        ? c
+        : (searchName.length > 0 ? c.CourseName.toLowerCase().includes(searchName.toLowerCase())
+          :
+          c.CourseCode.toLowerCase().includes(searchCode.toLowerCase()));
+    }),
     /*
       Enroll student to course
     */
@@ -100,7 +134,8 @@ const CourseList = ({ courses, term, mode }) => {
     case "enroll":
       return (
         <div>
-          {list.map((c) => (
+          {filterDiv()}
+          {filterLst.map((c) => (
             // Render each course into individual sections
             <div className="courseList" key={c.CourseCode}>
               <h2
@@ -121,7 +156,8 @@ const CourseList = ({ courses, term, mode }) => {
     case "show":
       return (
         <div>
-          {list.map((c) => (
+          {filterDiv()}
+          {filterLst.map((c) => (
             // Render each course into individual sections
             <div className="courseList" key={c.CourseCode}>
               <h2
@@ -143,7 +179,8 @@ const CourseList = ({ courses, term, mode }) => {
     case "edit":
       return (
         <div>
-          {list.map((c) => (
+          {filterDiv()}
+          {filterLst.map((c) => (
             // Render each course into individual sections
             <div className="courseList" key={c.CourseCode}>
               <h2
@@ -151,14 +188,14 @@ const CourseList = ({ courses, term, mode }) => {
               >
                 {c.CourseName}
                 <span style={{ float: "right", color: "black" }}>
-                  {c.CourseCode}
+                  {c.CourseCode} — Term {c.CourseTerm}
                 </span>
               </h2>
               <button onClick={() => alert("To be added")}>Modify</button>
               <button onClick={() => courseDelete(c.CourseCode)}>Delete</button>
             </div>
           ))}
-        </div>
+        </div >
       );
   }
 };
