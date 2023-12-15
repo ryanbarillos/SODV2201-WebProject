@@ -116,7 +116,7 @@ GO
 -- Delete Course
 GO
 CREATE PROCEDURE cDel(@aID INT,
-    @cCode INT)
+    @cCode NVARCHAR(7))
 AS
 BEGIN
     IF EXISTS (SELECT ID

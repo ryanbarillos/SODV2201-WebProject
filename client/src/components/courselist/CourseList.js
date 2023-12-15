@@ -16,7 +16,7 @@ const CourseList = ({ courses, term, mode }) => {
       Enroll student to course
     */
     courseEnroll = (cCode) => {
-      if (user) {
+      if (user && user.type === "stdnt") {
         const email = user.email;
         fetch(`/api/course/enroll/`, {
           method: "POST",
@@ -39,8 +39,11 @@ const CourseList = ({ courses, term, mode }) => {
         });
       }
     },
+    /*
+      Withdraw course
+    */
     courseWithdraw = (cCode) => {
-      if (user) {
+      if (user && user.type === "stdnt") {
         const email = user.email;
         fetch(`/api/course/withdraw/`, {
           method: "DELETE",
@@ -62,7 +65,36 @@ const CourseList = ({ courses, term, mode }) => {
           }
         });
       }
+    },
+    courseDelete = (cCode) => {
+      if (user.type === "admin") {
+        const email = user.email;
+        fetch("/api/58E1tuTbjL1YhkTZEV5IyXig2eK9q7jp/rm/crs", {
+          method: "DELETE",
+          headers: {
+            // To authorize transaction
+            Authorization: `Bearer ${user.token}`,
+            // To send body
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            code: cCode,
+          }),
+        }).then((response) => {
+          if (response.ok) {
+            alert("Operation: SUCCESS\n\nCourse has been DELETED to the database");
+            // Reflect changes on frontend
+            setList(list.filter((c) => c.CourseCode !== cCode));
+          }
+        });
+      }
     };
+  /*
+    Delete Course
+    ADMIN ONLY
+  */
+
 
   switch (mode) {
     case "enroll":
@@ -123,7 +155,7 @@ const CourseList = ({ courses, term, mode }) => {
                 </span>
               </h2>
               <button onClick={() => alert("To be added")}>Modify</button>
-              <button onClick={() => alert("To be added")}>Delete</button>
+              <button onClick={() => courseDelete(c.CourseCode)}>Delete</button>
             </div>
           ))}
         </div>

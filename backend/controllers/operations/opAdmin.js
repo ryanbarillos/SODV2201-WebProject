@@ -22,14 +22,16 @@ cAdd = async (adminID, cName, cCode, cTerm) => {
 };
 
 // course remove
-cDel = async (adminID, cCode) => {
+cDel = async (aID, cCode) => {
+  console.log(aID);
+  console.log(cCode);
   const pool = await sql.connect(config);
   // Invoke anonymous function
   try {
     (async () => {
       await pool
         .request()
-        .input("adminID", sql.Int, adminID)
+        .input("aID", sql.Int, aID)
         .input("cCode", sql.NVarChar(7), cCode)
         .execute("cDel");
       pool.close();

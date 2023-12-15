@@ -6,6 +6,10 @@ GO
 
 SELECT *
 FROM Courses
+ORDER BY CourseTerm, CourseName
+
+USE master;
+GO
 
 SELECT *
 FROM CoursesEnrolled
