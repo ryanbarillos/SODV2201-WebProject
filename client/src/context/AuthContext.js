@@ -8,9 +8,9 @@
 import { createContext, useReducer, useEffect } from "react";
 
 const ACT = {
-    LIN: "LOGIN",
-    LOUT: "LOGOUT",
-  },
+  LIN: "LOGIN",
+  LOUT: "LOGOUT",
+},
   AuthContext = createContext(),
   AuthReducer = (state, action) => {
     switch (action.type) {

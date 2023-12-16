@@ -22,7 +22,7 @@ function EditCourses() {
         console.log("Error\n" + err.message);
       }
     };
-    if (user) {
+    if (user && user.type === "admin") {
       courseList(user);
     }
   }, [user]);

@@ -37,7 +37,6 @@ function AddCourse() {
           }),
         }).then((response) => {
           if (response.ok) {
-            console.log(response.json());
             alert(
               "Operation: SUCCESS\n\nCourse has been added to the database"
             );
@@ -66,6 +65,8 @@ function AddCourse() {
     } else {
       // Revoke access to site
       alert("ACCESS DENIED");
+      // Remove credentials from local storage
+      localStorage.removeItem("user");
     }
   };
 

@@ -66,12 +66,15 @@ courseSelect = async (id, term) => {
       AND CourseCode NOT IN (SELECT CourseCode
       FROM CoursesEnrolled
       WHERE StudentID = @id)`,
-      result = await sql.connect(config).then(pool => {
-        return pool.request()
-          .input("term", sql.Int, term)
-          .input("id", sql.Int, id)
-          .query(query);
-      })
+      result = await sql.connect(config)
+        .then(pool => {
+          return pool.request()
+            .input("term", sql.Int, term)
+            .input("id", sql.Int, id)
+            .query(query);
+        }).catch((err) => {
+          console.log(err);
+        });
     return result.recordsets[0];
   } catch (err) {
     console.log(err);

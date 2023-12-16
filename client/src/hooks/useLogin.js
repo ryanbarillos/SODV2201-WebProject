@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import useAuthContext from "./useAuthContext";
+import { Navigate, redirect } from "react-router";
 
 const useLogin = () => {
   const [err, setErr] = useState(null),
@@ -16,16 +17,15 @@ const useLogin = () => {
 
     // Get POST response
     const res = await fetch("/api/user/login", {
-        // Consider converting to GET instead of POST
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, passwd }),
-      }),
+      // Consider converting to GET instead of POST
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, passwd }),
+    }),
       json = await res.json();
     // console.log(json);
 
     if (!res.ok) {
-      setIsLoading(false);
       setErr(json.err);
     }
     if (res.ok) {
@@ -43,6 +43,7 @@ const useLogin = () => {
     //Update auth context
     dispatch({ type: "LOGIN", payload: json });
     setIsLoading(false);
+    // <Navigate to="/" />
   };
   return { login, isLoading, err };
 };

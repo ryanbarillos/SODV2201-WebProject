@@ -229,26 +229,23 @@ getUserID = async (email) => {
     chk2 = `
       SELECT ID
       FROM Administrators
-      WHERE Email = @email`,
-    // Connect to db
-    pool = await sql.connect(config);
+      WHERE Email = @email`;
 
   // Check in student db
-  let id = (
-    await pool.request().input("email", sql.NVarChar(255), email).query(chk1)
-  ).recordset[0];
+  let id = (await sql.connect(config).then(pool => {
+    return pool.request().input("email", sql.NVarChar(255), email).query(chk1)
+  })).recordset[0];
 
   if (!id) {
     // Check in admin db
-    id = (
-      await pool.request().input("email", sql.NVarChar(255), email).query(chk2)
-    ).recordset[0];
+    id = (await sql.connect(config).then(pool => {
+      return pool.request().input("email", sql.NVarChar(255), email).query(chk2)
+    })).recordset[0];
+    // Halt query
     if (!id) {
-      pool.close();
       throw Error("No account with that email found");
     }
   }
-  pool.close();
   return id.ID;
 };
 

@@ -134,7 +134,7 @@ END;
 GO
 -- Add Course
 GO
-CREATE PROCEDURE cAdd(@adminID INT,
+CREATE PROCEDURE cAdd(@aID INT,
     @cName NVARCHAR(255),
     @cCode NVARCHAR(7),
     @cTerm INT)
@@ -142,10 +142,25 @@ AS
 BEGIN
     IF EXISTS (SELECT ID
     FROM Administrators
-    WHERE ID = @adminID)
+    WHERE ID = @aID)
 BEGIN
         INSERT INTO Courses
         VALUES(@cName, @cCode, @cTerm);
+    END;
+END;
+GO
+-- Get Student List
+GO
+CREATE PROCEDURE getStdntAll(@aID INT)
+AS
+BEGIN
+    IF EXISTS (SELECT ID
+    FROM Administrators
+    WHERE ID = @aID)
+BEGIN
+        SELECT*
+        FROM Students
+        ORDER BY NameLast, NameFirst;
     END;
 END;
 GO

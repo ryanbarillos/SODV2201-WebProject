@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import useAuthContext from "./useAuthContext";
-
+import { Navigate } from "react-router";
 const useSignup = () => {
   const [err, setErr] = useState(null),
     [isLoading, setIsLoading] = useState(null),
@@ -16,16 +16,16 @@ const useSignup = () => {
 
     // Get POST response
     const res = await fetch("/api/user/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          passwd,
-          namef,
-          namel,
-          type: "stdnt",
-        }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        passwd,
+        namef,
+        namel,
+        type: "stdnt",
       }),
+    }),
       json = await res.json();
 
     if (!res.ok) {
@@ -43,10 +43,12 @@ const useSignup = () => {
       ways to store login sessions.
       */
       localStorage.setItem("user", JSON.stringify(json));
+      // <Navigate to="/" />
     }
     //Update auth context
     dispatch({ type: "LOGIN", payload: json });
     setIsLoading(false);
+
   };
   return { signup, isLoading, err };
 };

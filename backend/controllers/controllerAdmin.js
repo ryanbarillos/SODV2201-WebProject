@@ -33,7 +33,21 @@ cDel = async (req, res) => {
       res.status(400).json({ err: e.message });
     });
 };
+
+// Get Student List
+getStdntAll = async (req, res) => {
+  const { email } = req.body,
+    id = await dbo[1].getUserID(email);
+  // Make request
+  dbo[0].getStdntAll(parseInt(id))
+    .then((list) => {
+      res.status(200).json(list);
+    }).catch((e) => {
+      res.status(400).json({ err: e.message });
+    });
+}
 module.exports = {
   cAdd,
   cDel,
+  getStdntAll
 };

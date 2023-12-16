@@ -183,13 +183,13 @@ const CourseList = ({ courses, term, mode }) => {
           {filterLst.map((c) => (
             // Render each course into individual sections
             <div className="courseList" key={c.CourseCode}>
-              <h2
-                style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}
-              >
+              <h4 style={{ textAlign: "left", color: "black", textDecorationLine: "underline", marginBottom: "-10px" }}>
+                Course Name
+                <span style={{ float: "right", color: "black", textDecorationLine: "underline" }}>Term {c.CourseTerm}</span>
+              </h4>
+              <h2 style={{ textAlign: "left", color: "hsla(335, 100%, 40%, 1)" }}>
                 {c.CourseName}
-                <span style={{ float: "right", color: "black" }}>
-                  {c.CourseCode} — Term {c.CourseTerm}
-                </span>
+                <span style={{ float: "right", color: "black" }}>{c.CourseCode}</span>
               </h2>
               <button onClick={() => alert("To be added")}>Modify</button>
               <button onClick={() => courseDelete(c.CourseCode)}>Delete</button>

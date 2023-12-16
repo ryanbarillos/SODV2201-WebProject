@@ -14,8 +14,8 @@ r.use(reqAuth);
 r.post("/mk/crs/", dbo.cAdd);
 // course remove
 r.delete("/rm/crs", dbo.cDel);
-// // student remove
-// r.delete("/rm/stdnt", dbo.courseWithdraw);
+// Student list get
+r.post("/get/all/stdnt", dbo.getStdntAll)
 
 // Enroll to specified course
 // Withdraw from specified course
