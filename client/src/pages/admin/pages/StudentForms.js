@@ -28,7 +28,7 @@ function StudentForms() {
     if (user && user.type === "admin") {
       courseList(user);
     }
-  }, [user]);
+  }, [user, msgList]);
   msgList && console.log(msgList);
   return (
     <div>
