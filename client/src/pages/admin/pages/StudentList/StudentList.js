@@ -38,11 +38,37 @@ function StudentList() {
         <strong>Email:&nbsp;</strong>
         <input
           placeholder='Search Email...'
-          onChange={event => searchEmail.length != 0 ? alert(filterErr) : setSearchEmail(event.target.value)}
+          onChange={event => searchName.length != 0 ? alert(filterErr) : setSearchEmail(event.target.value)}
           value={searchEmail}
         />
       </div>);
-    };
+    },
+    viewStdntCourses = async (stdntEmail) => {
+      try {
+        const response = await fetch(`/api/course/mine/${stdntEmail}`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${user.token}` },
+        }).then((res) => {
+          return res.json();
+        });
+        if (response) {
+          if (response.length > 0) {
+            // Get Course List as a string
+            let list = "";
+            response.map(c => {
+              list += `${c.CourseCode}\t\t${c.CourseName}\n`
+            });
+            // Print info
+            alert(`COURSES ENROLLED BY STUDENT:\n\nCourse Code\tCourse Name\n---------------------------------\n${list}`);
+          } else {
+            alert("Student has no courses enrolled");
+          }
+        }
+      } catch (err) {
+        console.log("Error\n" + err.message);
+      }
+    }
+  // Student Course Info
 
   // Get courses
   useEffect(() => {
@@ -89,9 +115,8 @@ function StudentList() {
               {stdnt.Email}
             </span>
           </h2>
-          <button onClick={() => alert("Hi")}>
-            Withdraw
-          </button>
+          <button onClick={() => viewStdntCourses(stdnt.Email)}>View Info</button>
+          <button onClick={() => alert("Operation: TBA")}>Remove</button>
         </div>
       ))}
     </div>
