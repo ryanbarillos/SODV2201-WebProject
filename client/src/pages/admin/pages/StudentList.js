@@ -1,9 +1,9 @@
 // React & Javascript Components
 import React, { useEffect, useState } from "react";
-import useAuthContext from "../../../../hooks/useAuthContext";
+import useAuthContext from "../../../hooks/useAuthContext";
 
 // CSS
-import "../../../../components/courselist/CourseList.css";
+import "../../../components/courselist/CourseList.css";
 
 function StudentList() {
   // User Authentication

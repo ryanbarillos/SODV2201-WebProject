@@ -3,7 +3,7 @@
     Authored By Ryan Barillos
 
     Date Started: 29 Nov 2023
-    Last Updated: 13 Dec 2023
+    Last Updated: 16 Dec 2023
 */
 
 USE master;
@@ -54,9 +54,10 @@ CREATE TABLE Administrators
 );
 CREATE TABLE StudentMessages
 (
+    MsgID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
     StudentMsg NVARCHAR(280) NOT NULL,
-    PRIMARY KEY (StudentID, StudentMsg)
+    DateSentOn NVARCHAR(22) NOT NULL DEFAULT FORMAT(GETDATE(), 'hh:mm tt on dd/MM/yyyy')
 );
 -- Make Tables END
 
@@ -126,6 +127,7 @@ BEGIN
     WHERE ID = @sID)
 BEGIN
         INSERT INTO StudentMessages
+            (StudentID, StudentMsg)
         VALUES(@sID, @sMsg);
     END;
 END;
@@ -183,6 +185,16 @@ BEGIN
         FROM Students
         ORDER BY NameLast, NameFirst;
     END;
+END;
+GO
+-- Get Student List
+GO
+CREATE PROCEDURE MsgGetAll
+AS
+BEGIN
+    SELECT MsgID AS ID, NameFirst, NameLast, StudentMsg AS Message, DateSentOn
+    FROM StudentMessages
+        LEFT JOIN Students ON Students.ID = StudentMessages.StudentID
 END;
 GO
 /*

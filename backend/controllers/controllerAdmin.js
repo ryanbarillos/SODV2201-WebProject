@@ -1,8 +1,7 @@
 // Requires are treated a functions in array
 const dbo = [
   require("./operations/opAdmin"),
-  require("./operations/opUser"),
-  require("./operations/opMessage")
+  require("./operations/opUser")
 ];
 
 // Add Course
@@ -50,11 +49,11 @@ getStdntAll = async (req, res) => {
 
 // GET all student messages
 msgGetAll = async (req, res) => {
-  dbo[2].msgGetAll()
-    .then((data) => {
+  dbo[0].msgGetAll()
+    .then(data => {
       res.status(200).json(data);
     })
-    .catch((e) => {
+    .catch(e => {
       console.log(e);
       res.status(400).json({ err: e.message });
     });
@@ -62,5 +61,6 @@ msgGetAll = async (req, res) => {
 module.exports = {
   cAdd,
   cDel,
-  getStdntAll
+  getStdntAll,
+  msgGetAll
 };

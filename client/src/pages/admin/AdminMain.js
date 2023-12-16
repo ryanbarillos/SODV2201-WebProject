@@ -1,7 +1,7 @@
 // Pages
 import Home from "./pages/Home";
 import AddCourse from "./pages/AddCourse";
-import StudentList from "./pages/StudentList/StudentList";
+import StudentList from "./pages/StudentList";
 import StudentForms from "./pages/StudentForms";
 import EditCourse from "./pages/EditCourse";
 import NotFound from "../../components/pages/NotFound";

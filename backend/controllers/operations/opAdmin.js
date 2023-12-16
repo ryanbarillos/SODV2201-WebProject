@@ -54,8 +54,20 @@ getStdntAll = async (aID) => {
   }
 };
 
+msgGetAll = async () => {
+  try {
+    const result = await sql.connect(config).then(pool => {
+      return pool.request().execute("MsgGetAll");
+    });
+    return result.recordsets[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   cAdd,
   cDel,
-  getStdntAll
+  getStdntAll,
+  msgGetAll
 };

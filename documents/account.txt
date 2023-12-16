@@ -9,3 +9,6 @@ Jon
 Fam
 jdm@bvc.ca
 re@|!+7_sets
+
+// Test Course
+Winnie The Pooh A++ B-- C+- D-+ E# F#+ F#- G-# H+# Hydrogen
