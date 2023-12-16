@@ -29,7 +29,6 @@ function StudentForms() {
       courseList(user);
     }
   }, [user, msgList]);
-  msgList && console.log(msgList);
   return (
     <div>
       <h1>Student Forms</h1>

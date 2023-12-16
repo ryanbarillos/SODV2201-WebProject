@@ -1,6 +1,9 @@
 /*
   Microsoft SQL Server
   Server Configuration
+
+  To get server name for "server" property:
+  https://stackoverflow.com/questions/52110716/how-to-know-my-server-name-in-sql-server
 */
 const sql = require("mssql"),
   config = {
@@ -15,13 +18,4 @@ const sql = require("mssql"),
       trustServerCertificate: true,
     },
   };
-// async function connectDB() {
-//   try {
-//     return await sql.connect(config);
-//   } catch (err) {
-//     console.error("Connexion failed\n" + err);
-//   }
-// database.close();  // To end database connection
-// }
-
 module.exports = config;
