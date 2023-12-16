@@ -27,4 +27,4 @@ Following NPM Packages Used:<br>
 IMPORTANT!<br>
 
 - GO TO "backend/database" and CONFIGURE ".env" to have correct information to connect to your local Microsoft SQL Server Instance
-- Inside the same folder, please read through "dbconfig.js"—it has comments to guide you to establishing connection you your MSSQL Server
+- Inside the same folder, please read through "dbconfig.js"—it has comments to guide you to establishing connection to your MSSQL Server
