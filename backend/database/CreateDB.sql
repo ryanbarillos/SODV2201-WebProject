@@ -52,6 +52,12 @@ CREATE TABLE Administrators
     NameFirst NVARCHAR(255) NOT NULL,
     NameLast NVARCHAR(255) NOT NULL,
 );
+CREATE TABLE StudentMessages
+(
+    StudentID INT NOT NULL FOREIGN KEY REFERENCES Students(ID),
+    StudentMsg NVARCHAR(280) NOT NULL,
+    PRIMARY KEY (StudentID, StudentMsg)
+);
 -- Make Tables END
 
 /*
@@ -107,6 +113,21 @@ BEGIN
     DELETE FROM CoursesEnrolled
     WHERE StudentID = @sID
         AND CourseCode = @cCode
+END;
+GO
+-- Submit messages to admin
+GO
+CREATE PROCEDURE MsgSubmit(@sID INT,
+    @sMsg NVARCHAR(280))
+AS
+BEGIN
+    IF EXISTS (SELECT ID
+    FROM Students
+    WHERE ID = @sID)
+BEGIN
+        INSERT INTO StudentMessages
+        VALUES(@sID, @sMsg);
+    END;
 END;
 GO
 /*

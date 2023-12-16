@@ -43,7 +43,6 @@ const useSignup = () => {
       ways to store login sessions.
       */
       localStorage.setItem("user", JSON.stringify(json));
-      // <Navigate to="/" />
     }
     //Update auth context
     dispatch({ type: "LOGIN", payload: json });

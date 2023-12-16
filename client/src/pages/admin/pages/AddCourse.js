@@ -40,12 +40,6 @@ function AddCourse() {
             alert(
               "Operation: SUCCESS\n\nCourse has been added to the database"
             );
-          } else {
-            /*
-              TO DO:
-              Send error message that one or more field values
-              already exists, thus reporting duplicates
-            */
           }
         });
       } else {

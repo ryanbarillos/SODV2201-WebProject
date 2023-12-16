@@ -17,9 +17,6 @@ import {
   createRoutesFromElements,
   RouterProvider,
   Route,
-  useNavigate,
-  redirect,
-  Navigate
 } from "react-router-dom";
 import AdminMain from "./pages/admin/AdminMain";
 import StudentMain from "./pages/student/StudentMain";
@@ -37,14 +34,14 @@ export function App() {
   // let mode = user === null || undefined ? "auth" : user.type;
   let mode = () => {
     const a = "auth";
-    if (user === null || undefined) { return a; }
+    if (user === null || undefined) {
+      return a;
+    }
     else {
       switch (user.type) {
         case "stdnt":
-          <Navigate to="/" />
           return user.type;
         case "admin":
-          <Navigate to="/" />
           return user.type;
         default:
           return a;
@@ -68,12 +65,6 @@ export function App() {
   );
 
   switch (mode()) {
-    case "auth":
-      return (
-        <div>
-          <RouterProvider router={auth} />
-        </div>
-      );
     case "stdnt":
       return (
         <div>
@@ -84,6 +75,12 @@ export function App() {
       return (
         <div>
           <AdminMain />
+        </div>
+      );
+    default:
+      return (
+        <div>
+          <RouterProvider router={auth} />
         </div>
       );
   }

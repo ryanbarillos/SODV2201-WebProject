@@ -20,7 +20,8 @@ const express = require("express"),
   port = process.env.PORT,
   routerCourse = require("./routes/routerCourse"),
   routerUser = require("./routes/routerUser"),
-  routerAdmin = require("./routes/routerAdmin");
+  routerAdmin = require("./routes/routerAdmin"),
+  routerStdnt = require("./routes/routerStudent");
 
 /*
   Middleware
@@ -31,7 +32,10 @@ app.use(cors()); // Benefits are unknown, as I haven't emphasized cors
 app.use(data);
 
 // Router Admin
+
 app.use("/api/58E1tuTbjL1YhkTZEV5IyXig2eK9q7jp", routerAdmin);
+// Router Student
+app.use("/api/sKSgljbMf5GAf7vxFzuQVqtrTNXsFMio", routerStdnt);
 // Router User
 app.use("/api/user", routerUser);
 // Router Course

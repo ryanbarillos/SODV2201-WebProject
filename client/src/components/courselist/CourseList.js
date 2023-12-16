@@ -27,14 +27,14 @@ const CourseList = ({ courses, term, mode }) => {
         <strong>Name:&nbsp;</strong>
         <input
           placeholder='Search Name...'
-          onChange={event => searchCode.length != 0 ? alert(filterErr) : setSearchName(event.target.value)}
+          onChange={event => searchCode.length !== 0 ? alert(filterErr) : setSearchName(event.target.value)}
           value={searchName}
           style={{ marginRight: "20px" }}
         />
         <strong>Code:&nbsp;</strong>
         <input
           placeholder='Search Code...'
-          onChange={event => searchName.length != 0 ? alert(filterErr) : setSearchCode(event.target.value)}
+          onChange={event => searchName.length !== 0 ? alert(filterErr) : setSearchCode(event.target.value)}
           value={searchCode}
         />
       </div>);

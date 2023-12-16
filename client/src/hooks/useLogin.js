@@ -43,7 +43,6 @@ const useLogin = () => {
     //Update auth context
     dispatch({ type: "LOGIN", payload: json });
     setIsLoading(false);
-    // <Navigate to="/" />
   };
   return { login, isLoading, err };
 };

@@ -31,14 +31,14 @@ function StudentList() {
         <strong>Name:&nbsp;</strong>
         <input
           placeholder='First name or last name...'
-          onChange={event => searchEmail.length != 0 ? alert(filterErr) : setSearchName(event.target.value)}
+          onChange={event => searchEmail.length !== 0 ? alert(filterErr) : setSearchName(event.target.value)}
           value={searchName}
           style={{ marginRight: "20px" }}
         />
         <strong>Email:&nbsp;</strong>
         <input
           placeholder='Search Email...'
-          onChange={event => searchName.length != 0 ? alert(filterErr) : setSearchEmail(event.target.value)}
+          onChange={event => searchName.length !== 0 ? alert(filterErr) : setSearchEmail(event.target.value)}
           value={searchEmail}
         />
       </div>);
@@ -56,7 +56,7 @@ function StudentList() {
             // Get Course List as a string
             let list = "";
             response.map(c => {
-              list += `${c.CourseCode}\t\t${c.CourseName}\n`
+              return list += `${c.CourseCode}\t\t${c.CourseName}\n`
             });
             // Print info
             alert(`COURSES ENROLLED BY STUDENT:\n\nCourse Code\tCourse Name\n---------------------------------\n${list}`);

@@ -16,6 +16,8 @@ r.post("/mk/crs/", dbo.cAdd);
 r.delete("/rm/crs", dbo.cDel);
 // Student list get
 r.post("/get/all/stdnt", dbo.getStdntAll)
+// Get student forms
+r.post("/get/all/stdnt/messages", dbo.getStdntAll)
 
 // Enroll to specified course
 // Withdraw from specified course

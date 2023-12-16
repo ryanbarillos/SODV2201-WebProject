@@ -2,7 +2,7 @@
 import Home from "./pages/Home";
 import MyCourses from "./pages/MyCourses";
 import AddCourses from "./pages/AddCouses";
-import Help from "../../components/pages/Help";
+import StudentForms from "./pages/StudentForms";
 import NotFound from "../../components/pages/NotFound";
 
 // Javascript & React Components
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/MyCourses" element={<MyCourses />} />
       <Route path="/AddCourses" element={<AddCourses />} />
-      <Route path="/Help" element={<Help />} />
+      <Route path="/Help" element={<StudentForms />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )
