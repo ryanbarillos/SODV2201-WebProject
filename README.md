@@ -23,3 +23,8 @@ Following NPM Packages Used:<br>
 - [mssql](https://www.npmjs.com/package/mssql)
 - [nodemon](https://www.npmjs.com/package/nodemon)
 - [validator](https://www.npmjs.com/package/validator)
+
+IMPORTANT!<br>
+
+- GO TO "backend/database" and CONFIGURE ".env" to have correct information to connect to your local Microsoft SQL Server Instance
+- Inside the same folder, please read through "dbconfig.js"—it has comments to guide you to establishing connection you your MSSQL Server

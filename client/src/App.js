@@ -48,11 +48,7 @@ export function App() {
       }
     }
   }
-  // // console.log(mode);
-  // let mode = "stdnt";
-  // let mode = userType === null ? "auth" : userType;
-
-  // V6 and newer
+  // React Router v6 format
   const auth = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Navbar mode={mode()} />}>

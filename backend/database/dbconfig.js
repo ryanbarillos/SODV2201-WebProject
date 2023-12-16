@@ -2,8 +2,13 @@
   Microsoft SQL Server
   Server Configuration
 
-  To get server name for "server" property:
+  "server" requires your Server Name
   https://stackoverflow.com/questions/52110716/how-to-know-my-server-name-in-sql-server
+
+  "user" requires your username for SSMS
+  "password" requires your password for SSMS
+  "database" is given
+  "driver" is given
 */
 const sql = require("mssql"),
   config = {
